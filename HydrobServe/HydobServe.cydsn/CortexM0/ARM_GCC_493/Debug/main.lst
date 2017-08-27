@@ -1,0 +1,3119 @@
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.isrCombined,"ax",%progbits
+  18              		.align	2
+  19              		.global	isrCombined
+  20              		.code	16
+  21              		.thumb_func
+  22              		.type	isrCombined, %function
+  23              	isrCombined:
+  24              	.LFB37:
+  25              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  * Author:  Jannai Flaschberger, 2017
+   3:main.c        ****  * Copyright (C)
+   4:main.c        ****  * This program is free software; you can redistribute it and/or
+   5:main.c        ****  * modify it under the terms of the GNU General Public License as
+   6:main.c        ****  * published by the Free Software Foundation; either version 2 of
+   7:main.c        ****  * the License, or (at your option) any later version.
+   8:main.c        ****  *
+   9:main.c        ****  * ========================================
+  10:main.c        **** */
+  11:main.c        **** #include <project.h>
+  12:main.c        **** #include "BLE_functions.h"
+  13:main.c        **** #include "common.h"
+  14:main.c        **** #include "mainFunctions.h"
+  15:main.c        **** 
+  16:main.c        **** #define WDT_INTERVAL_2S             2000u                       /* millisecond */
+  17:main.c        **** #define ILO_FREQ                    32000                       /* Hz */
+  18:main.c        **** 
+  19:main.c        **** 
+  20:main.c        **** /***************************************
+  21:main.c        **** *        function Dummies
+  22:main.c        **** ***************************************/
+  23:main.c        **** void handle_BLE_Statemachine();
+  24:main.c        ****          
+  25:main.c        **** 
+  26:main.c        **** //ISR dummies
+  27:main.c        **** CY_ISR(DoThisEverySecond);
+  28:main.c        **** CY_ISR(ISR_hall_pulse);
+  29:main.c        **** CY_ISR(ISR_button_press);
+  30:main.c        **** CY_ISR(ISR_acc_movement);
+  31:main.c        **** CY_ISR(ISR_anyInterrupt);
+  32:main.c        **** CY_ISR(isrCombined);
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 2
+
+
+  33:main.c        **** 
+  34:main.c        **** 
+  35:main.c        **** #define Pin_button_isr_IntrTrigger      ((uint32)((uint32)1u << Pin_button_isr__PORT))
+  36:main.c        **** #define Pin_NoDPWakeup_IntrTrigger    ((uint32)((uint32)1u << Pin_NoDPWakeup__PORT))
+  37:main.c        **** #define Pin_CombinedIntr_IntrTrigger  ((uint32)((uint32)1u << Pin_CombinedIntr__PORT))
+  38:main.c        **** //delete later
+  39:main.c        **** 
+  40:main.c        **** 
+  41:main.c        **** CY_ISR(isrCombined)
+  42:main.c        **** {
+  26              		.loc 1 42 0
+  27              		.cfi_startproc
+  28 0000 08B5     		push	{r3, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 3, -8
+  31              		.cfi_offset 14, -4
+  43:main.c        ****      if(Pin_button_isr_INTR_CAUSE & Pin_button_isr_IntrTrigger)
+  32              		.loc 1 43 0
+  33 0002 024B     		ldr	r3, .L2
+  34 0004 1B68     		ldr	r3, [r3]
+  44:main.c        ****     {
+  45:main.c        ****     }
+  46:main.c        ****     
+  47:main.c        ****         Pin_CombinedIntr_ClearInterrupt();
+  35              		.loc 1 47 0
+  36 0006 FFF7FEFF 		bl	Pin_CombinedIntr_ClearInterrupt
+  37              	.LVL0:
+  48:main.c        **** }
+  38              		.loc 1 48 0
+  39              		@ sp needed
+  40 000a 08BD     		pop	{r3, pc}
+  41              	.L3:
+  42              		.align	2
+  43              	.L2:
+  44 000c 00100440 		.word	1074008064
+  45              		.cfi_endproc
+  46              	.LFE37:
+  47              		.size	isrCombined, .-isrCombined
+  48              		.section	.text.main,"ax",%progbits
+  49              		.align	2
+  50              		.global	main
+  51              		.code	16
+  52              		.thumb_func
+  53              		.type	main, %function
+  54              	main:
+  55              	.LFB38:
+  49:main.c        **** 
+  50:main.c        **** 
+  51:main.c        **** int main()
+  52:main.c        **** {
+  56              		.loc 1 52 0
+  57              		.cfi_startproc
+  58 0000 10B5     		push	{r4, lr}
+  59              		.cfi_def_cfa_offset 8
+  60              		.cfi_offset 4, -8
+  61              		.cfi_offset 14, -4
+  53:main.c        ****     //start SW UART TX for debug
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 3
+
+
+  54:main.c        ****     SW_TX_Start();
+  62              		.loc 1 54 0
+  63 0002 FFF7FEFF 		bl	SW_TX_Start
+  64              	.LVL1:
+  55:main.c        ****     SW_TX_PutCRLF();
+  65              		.loc 1 55 0
+  66 0006 FFF7FEFF 		bl	SW_TX_PutCRLF
+  67              	.LVL2:
+  56:main.c        ****     SW_TX_PutCRLF();
+  68              		.loc 1 56 0
+  69 000a FFF7FEFF 		bl	SW_TX_PutCRLF
+  70              	.LVL3:
+  57:main.c        ****     SW_TX_PutString("----------------UART debug started------------------------");   
+  71              		.loc 1 57 0
+  72 000e 3748     		ldr	r0, .L16
+  73 0010 FFF7FEFF 		bl	SW_TX_PutString
+  74              	.LVL4:
+  58:main.c        ****     
+  59:main.c        ****     //Start Analog Digital Converter
+  60:main.c        ****     ADC_Start();
+  75              		.loc 1 60 0
+  76 0014 FFF7FEFF 		bl	ADC_Start
+  77              	.LVL5:
+  61:main.c        ****     
+  62:main.c        ****     // DO NOT CHANGE 
+  63:main.c        ****     // Change SCL and SDA pins drive mode to Resistive Pull Up --> no external components necessary
+  64:main.c        ****     I2CM_scl_SetDriveMode(I2CM_scl_DM_RES_UP);
+  78              		.loc 1 64 0
+  79 0018 0220     		mov	r0, #2
+  80 001a FFF7FEFF 		bl	I2CM_scl_SetDriveMode
+  81              	.LVL6:
+  65:main.c        ****     I2CM_sda_SetDriveMode(I2CM_sda_DM_RES_UP);
+  82              		.loc 1 65 0
+  83 001e 0220     		mov	r0, #2
+  84 0020 FFF7FEFF 		bl	I2CM_sda_SetDriveMode
+  85              	.LVL7:
+  66:main.c        ****      
+  67:main.c        ****     
+  68:main.c        ****     /*************************************************************
+  69:main.c        ****     *       Start Interrupts
+  70:main.c        ****     ************************************************************/
+  71:main.c        ****     
+  72:main.c        ****     //Start secondly timer running the main routine
+  73:main.c        ****     Timer_1_Start();
+  86              		.loc 1 73 0
+  87 0024 FFF7FEFF 		bl	Timer_1_Start
+  88              	.LVL8:
+  74:main.c        ****     
+  75:main.c        ****     // Enable the Interrupt component connected to Timer interrupt 
+  76:main.c        ****     ISR_everySecond_StartEx(DoThisEverySecond);
+  89              		.loc 1 76 0
+  90 0028 3148     		ldr	r0, .L16+4
+  91 002a FFF7FEFF 		bl	ISR_everySecond_StartEx
+  92              	.LVL9:
+  77:main.c        ****     // Enable the Interrupt component connected to hall sensor
+  78:main.c        ****     ISR_hall_StartEx(ISR_hall_pulse);
+  93              		.loc 1 78 0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 4
+
+
+  94 002e 3148     		ldr	r0, .L16+8
+  95 0030 FFF7FEFF 		bl	ISR_hall_StartEx
+  96              	.LVL10:
+  79:main.c        ****     //ISR_hall_SetVector(ISR_hall_pulse);
+  80:main.c        ****     // Enable the Interrupt component connected to accellerometer
+  81:main.c        ****     ISR_acc_StartEx(ISR_acc_movement);
+  97              		.loc 1 81 0
+  98 0034 3048     		ldr	r0, .L16+12
+  99 0036 FFF7FEFF 		bl	ISR_acc_StartEx
+ 100              	.LVL11:
+  82:main.c        ****     // Enable the Interrupt component connected to pushbutton
+  83:main.c        ****     ISR_btn_StartEx(ISR_button_press);
+ 101              		.loc 1 83 0
+ 102 003a 3048     		ldr	r0, .L16+16
+ 103 003c FFF7FEFF 		bl	ISR_btn_StartEx
+ 104              	.LVL12:
+  84:main.c        ****     //ISR_btn_SetVector(ISR_button_press);
+  85:main.c        ****     
+  86:main.c        ****     //ISR_wakeup_StartEx(ISR_anyInterrupt);
+  87:main.c        ****     isr_CombinedPort_StartEx(isrCombined);
+ 105              		.loc 1 87 0
+ 106 0040 2F48     		ldr	r0, .L16+20
+ 107 0042 FFF7FEFF 		bl	isr_CombinedPort_StartEx
+ 108              	.LVL13:
+  88:main.c        ****     
+  89:main.c        ****     /* zaehler_pos is not resettet. Do manual reset if Reset Reason is not Hibernate*/
+  90:main.c        ****     /* Values are safed if device wakes up from hibernate but not if it resetts of another reason*/
+  91:main.c        ****     if( CySysPmGetResetReason() != CY_PM_RESET_REASON_WAKEUP_HIB )
+ 109              		.loc 1 91 0
+ 110 0046 FFF7FEFF 		bl	CySysPmGetResetReason
+ 111              	.LVL14:
+ 112 004a 0228     		cmp	r0, #2
+ 113 004c 04D0     		beq	.L5
+  92:main.c        ****       {
+  93:main.c        ****         overall_volume = 0;
+ 114              		.loc 1 93 0
+ 115 004e 0023     		mov	r3, #0
+ 116 0050 2C4A     		ldr	r2, .L16+24
+ 117 0052 1380     		strh	r3, [r2]
+  94:main.c        ****         overall_pulses = 0;
+ 118              		.loc 1 94 0
+ 119 0054 2C4A     		ldr	r2, .L16+28
+ 120 0056 1380     		strh	r3, [r2]
+ 121              	.L5:
+  95:main.c        ****       }
+  96:main.c        ****     
+  97:main.c        ****     uint32 reason = CySysPmGetResetReason();
+ 122              		.loc 1 97 0
+ 123 0058 FFF7FEFF 		bl	CySysPmGetResetReason
+ 124              	.LVL15:
+ 125 005c 041C     		mov	r4, r0
+ 126              	.LVL16:
+  98:main.c        ****     SW_TX_PutString("Wakeup Reason = ");  
+ 127              		.loc 1 98 0
+ 128 005e 2B48     		ldr	r0, .L16+32
+ 129              	.LVL17:
+ 130 0060 FFF7FEFF 		bl	SW_TX_PutString
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 5
+
+
+ 131              	.LVL18:
+  99:main.c        ****     switch(reason)
+ 132              		.loc 1 99 0
+ 133 0064 F12C     		cmp	r4, #241
+ 134 0066 07D0     		beq	.L7
+ 135 0068 F22C     		cmp	r4, #242
+ 136 006a 09D0     		beq	.L8
+ 137 006c 002C     		cmp	r4, #0
+ 138 006e 0BD1     		bne	.L15
+ 100:main.c        ****         {
+ 101:main.c        ****         /* Power up, XRES */
+ 102:main.c        ****         case CY_PM_PWR_STOP_TOKEN_XRES:
+ 103:main.c        ****             SW_TX_PutString("Reset");  
+ 139              		.loc 1 103 0
+ 140 0070 2748     		ldr	r0, .L16+36
+ 141 0072 FFF7FEFF 		bl	SW_TX_PutString
+ 142              	.LVL19:
+ 104:main.c        ****             break;
+ 143              		.loc 1 104 0
+ 144 0076 0AE0     		b	.L10
+ 145              	.L7:
+ 105:main.c        **** 
+ 106:main.c        ****         /* Wakeup from Hibernate */
+ 107:main.c        ****         case CY_PM_PWR_STOP_TOKEN_HIB:
+ 108:main.c        ****             SW_TX_PutString("wakeup from hibernate");  
+ 146              		.loc 1 108 0
+ 147 0078 2648     		ldr	r0, .L16+40
+ 148 007a FFF7FEFF 		bl	SW_TX_PutString
+ 149              	.LVL20:
+ 109:main.c        ****             break;
+ 150              		.loc 1 109 0
+ 151 007e 06E0     		b	.L10
+ 152              	.L8:
+ 110:main.c        **** 
+ 111:main.c        ****         /* Wakeup from Stop (through WAKEUP pin assert) */
+ 112:main.c        ****         case CY_PM_PWR_STOP_TOKEN_STOP:
+ 113:main.c        ****             SW_TX_PutString("wakeup from stop");  
+ 153              		.loc 1 113 0
+ 154 0080 2548     		ldr	r0, .L16+44
+ 155 0082 FFF7FEFF 		bl	SW_TX_PutString
+ 156              	.LVL21:
+ 114:main.c        ****             break;
+ 157              		.loc 1 114 0
+ 158 0086 02E0     		b	.L10
+ 159              	.L15:
+ 115:main.c        **** 
+ 116:main.c        ****         /* Unknown reason */
+ 117:main.c        ****         default:
+ 118:main.c        ****             SW_TX_PutString("Unknown reason");  
+ 160              		.loc 1 118 0
+ 161 0088 2448     		ldr	r0, .L16+48
+ 162 008a FFF7FEFF 		bl	SW_TX_PutString
+ 163              	.LVL22:
+ 164              	.L10:
+ 119:main.c        ****             break;
+ 120:main.c        ****         }
+ 121:main.c        ****         SW_TX_PutCRLF();
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 6
+
+
+ 165              		.loc 1 121 0
+ 166 008e FFF7FEFF 		bl	SW_TX_PutCRLF
+ 167              	.LVL23:
+ 122:main.c        ****     
+ 123:main.c        ****     //start I2C
+ 124:main.c        ****     //I2CM_Start();
+ 125:main.c        ****     
+ 126:main.c        ****        
+ 127:main.c        ****     
+ 128:main.c        ****     //start BLE component and wait for it to initialize
+ 129:main.c        ****     CyBle_Start(StackEventHandler);
+ 168              		.loc 1 129 0
+ 169 0092 2348     		ldr	r0, .L16+52
+ 170 0094 FFF7FEFF 		bl	CyBle_Start
+ 171              	.LVL24:
+ 130:main.c        ****     while (CyBle_GetState() == CYBLE_STATE_INITIALIZING)
+ 172              		.loc 1 130 0
+ 173 0098 04E0     		b	.L11
+ 174              	.L12:
+ 131:main.c        ****     {
+ 132:main.c        ****         CyBle_ProcessEvents();
+ 175              		.loc 1 132 0
+ 176 009a FFF7FEFF 		bl	CyBle_ProcessEvents
+ 177              	.LVL25:
+ 133:main.c        ****         CyDelay(10);
+ 178              		.loc 1 133 0
+ 179 009e 0A20     		mov	r0, #10
+ 180 00a0 FFF7FEFF 		bl	CyDelay
+ 181              	.LVL26:
+ 182              	.L11:
+ 130:main.c        ****     while (CyBle_GetState() == CYBLE_STATE_INITIALIZING)
+ 183              		.loc 1 130 0
+ 184 00a4 1F4B     		ldr	r3, .L16+56
+ 185 00a6 1B78     		ldrb	r3, [r3]
+ 186 00a8 012B     		cmp	r3, #1
+ 187 00aa F6D0     		beq	.L12
+ 134:main.c        ****     }
+ 135:main.c        ****     
+ 136:main.c        ****     // Enable global interrupts 
+ 137:main.c        ****     CyGlobalIntEnable;
+ 188              		.loc 1 137 0
+ 189              	@ 137 "main.c" 1
+ 190 00ac 62B6     		CPSIE   i
+ 191              	@ 0 "" 2
+ 138:main.c        ****     
+ 139:main.c        ****     
+ 140:main.c        ****     //switch on hall sensor
+ 141:main.c        ****     VCC_hall_Write(ON);
+ 192              		.loc 1 141 0
+ 193              		.code	16
+ 194 00ae 0120     		mov	r0, #1
+ 195 00b0 FFF7FEFF 		bl	VCC_hall_Write
+ 196              	.LVL27:
+ 142:main.c        ****     
+ 143:main.c        ****     //check if bat level has changed and if so, pack new value into ble database
+ 144:main.c        ****     uint8 newBatLevel = MeasureBattery();
+ 197              		.loc 1 144 0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 7
+
+
+ 198 00b4 FFF7FEFF 		bl	MeasureBattery
+ 199              	.LVL28:
+ 145:main.c        ****     if(oldBatLevel != newBatLevel)
+ 200              		.loc 1 145 0
+ 201 00b8 1B4B     		ldr	r3, .L16+60
+ 202 00ba 1B78     		ldrb	r3, [r3]
+ 203 00bc 8342     		cmp	r3, r0
+ 204 00be 04D0     		beq	.L13
+ 146:main.c        ****     {
+ 147:main.c        ****         oldBatLevel = newBatLevel;
+ 205              		.loc 1 147 0
+ 206 00c0 194B     		ldr	r3, .L16+60
+ 207 00c2 1870     		strb	r0, [r3]
+ 148:main.c        ****         writeUint8ToBLEdb(oldBatLevel, CYBLE_BATTERY_BATTERY_LEVEL_CHAR_HANDLE);
+ 208              		.loc 1 148 0
+ 209 00c4 2221     		mov	r1, #34
+ 210 00c6 FFF7FEFF 		bl	writeUint8ToBLEdb
+ 211              	.LVL29:
+ 212              	.L13:
+ 149:main.c        ****     }
+ 150:main.c        ****     
+ 151:main.c        ****     //start I2C communication with eeprom and let it wake up
+ 152:main.c        ****     I2CM_Start(); CyDelay(5);
+ 213              		.loc 1 152 0
+ 214 00ca FFF7FEFF 		bl	I2CM_Start
+ 215              	.LVL30:
+ 216 00ce 0520     		mov	r0, #5
+ 217 00d0 FFF7FEFF 		bl	CyDelay
+ 218              	.LVL31:
+ 153:main.c        ****     //now init BLE characteristics with saved variables
+ 154:main.c        ****     initBLEcharacteristics();
+ 219              		.loc 1 154 0
+ 220 00d4 FFF7FEFF 		bl	initBLEcharacteristics
+ 221              	.LVL32:
+ 155:main.c        ****     initAcc();
+ 222              		.loc 1 155 0
+ 223 00d8 FFF7FEFF 		bl	initAcc
+ 224              	.LVL33:
+ 156:main.c        ****     //I2CM_Stop();
+ 157:main.c        ****     
+ 158:main.c        ****     SW_TX_PutString("---------------------INIT DONE. NOW LOOPING-------------------");SW_TX_PutCRLF
+ 225              		.loc 1 158 0
+ 226 00dc 1348     		ldr	r0, .L16+64
+ 227 00de FFF7FEFF 		bl	SW_TX_PutString
+ 228              	.LVL34:
+ 229 00e2 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 230              	.LVL35:
+ 231              	.L14:
+ 159:main.c        ****     
+ 160:main.c        **** 
+ 161:main.c        ****     /*************************************************************
+ 162:main.c        ****     *       LOOP ROUTINE
+ 163:main.c        ****     ************************************************************/
+ 164:main.c        ****     for(;;)
+ 165:main.c        ****     {
+ 166:main.c        ****         //regularly update BLE Stack
+ 167:main.c        ****         CyBle_ProcessEvents();    
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 8
+
+
+ 232              		.loc 1 167 0 discriminator 1
+ 233 00e6 FFF7FEFF 		bl	CyBle_ProcessEvents
+ 234              	.LVL36:
+ 168:main.c        ****         //SW_TX_PutString(".");
+ 169:main.c        ****         //CyDelay(10);
+ 170:main.c        ****         
+ 171:main.c        ****             
+ 172:main.c        ****     }
+ 235              		.loc 1 172 0 discriminator 1
+ 236 00ea FCE7     		b	.L14
+ 237              	.L17:
+ 238              		.align	2
+ 239              	.L16:
+ 240 00ec 00000000 		.word	.LC0
+ 241 00f0 00000000 		.word	DoThisEverySecond
+ 242 00f4 00000000 		.word	ISR_hall_pulse
+ 243 00f8 00000000 		.word	ISR_acc_movement
+ 244 00fc 00000000 		.word	ISR_button_press
+ 245 0100 00000000 		.word	isrCombined
+ 246 0104 00000000 		.word	overall_volume
+ 247 0108 00000000 		.word	overall_pulses
+ 248 010c 3C000000 		.word	.LC9
+ 249 0110 50000000 		.word	.LC11
+ 250 0114 58000000 		.word	.LC13
+ 251 0118 70000000 		.word	.LC15
+ 252 011c 84000000 		.word	.LC17
+ 253 0120 00000000 		.word	StackEventHandler
+ 254 0124 00000000 		.word	cyBle_state
+ 255 0128 00000000 		.word	oldBatLevel
+ 256 012c 94000000 		.word	.LC22
+ 257              		.cfi_endproc
+ 258              	.LFE38:
+ 259              		.size	main, .-main
+ 260              		.comm	lpMode,1,1
+ 261              		.comm	apiResult,2,2
+ 262              		.comm	connectionHandle,2,4
+ 263              		.comm	debugStr,50,4
+ 264              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 265              		.align	2
+ 266              	.LC0:
+ 267 0000 2D2D2D2D 		.ascii	"----------------UART debug started-----------------"
+ 267      2D2D2D2D 
+ 267      2D2D2D2D 
+ 267      2D2D2D2D 
+ 267      55415254 
+ 268 0033 2D2D2D2D 		.ascii	"-------\000"
+ 268      2D2D2D00 
+ 269 003b 00       		.space	1
+ 270              	.LC9:
+ 271 003c 57616B65 		.ascii	"Wakeup Reason = \000"
+ 271      75702052 
+ 271      6561736F 
+ 271      6E203D20 
+ 271      00
+ 272 004d 000000   		.space	3
+ 273              	.LC11:
+ 274 0050 52657365 		.ascii	"Reset\000"
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 9
+
+
+ 274      7400
+ 275 0056 0000     		.space	2
+ 276              	.LC13:
+ 277 0058 77616B65 		.ascii	"wakeup from hibernate\000"
+ 277      75702066 
+ 277      726F6D20 
+ 277      68696265 
+ 277      726E6174 
+ 278 006e 0000     		.space	2
+ 279              	.LC15:
+ 280 0070 77616B65 		.ascii	"wakeup from stop\000"
+ 280      75702066 
+ 280      726F6D20 
+ 280      73746F70 
+ 280      00
+ 281 0081 000000   		.space	3
+ 282              	.LC17:
+ 283 0084 556E6B6E 		.ascii	"Unknown reason\000"
+ 283      6F776E20 
+ 283      72656173 
+ 283      6F6E00
+ 284 0093 00       		.space	1
+ 285              	.LC22:
+ 286 0094 2D2D2D2D 		.ascii	"---------------------INIT DONE. NOW LOOPING--------"
+ 286      2D2D2D2D 
+ 286      2D2D2D2D 
+ 286      2D2D2D2D 
+ 286      2D2D2D2D 
+ 287 00c7 2D2D2D2D 		.ascii	"-----------\000"
+ 287      2D2D2D2D 
+ 287      2D2D2D00 
+ 288 00d3 00       		.text
+ 289              	.Letext0:
+ 290              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 291              		.file 3 "Generated_Source\\PSoC4/BLE_Stack.h"
+ 292              		.file 4 "Generated_Source\\PSoC4/BLE_StackGatt.h"
+ 293              		.file 5 "Generated_Source\\PSoC4/BLE.h"
+ 294              		.file 6 "Generated_Source\\PSoC4/BLE_eventHandler.h"
+ 295              		.file 7 "common.h"
+ 296              		.file 8 "BLE_functions.h"
+ 297              		.file 9 "Generated_Source\\PSoC4/SW_TX.h"
+ 298              		.file 10 "Generated_Source\\PSoC4/ADC.h"
+ 299              		.file 11 "Generated_Source\\PSoC4/I2CM_scl.h"
+ 300              		.file 12 "Generated_Source\\PSoC4/I2CM_sda.h"
+ 301              		.file 13 "Generated_Source\\PSoC4/Timer_1.h"
+ 302              		.file 14 "Generated_Source\\PSoC4/ISR_everySecond.h"
+ 303              		.file 15 "Generated_Source\\PSoC4/ISR_hall.h"
+ 304              		.file 16 "Generated_Source\\PSoC4/ISR_acc.h"
+ 305              		.file 17 "Generated_Source\\PSoC4/ISR_btn.h"
+ 306              		.file 18 "Generated_Source\\PSoC4/isr_CombinedPort.h"
+ 307              		.file 19 "Generated_Source\\PSoC4/Pin_CombinedIntr.h"
+ 308              		.file 20 "Generated_Source\\PSoC4/cyPm.h"
+ 309              		.file 21 "Generated_Source\\PSoC4/CyLib.h"
+ 310              		.file 22 "Generated_Source\\PSoC4/VCC_hall.h"
+ 311              		.file 23 "mainFunctions.h"
+ 312              		.file 24 "Generated_Source\\PSoC4/I2CM.h"
+ 313              		.section	.debug_info,"",%progbits
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 10
+
+
+ 314              	.Ldebug_info0:
+ 315 0000 43080000 		.4byte	0x843
+ 316 0004 0400     		.2byte	0x4
+ 317 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 318 000a 04       		.byte	0x4
+ 319 000b 01       		.uleb128 0x1
+ 320 000c C90B0000 		.4byte	.LASF169
+ 321 0010 01       		.byte	0x1
+ 322 0011 83080000 		.4byte	.LASF170
+ 323 0015 FD0E0000 		.4byte	.LASF171
+ 324 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 325 001d 00000000 		.4byte	0
+ 326 0021 00000000 		.4byte	.Ldebug_line0
+ 327 0025 02       		.uleb128 0x2
+ 328 0026 01       		.byte	0x1
+ 329 0027 06       		.byte	0x6
+ 330 0028 8E030000 		.4byte	.LASF0
+ 331 002c 02       		.uleb128 0x2
+ 332 002d 01       		.byte	0x1
+ 333 002e 08       		.byte	0x8
+ 334 002f 900B0000 		.4byte	.LASF1
+ 335 0033 02       		.uleb128 0x2
+ 336 0034 02       		.byte	0x2
+ 337 0035 05       		.byte	0x5
+ 338 0036 570C0000 		.4byte	.LASF2
+ 339 003a 02       		.uleb128 0x2
+ 340 003b 02       		.byte	0x2
+ 341 003c 07       		.byte	0x7
+ 342 003d 6D0E0000 		.4byte	.LASF3
+ 343 0041 02       		.uleb128 0x2
+ 344 0042 04       		.byte	0x4
+ 345 0043 05       		.byte	0x5
+ 346 0044 04020000 		.4byte	.LASF4
+ 347 0048 02       		.uleb128 0x2
+ 348 0049 04       		.byte	0x4
+ 349 004a 07       		.byte	0x7
+ 350 004b F1060000 		.4byte	.LASF5
+ 351 004f 02       		.uleb128 0x2
+ 352 0050 08       		.byte	0x8
+ 353 0051 05       		.byte	0x5
+ 354 0052 80030000 		.4byte	.LASF6
+ 355 0056 02       		.uleb128 0x2
+ 356 0057 08       		.byte	0x8
+ 357 0058 07       		.byte	0x7
+ 358 0059 16060000 		.4byte	.LASF7
+ 359 005d 03       		.uleb128 0x3
+ 360 005e 04       		.byte	0x4
+ 361 005f 05       		.byte	0x5
+ 362 0060 696E7400 		.ascii	"int\000"
+ 363 0064 02       		.uleb128 0x2
+ 364 0065 04       		.byte	0x4
+ 365 0066 07       		.byte	0x7
+ 366 0067 C50D0000 		.4byte	.LASF8
+ 367 006b 04       		.uleb128 0x4
+ 368 006c E7040000 		.4byte	.LASF9
+ 369 0070 02       		.byte	0x2
+ 370 0071 9801     		.2byte	0x198
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 11
+
+
+ 371 0073 2C000000 		.4byte	0x2c
+ 372 0077 04       		.uleb128 0x4
+ 373 0078 9E0B0000 		.4byte	.LASF10
+ 374 007c 02       		.byte	0x2
+ 375 007d 9901     		.2byte	0x199
+ 376 007f 3A000000 		.4byte	0x3a
+ 377 0083 04       		.uleb128 0x4
+ 378 0084 6A050000 		.4byte	.LASF11
+ 379 0088 02       		.byte	0x2
+ 380 0089 9A01     		.2byte	0x19a
+ 381 008b 48000000 		.4byte	0x48
+ 382 008f 02       		.uleb128 0x2
+ 383 0090 04       		.byte	0x4
+ 384 0091 04       		.byte	0x4
+ 385 0092 2C0B0000 		.4byte	.LASF12
+ 386 0096 02       		.uleb128 0x2
+ 387 0097 08       		.byte	0x8
+ 388 0098 04       		.byte	0x4
+ 389 0099 0C050000 		.4byte	.LASF13
+ 390 009d 04       		.uleb128 0x4
+ 391 009e FB0D0000 		.4byte	.LASF14
+ 392 00a2 02       		.byte	0x2
+ 393 00a3 A901     		.2byte	0x1a9
+ 394 00a5 A9000000 		.4byte	0xa9
+ 395 00a9 02       		.uleb128 0x2
+ 396 00aa 01       		.byte	0x1
+ 397 00ab 08       		.byte	0x8
+ 398 00ac 5F0D0000 		.4byte	.LASF15
+ 399 00b0 04       		.uleb128 0x4
+ 400 00b1 19090000 		.4byte	.LASF16
+ 401 00b5 02       		.byte	0x2
+ 402 00b6 4402     		.2byte	0x244
+ 403 00b8 BC000000 		.4byte	0xbc
+ 404 00bc 05       		.uleb128 0x5
+ 405 00bd 83000000 		.4byte	0x83
+ 406 00c1 04       		.uleb128 0x4
+ 407 00c2 B80D0000 		.4byte	.LASF17
+ 408 00c6 02       		.byte	0x2
+ 409 00c7 5402     		.2byte	0x254
+ 410 00c9 CD000000 		.4byte	0xcd
+ 411 00cd 06       		.uleb128 0x6
+ 412 00ce 04       		.byte	0x4
+ 413 00cf D3000000 		.4byte	0xd3
+ 414 00d3 07       		.uleb128 0x7
+ 415 00d4 02       		.uleb128 0x2
+ 416 00d5 04       		.byte	0x4
+ 417 00d6 07       		.byte	0x7
+ 418 00d7 B2090000 		.4byte	.LASF18
+ 419 00db 08       		.uleb128 0x8
+ 420 00dc 04       		.byte	0x4
+ 421 00dd 09       		.uleb128 0x9
+ 422 00de 01       		.byte	0x1
+ 423 00df 03       		.byte	0x3
+ 424 00e0 4201     		.2byte	0x142
+ 425 00e2 9A020000 		.4byte	0x29a
+ 426 00e6 0A       		.uleb128 0xa
+ 427 00e7 C1070000 		.4byte	.LASF19
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 12
+
+
+ 428 00eb 00       		.sleb128 0
+ 429 00ec 0A       		.uleb128 0xa
+ 430 00ed 9A030000 		.4byte	.LASF20
+ 431 00f1 01       		.sleb128 1
+ 432 00f2 0A       		.uleb128 0xa
+ 433 00f3 F2010000 		.4byte	.LASF21
+ 434 00f7 02       		.sleb128 2
+ 435 00f8 0A       		.uleb128 0xa
+ 436 00f9 540E0000 		.4byte	.LASF22
+ 437 00fd 03       		.sleb128 3
+ 438 00fe 0A       		.uleb128 0xa
+ 439 00ff 72020000 		.4byte	.LASF23
+ 440 0103 04       		.sleb128 4
+ 441 0104 0A       		.uleb128 0xa
+ 442 0105 6A010000 		.4byte	.LASF24
+ 443 0109 05       		.sleb128 5
+ 444 010a 0A       		.uleb128 0xa
+ 445 010b F6070000 		.4byte	.LASF25
+ 446 010f 06       		.sleb128 6
+ 447 0110 0A       		.uleb128 0xa
+ 448 0111 1F090000 		.4byte	.LASF26
+ 449 0115 20       		.sleb128 32
+ 450 0116 0A       		.uleb128 0xa
+ 451 0117 EC030000 		.4byte	.LASF27
+ 452 011b 21       		.sleb128 33
+ 453 011c 0A       		.uleb128 0xa
+ 454 011d 2F080000 		.4byte	.LASF28
+ 455 0121 22       		.sleb128 34
+ 456 0122 0A       		.uleb128 0xa
+ 457 0123 BC080000 		.4byte	.LASF29
+ 458 0127 23       		.sleb128 35
+ 459 0128 0A       		.uleb128 0xa
+ 460 0129 740A0000 		.4byte	.LASF30
+ 461 012d 24       		.sleb128 36
+ 462 012e 0A       		.uleb128 0xa
+ 463 012f D4090000 		.4byte	.LASF31
+ 464 0133 25       		.sleb128 37
+ 465 0134 0A       		.uleb128 0xa
+ 466 0135 8D040000 		.4byte	.LASF32
+ 467 0139 26       		.sleb128 38
+ 468 013a 0A       		.uleb128 0xa
+ 469 013b 53080000 		.4byte	.LASF33
+ 470 013f 27       		.sleb128 39
+ 471 0140 0A       		.uleb128 0xa
+ 472 0141 960D0000 		.4byte	.LASF34
+ 473 0145 28       		.sleb128 40
+ 474 0146 0A       		.uleb128 0xa
+ 475 0147 F4020000 		.4byte	.LASF35
+ 476 014b 29       		.sleb128 41
+ 477 014c 0A       		.uleb128 0xa
+ 478 014d AE000000 		.4byte	.LASF36
+ 479 0151 2A       		.sleb128 42
+ 480 0152 0A       		.uleb128 0xa
+ 481 0153 A0020000 		.4byte	.LASF37
+ 482 0157 2B       		.sleb128 43
+ 483 0158 0A       		.uleb128 0xa
+ 484 0159 F2050000 		.4byte	.LASF38
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 13
+
+
+ 485 015d 2C       		.sleb128 44
+ 486 015e 0A       		.uleb128 0xa
+ 487 015f 11030000 		.4byte	.LASF39
+ 488 0163 2D       		.sleb128 45
+ 489 0164 0A       		.uleb128 0xa
+ 490 0165 A50B0000 		.4byte	.LASF40
+ 491 0169 2E       		.sleb128 46
+ 492 016a 0A       		.uleb128 0xa
+ 493 016b 2B010000 		.4byte	.LASF41
+ 494 016f 2F       		.sleb128 47
+ 495 0170 0A       		.uleb128 0xa
+ 496 0171 3F0A0000 		.4byte	.LASF42
+ 497 0175 30       		.sleb128 48
+ 498 0176 0A       		.uleb128 0xa
+ 499 0177 9C100000 		.4byte	.LASF43
+ 500 017b 31       		.sleb128 49
+ 501 017c 0A       		.uleb128 0xa
+ 502 017d 080A0000 		.4byte	.LASF44
+ 503 0181 32       		.sleb128 50
+ 504 0182 0A       		.uleb128 0xa
+ 505 0183 310D0000 		.4byte	.LASF45
+ 506 0187 33       		.sleb128 51
+ 507 0188 0A       		.uleb128 0xa
+ 508 0189 B2050000 		.4byte	.LASF46
+ 509 018d C000     		.sleb128 64
+ 510 018f 0A       		.uleb128 0xa
+ 511 0190 E2080000 		.4byte	.LASF47
+ 512 0194 C100     		.sleb128 65
+ 513 0196 0A       		.uleb128 0xa
+ 514 0197 DC100000 		.4byte	.LASF48
+ 515 019b C200     		.sleb128 66
+ 516 019d 0A       		.uleb128 0xa
+ 517 019e C50E0000 		.4byte	.LASF49
+ 518 01a2 C300     		.sleb128 67
+ 519 01a4 0A       		.uleb128 0xa
+ 520 01a5 1F070000 		.4byte	.LASF50
+ 521 01a9 C400     		.sleb128 68
+ 522 01ab 0A       		.uleb128 0xa
+ 523 01ac 050B0000 		.4byte	.LASF51
+ 524 01b0 C500     		.sleb128 69
+ 525 01b2 0A       		.uleb128 0xa
+ 526 01b3 7A090000 		.4byte	.LASF52
+ 527 01b7 C600     		.sleb128 70
+ 528 01b9 0A       		.uleb128 0xa
+ 529 01ba D8070000 		.4byte	.LASF53
+ 530 01be C700     		.sleb128 71
+ 531 01c0 0A       		.uleb128 0xa
+ 532 01c1 F70F0000 		.4byte	.LASF54
+ 533 01c5 C800     		.sleb128 72
+ 534 01c7 0A       		.uleb128 0xa
+ 535 01c8 03040000 		.4byte	.LASF55
+ 536 01cc C900     		.sleb128 73
+ 537 01ce 0A       		.uleb128 0xa
+ 538 01cf 500F0000 		.4byte	.LASF56
+ 539 01d3 CA00     		.sleb128 74
+ 540 01d5 0A       		.uleb128 0xa
+ 541 01d6 86010000 		.4byte	.LASF57
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 14
+
+
+ 542 01da CB00     		.sleb128 75
+ 543 01dc 0A       		.uleb128 0xa
+ 544 01dd 8A080000 		.4byte	.LASF58
+ 545 01e1 CC00     		.sleb128 76
+ 546 01e3 0A       		.uleb128 0xa
+ 547 01e4 EE090000 		.4byte	.LASF59
+ 548 01e8 CD00     		.sleb128 77
+ 549 01ea 0A       		.uleb128 0xa
+ 550 01eb 40040000 		.4byte	.LASF60
+ 551 01ef CE00     		.sleb128 78
+ 552 01f1 0A       		.uleb128 0xa
+ 553 01f2 CC0C0000 		.4byte	.LASF61
+ 554 01f6 CF00     		.sleb128 79
+ 555 01f8 0A       		.uleb128 0xa
+ 556 01f9 A5010000 		.4byte	.LASF62
+ 557 01fd D000     		.sleb128 80
+ 558 01ff 0A       		.uleb128 0xa
+ 559 0200 ED040000 		.4byte	.LASF63
+ 560 0204 D100     		.sleb128 81
+ 561 0206 0A       		.uleb128 0xa
+ 562 0207 AD0A0000 		.4byte	.LASF64
+ 563 020b D200     		.sleb128 82
+ 564 020d 0A       		.uleb128 0xa
+ 565 020e 610C0000 		.4byte	.LASF65
+ 566 0212 D300     		.sleb128 83
+ 567 0214 0A       		.uleb128 0xa
+ 568 0215 F20C0000 		.4byte	.LASF66
+ 569 0219 D400     		.sleb128 84
+ 570 021b 0A       		.uleb128 0xa
+ 571 021c 3D070000 		.4byte	.LASF67
+ 572 0220 D500     		.sleb128 85
+ 573 0222 0A       		.uleb128 0xa
+ 574 0223 2D060000 		.4byte	.LASF68
+ 575 0227 D600     		.sleb128 86
+ 576 0229 0A       		.uleb128 0xa
+ 577 022a D20D0000 		.4byte	.LASF69
+ 578 022e D700     		.sleb128 87
+ 579 0230 0A       		.uleb128 0xa
+ 580 0231 61070000 		.4byte	.LASF70
+ 581 0235 D800     		.sleb128 88
+ 582 0237 0A       		.uleb128 0xa
+ 583 0238 CC050000 		.4byte	.LASF71
+ 584 023c F000     		.sleb128 112
+ 585 023e 0A       		.uleb128 0xa
+ 586 023f 5E100000 		.4byte	.LASF72
+ 587 0243 F100     		.sleb128 113
+ 588 0245 0A       		.uleb128 0xa
+ 589 0246 FD080000 		.4byte	.LASF73
+ 590 024a F200     		.sleb128 114
+ 591 024c 0A       		.uleb128 0xa
+ 592 024d D4010000 		.4byte	.LASF74
+ 593 0251 F300     		.sleb128 115
+ 594 0253 0A       		.uleb128 0xa
+ 595 0254 E70A0000 		.4byte	.LASF75
+ 596 0258 F400     		.sleb128 116
+ 597 025a 0A       		.uleb128 0xa
+ 598 025b 13050000 		.4byte	.LASF76
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 15
+
+
+ 599 025f F500     		.sleb128 117
+ 600 0261 0A       		.uleb128 0xa
+ 601 0262 D7000000 		.4byte	.LASF77
+ 602 0266 F600     		.sleb128 118
+ 603 0268 0A       		.uleb128 0xa
+ 604 0269 45000000 		.4byte	.LASF78
+ 605 026d F700     		.sleb128 119
+ 606 026f 0A       		.uleb128 0xa
+ 607 0270 00000000 		.4byte	.LASF79
+ 608 0274 F800     		.sleb128 120
+ 609 0276 0A       		.uleb128 0xa
+ 610 0277 3A030000 		.4byte	.LASF80
+ 611 027b F900     		.sleb128 121
+ 612 027d 0A       		.uleb128 0xa
+ 613 027e 71050000 		.4byte	.LASF81
+ 614 0282 FA00     		.sleb128 122
+ 615 0284 0A       		.uleb128 0xa
+ 616 0285 BF020000 		.4byte	.LASF82
+ 617 0289 FA01     		.sleb128 250
+ 618 028b 0A       		.uleb128 0xa
+ 619 028c 7D060000 		.4byte	.LASF83
+ 620 0290 FB01     		.sleb128 251
+ 621 0292 0A       		.uleb128 0xa
+ 622 0293 95050000 		.4byte	.LASF84
+ 623 0297 FF01     		.sleb128 255
+ 624 0299 00       		.byte	0
+ 625 029a 09       		.uleb128 0x9
+ 626 029b 02       		.byte	0x2
+ 627 029c 03       		.byte	0x3
+ 628 029d FF02     		.2byte	0x2ff
+ 629 029f 6A030000 		.4byte	0x36a
+ 630 02a3 0A       		.uleb128 0xa
+ 631 02a4 A3050000 		.4byte	.LASF85
+ 632 02a8 00       		.sleb128 0
+ 633 02a9 0A       		.uleb128 0xa
+ 634 02aa 34050000 		.4byte	.LASF86
+ 635 02ae 01       		.sleb128 1
+ 636 02af 0A       		.uleb128 0xa
+ 637 02b0 880E0000 		.4byte	.LASF87
+ 638 02b4 02       		.sleb128 2
+ 639 02b5 0A       		.uleb128 0xa
+ 640 02b6 78000000 		.4byte	.LASF88
+ 641 02ba 03       		.sleb128 3
+ 642 02bb 0A       		.uleb128 0xa
+ 643 02bc 4F020000 		.4byte	.LASF89
+ 644 02c0 04       		.sleb128 4
+ 645 02c1 0A       		.uleb128 0xa
+ 646 02c2 5F060000 		.4byte	.LASF90
+ 647 02c6 05       		.sleb128 5
+ 648 02c7 0A       		.uleb128 0xa
+ 649 02c8 820C0000 		.4byte	.LASF91
+ 650 02cc 06       		.sleb128 6
+ 651 02cd 0A       		.uleb128 0xa
+ 652 02ce CF030000 		.4byte	.LASF92
+ 653 02d2 07       		.sleb128 7
+ 654 02d3 0A       		.uleb128 0xa
+ 655 02d4 130D0000 		.4byte	.LASF93
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 16
+
+
+ 656 02d8 08       		.sleb128 8
+ 657 02d9 0A       		.uleb128 0xa
+ 658 02da 1E100000 		.4byte	.LASF94
+ 659 02de 09       		.sleb128 9
+ 660 02df 0A       		.uleb128 0xa
+ 661 02e0 4D0B0000 		.4byte	.LASF95
+ 662 02e4 0A       		.sleb128 10
+ 663 02e5 0A       		.uleb128 0xa
+ 664 02e6 760D0000 		.4byte	.LASF96
+ 665 02ea 0B       		.sleb128 11
+ 666 02eb 0A       		.uleb128 0xa
+ 667 02ec DD020000 		.4byte	.LASF97
+ 668 02f0 0C       		.sleb128 12
+ 669 02f1 0A       		.uleb128 0xa
+ 670 02f2 2A020000 		.4byte	.LASF98
+ 671 02f6 0D       		.sleb128 13
+ 672 02f7 0A       		.uleb128 0xa
+ 673 02f8 C8060000 		.4byte	.LASF99
+ 674 02fc 0E       		.sleb128 14
+ 675 02fd 0A       		.uleb128 0xa
+ 676 02fe A60F0000 		.4byte	.LASF100
+ 677 0302 0F       		.sleb128 15
+ 678 0303 0A       		.uleb128 0xa
+ 679 0304 260E0000 		.4byte	.LASF101
+ 680 0308 10       		.sleb128 16
+ 681 0309 0A       		.uleb128 0xa
+ 682 030a 84070000 		.4byte	.LASF102
+ 683 030e 11       		.sleb128 17
+ 684 030f 0A       		.uleb128 0xa
+ 685 0310 C4040000 		.4byte	.LASF103
+ 686 0314 12       		.sleb128 18
+ 687 0315 0A       		.uleb128 0xa
+ 688 0316 FA100000 		.4byte	.LASF104
+ 689 031a 13       		.sleb128 19
+ 690 031b 0A       		.uleb128 0xa
+ 691 031c AD030000 		.4byte	.LASF105
+ 692 0320 27       		.sleb128 39
+ 693 0321 0A       		.uleb128 0xa
+ 694 0322 010E0000 		.4byte	.LASF106
+ 695 0326 28       		.sleb128 40
+ 696 0327 0A       		.uleb128 0xa
+ 697 0328 8A0F0000 		.4byte	.LASF107
+ 698 032c 29       		.sleb128 41
+ 699 032d 0A       		.uleb128 0xa
+ 700 032e 0D020000 		.4byte	.LASF108
+ 701 0332 2A       		.sleb128 42
+ 702 0333 0A       		.uleb128 0xa
+ 703 0334 F8000000 		.4byte	.LASF109
+ 704 0338 2B       		.sleb128 43
+ 705 0339 0A       		.uleb128 0xa
+ 706 033a B40C0000 		.4byte	.LASF110
+ 707 033e 2C       		.sleb128 44
+ 708 033f 0A       		.uleb128 0xa
+ 709 0340 6E0F0000 		.4byte	.LASF111
+ 710 0344 FE01     		.sleb128 254
+ 711 0346 0A       		.uleb128 0xa
+ 712 0347 5B090000 		.4byte	.LASF112
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 17
+
+
+ 713 034b FF01     		.sleb128 255
+ 714 034d 0A       		.uleb128 0xa
+ 715 034e A8070000 		.4byte	.LASF113
+ 716 0352 8002     		.sleb128 256
+ 717 0354 0A       		.uleb128 0xa
+ 718 0355 CE0A0000 		.4byte	.LASF114
+ 719 0359 8102     		.sleb128 257
+ 720 035b 0A       		.uleb128 0xa
+ 721 035c 670B0000 		.4byte	.LASF115
+ 722 0360 8202     		.sleb128 258
+ 723 0362 0A       		.uleb128 0xa
+ 724 0363 26040000 		.4byte	.LASF116
+ 725 0367 8302     		.sleb128 259
+ 726 0369 00       		.byte	0
+ 727 036a 04       		.uleb128 0x4
+ 728 036b 9A0A0000 		.4byte	.LASF117
+ 729 036f 03       		.byte	0x3
+ 730 0370 6B03     		.2byte	0x36b
+ 731 0372 9A020000 		.4byte	0x29a
+ 732 0376 09       		.uleb128 0x9
+ 733 0377 01       		.byte	0x1
+ 734 0378 03       		.byte	0x3
+ 735 0379 6F03     		.2byte	0x36f
+ 736 037b 9F030000 		.4byte	0x39f
+ 737 037f 0A       		.uleb128 0xa
+ 738 0380 89100000 		.4byte	.LASF118
+ 739 0384 01       		.sleb128 1
+ 740 0385 0A       		.uleb128 0xa
+ 741 0386 640D0000 		.4byte	.LASF119
+ 742 038a 02       		.sleb128 2
+ 743 038b 0A       		.uleb128 0xa
+ 744 038c E10F0000 		.4byte	.LASF120
+ 745 0390 03       		.sleb128 3
+ 746 0391 0A       		.uleb128 0xa
+ 747 0392 290A0000 		.4byte	.LASF121
+ 748 0396 04       		.sleb128 4
+ 749 0397 0A       		.uleb128 0xa
+ 750 0398 0B070000 		.4byte	.LASF122
+ 751 039c FF01     		.sleb128 255
+ 752 039e 00       		.byte	0
+ 753 039f 04       		.uleb128 0x4
+ 754 03a0 C4010000 		.4byte	.LASF123
+ 755 03a4 03       		.byte	0x3
+ 756 03a5 8B03     		.2byte	0x38b
+ 757 03a7 76030000 		.4byte	0x376
+ 758 03ab 04       		.uleb128 0x4
+ 759 03ac C0100000 		.4byte	.LASF124
+ 760 03b0 04       		.byte	0x4
+ 761 03b1 9201     		.2byte	0x192
+ 762 03b3 77000000 		.4byte	0x77
+ 763 03b7 0B       		.uleb128 0xb
+ 764 03b8 02       		.byte	0x2
+ 765 03b9 04       		.byte	0x4
+ 766 03ba 9C01     		.2byte	0x19c
+ 767 03bc DB030000 		.4byte	0x3db
+ 768 03c0 0C       		.uleb128 0xc
+ 769 03c1 3F100000 		.4byte	.LASF125
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 18
+
+
+ 770 03c5 04       		.byte	0x4
+ 771 03c6 A301     		.2byte	0x1a3
+ 772 03c8 6B000000 		.4byte	0x6b
+ 773 03cc 00       		.byte	0
+ 774 03cd 0C       		.uleb128 0xc
+ 775 03ce 43090000 		.4byte	.LASF126
+ 776 03d2 04       		.byte	0x4
+ 777 03d3 A901     		.2byte	0x1a9
+ 778 03d5 6B000000 		.4byte	0x6b
+ 779 03d9 01       		.byte	0x1
+ 780 03da 00       		.byte	0
+ 781 03db 04       		.uleb128 0x4
+ 782 03dc 64000000 		.4byte	.LASF127
+ 783 03e0 04       		.byte	0x4
+ 784 03e1 AB01     		.2byte	0x1ab
+ 785 03e3 B7030000 		.4byte	0x3b7
+ 786 03e7 04       		.uleb128 0x4
+ 787 03e8 B40E0000 		.4byte	.LASF128
+ 788 03ec 05       		.byte	0x5
+ 789 03ed E501     		.2byte	0x1e5
+ 790 03ef F3030000 		.4byte	0x3f3
+ 791 03f3 06       		.uleb128 0x6
+ 792 03f4 04       		.byte	0x4
+ 793 03f5 F9030000 		.4byte	0x3f9
+ 794 03f9 0D       		.uleb128 0xd
+ 795 03fa 09040000 		.4byte	0x409
+ 796 03fe 0E       		.uleb128 0xe
+ 797 03ff 83000000 		.4byte	0x83
+ 798 0403 0E       		.uleb128 0xe
+ 799 0404 DB000000 		.4byte	0xdb
+ 800 0408 00       		.byte	0
+ 801 0409 09       		.uleb128 0x9
+ 802 040a 01       		.byte	0x1
+ 803 040b 06       		.byte	0x6
+ 804 040c BF07     		.2byte	0x7bf
+ 805 040e 31040000 		.4byte	0x431
+ 806 0412 0A       		.uleb128 0xa
+ 807 0413 31000000 		.4byte	.LASF129
+ 808 0417 00       		.sleb128 0
+ 809 0418 0A       		.uleb128 0xa
+ 810 0419 BB090000 		.4byte	.LASF130
+ 811 041d 01       		.sleb128 1
+ 812 041e 0A       		.uleb128 0xa
+ 813 041f CB0F0000 		.4byte	.LASF131
+ 814 0423 02       		.sleb128 2
+ 815 0424 0A       		.uleb128 0xa
+ 816 0425 5D030000 		.4byte	.LASF132
+ 817 0429 03       		.sleb128 3
+ 818 042a 0A       		.uleb128 0xa
+ 819 042b 5E040000 		.4byte	.LASF133
+ 820 042f 04       		.sleb128 4
+ 821 0430 00       		.byte	0
+ 822 0431 04       		.uleb128 0x4
+ 823 0432 EF0E0000 		.4byte	.LASF134
+ 824 0436 06       		.byte	0x6
+ 825 0437 CD07     		.2byte	0x7cd
+ 826 0439 09040000 		.4byte	0x409
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 19
+
+
+ 827 043d 0F       		.uleb128 0xf
+ 828 043e 9C060000 		.4byte	.LASF135
+ 829 0442 01       		.byte	0x1
+ 830 0443 29       		.byte	0x29
+ 831 0444 00000000 		.4byte	.LFB37
+ 832 0448 10000000 		.4byte	.LFE37-.LFB37
+ 833 044c 01       		.uleb128 0x1
+ 834 044d 9C       		.byte	0x9c
+ 835 044e 5C040000 		.4byte	0x45c
+ 836 0452 10       		.uleb128 0x10
+ 837 0453 0A000000 		.4byte	.LVL0
+ 838 0457 F4060000 		.4byte	0x6f4
+ 839 045b 00       		.byte	0
+ 840 045c 11       		.uleb128 0x11
+ 841 045d 84100000 		.4byte	.LASF136
+ 842 0461 01       		.byte	0x1
+ 843 0462 33       		.byte	0x33
+ 844 0463 5D000000 		.4byte	0x5d
+ 845 0467 00000000 		.4byte	.LFB38
+ 846 046b 30010000 		.4byte	.LFE38-.LFB38
+ 847 046f 01       		.uleb128 0x1
+ 848 0470 9C       		.byte	0x9c
+ 849 0471 73060000 		.4byte	0x673
+ 850 0475 12       		.uleb128 0x12
+ 851 0476 EB0C0000 		.4byte	.LASF137
+ 852 047a 01       		.byte	0x1
+ 853 047b 61       		.byte	0x61
+ 854 047c 83000000 		.4byte	0x83
+ 855 0480 00000000 		.4byte	.LLST0
+ 856 0484 12       		.uleb128 0x12
+ 857 0485 320B0000 		.4byte	.LASF138
+ 858 0489 01       		.byte	0x1
+ 859 048a 90       		.byte	0x90
+ 860 048b 6B000000 		.4byte	0x6b
+ 861 048f 1E000000 		.4byte	.LLST1
+ 862 0493 10       		.uleb128 0x10
+ 863 0494 06000000 		.4byte	.LVL1
+ 864 0498 FF060000 		.4byte	0x6ff
+ 865 049c 10       		.uleb128 0x10
+ 866 049d 0A000000 		.4byte	.LVL2
+ 867 04a1 06070000 		.4byte	0x706
+ 868 04a5 10       		.uleb128 0x10
+ 869 04a6 0E000000 		.4byte	.LVL3
+ 870 04aa 06070000 		.4byte	0x706
+ 871 04ae 13       		.uleb128 0x13
+ 872 04af 14000000 		.4byte	.LVL4
+ 873 04b3 0D070000 		.4byte	0x70d
+ 874 04b7 C5040000 		.4byte	0x4c5
+ 875 04bb 14       		.uleb128 0x14
+ 876 04bc 01       		.uleb128 0x1
+ 877 04bd 50       		.byte	0x50
+ 878 04be 05       		.uleb128 0x5
+ 879 04bf 03       		.byte	0x3
+ 880 04c0 00000000 		.4byte	.LC0
+ 881 04c4 00       		.byte	0
+ 882 04c5 10       		.uleb128 0x10
+ 883 04c6 18000000 		.4byte	.LVL5
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 20
+
+
+ 884 04ca 29070000 		.4byte	0x729
+ 885 04ce 13       		.uleb128 0x13
+ 886 04cf 1E000000 		.4byte	.LVL6
+ 887 04d3 30070000 		.4byte	0x730
+ 888 04d7 E1040000 		.4byte	0x4e1
+ 889 04db 14       		.uleb128 0x14
+ 890 04dc 01       		.uleb128 0x1
+ 891 04dd 50       		.byte	0x50
+ 892 04de 01       		.uleb128 0x1
+ 893 04df 32       		.byte	0x32
+ 894 04e0 00       		.byte	0
+ 895 04e1 13       		.uleb128 0x13
+ 896 04e2 24000000 		.4byte	.LVL7
+ 897 04e6 41070000 		.4byte	0x741
+ 898 04ea F4040000 		.4byte	0x4f4
+ 899 04ee 14       		.uleb128 0x14
+ 900 04ef 01       		.uleb128 0x1
+ 901 04f0 50       		.byte	0x50
+ 902 04f1 01       		.uleb128 0x1
+ 903 04f2 32       		.byte	0x32
+ 904 04f3 00       		.byte	0
+ 905 04f4 10       		.uleb128 0x10
+ 906 04f5 28000000 		.4byte	.LVL8
+ 907 04f9 52070000 		.4byte	0x752
+ 908 04fd 10       		.uleb128 0x10
+ 909 04fe 2E000000 		.4byte	.LVL9
+ 910 0502 59070000 		.4byte	0x759
+ 911 0506 10       		.uleb128 0x10
+ 912 0507 34000000 		.4byte	.LVL10
+ 913 050b 6A070000 		.4byte	0x76a
+ 914 050f 10       		.uleb128 0x10
+ 915 0510 3A000000 		.4byte	.LVL11
+ 916 0514 7B070000 		.4byte	0x77b
+ 917 0518 10       		.uleb128 0x10
+ 918 0519 40000000 		.4byte	.LVL12
+ 919 051d 8C070000 		.4byte	0x78c
+ 920 0521 13       		.uleb128 0x13
+ 921 0522 46000000 		.4byte	.LVL13
+ 922 0526 9D070000 		.4byte	0x79d
+ 923 052a 38050000 		.4byte	0x538
+ 924 052e 14       		.uleb128 0x14
+ 925 052f 01       		.uleb128 0x1
+ 926 0530 50       		.byte	0x50
+ 927 0531 05       		.uleb128 0x5
+ 928 0532 03       		.byte	0x3
+ 929 0533 00000000 		.4byte	isrCombined
+ 930 0537 00       		.byte	0
+ 931 0538 10       		.uleb128 0x10
+ 932 0539 4A000000 		.4byte	.LVL14
+ 933 053d AE070000 		.4byte	0x7ae
+ 934 0541 10       		.uleb128 0x10
+ 935 0542 5C000000 		.4byte	.LVL15
+ 936 0546 AE070000 		.4byte	0x7ae
+ 937 054a 13       		.uleb128 0x13
+ 938 054b 64000000 		.4byte	.LVL18
+ 939 054f 0D070000 		.4byte	0x70d
+ 940 0553 61050000 		.4byte	0x561
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 21
+
+
+ 941 0557 14       		.uleb128 0x14
+ 942 0558 01       		.uleb128 0x1
+ 943 0559 50       		.byte	0x50
+ 944 055a 05       		.uleb128 0x5
+ 945 055b 03       		.byte	0x3
+ 946 055c 3C000000 		.4byte	.LC9
+ 947 0560 00       		.byte	0
+ 948 0561 13       		.uleb128 0x13
+ 949 0562 76000000 		.4byte	.LVL19
+ 950 0566 0D070000 		.4byte	0x70d
+ 951 056a 78050000 		.4byte	0x578
+ 952 056e 14       		.uleb128 0x14
+ 953 056f 01       		.uleb128 0x1
+ 954 0570 50       		.byte	0x50
+ 955 0571 05       		.uleb128 0x5
+ 956 0572 03       		.byte	0x3
+ 957 0573 50000000 		.4byte	.LC11
+ 958 0577 00       		.byte	0
+ 959 0578 13       		.uleb128 0x13
+ 960 0579 7E000000 		.4byte	.LVL20
+ 961 057d 0D070000 		.4byte	0x70d
+ 962 0581 8F050000 		.4byte	0x58f
+ 963 0585 14       		.uleb128 0x14
+ 964 0586 01       		.uleb128 0x1
+ 965 0587 50       		.byte	0x50
+ 966 0588 05       		.uleb128 0x5
+ 967 0589 03       		.byte	0x3
+ 968 058a 58000000 		.4byte	.LC13
+ 969 058e 00       		.byte	0
+ 970 058f 13       		.uleb128 0x13
+ 971 0590 86000000 		.4byte	.LVL21
+ 972 0594 0D070000 		.4byte	0x70d
+ 973 0598 A6050000 		.4byte	0x5a6
+ 974 059c 14       		.uleb128 0x14
+ 975 059d 01       		.uleb128 0x1
+ 976 059e 50       		.byte	0x50
+ 977 059f 05       		.uleb128 0x5
+ 978 05a0 03       		.byte	0x3
+ 979 05a1 70000000 		.4byte	.LC15
+ 980 05a5 00       		.byte	0
+ 981 05a6 13       		.uleb128 0x13
+ 982 05a7 8E000000 		.4byte	.LVL22
+ 983 05ab 0D070000 		.4byte	0x70d
+ 984 05af BD050000 		.4byte	0x5bd
+ 985 05b3 14       		.uleb128 0x14
+ 986 05b4 01       		.uleb128 0x1
+ 987 05b5 50       		.byte	0x50
+ 988 05b6 05       		.uleb128 0x5
+ 989 05b7 03       		.byte	0x3
+ 990 05b8 84000000 		.4byte	.LC17
+ 991 05bc 00       		.byte	0
+ 992 05bd 10       		.uleb128 0x10
+ 993 05be 92000000 		.4byte	.LVL23
+ 994 05c2 06070000 		.4byte	0x706
+ 995 05c6 10       		.uleb128 0x10
+ 996 05c7 98000000 		.4byte	.LVL24
+ 997 05cb B9070000 		.4byte	0x7b9
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 22
+
+
+ 998 05cf 10       		.uleb128 0x10
+ 999 05d0 9E000000 		.4byte	.LVL25
+ 1000 05d4 CF070000 		.4byte	0x7cf
+ 1001 05d8 13       		.uleb128 0x13
+ 1002 05d9 A4000000 		.4byte	.LVL26
+ 1003 05dd D7070000 		.4byte	0x7d7
+ 1004 05e1 EB050000 		.4byte	0x5eb
+ 1005 05e5 14       		.uleb128 0x14
+ 1006 05e6 01       		.uleb128 0x1
+ 1007 05e7 50       		.byte	0x50
+ 1008 05e8 01       		.uleb128 0x1
+ 1009 05e9 3A       		.byte	0x3a
+ 1010 05ea 00       		.byte	0
+ 1011 05eb 13       		.uleb128 0x13
+ 1012 05ec B4000000 		.4byte	.LVL27
+ 1013 05f0 E8070000 		.4byte	0x7e8
+ 1014 05f4 FE050000 		.4byte	0x5fe
+ 1015 05f8 14       		.uleb128 0x14
+ 1016 05f9 01       		.uleb128 0x1
+ 1017 05fa 50       		.byte	0x50
+ 1018 05fb 01       		.uleb128 0x1
+ 1019 05fc 31       		.byte	0x31
+ 1020 05fd 00       		.byte	0
+ 1021 05fe 10       		.uleb128 0x10
+ 1022 05ff B8000000 		.4byte	.LVL28
+ 1023 0603 F9070000 		.4byte	0x7f9
+ 1024 0607 13       		.uleb128 0x13
+ 1025 0608 CA000000 		.4byte	.LVL29
+ 1026 060c 04080000 		.4byte	0x804
+ 1027 0610 1B060000 		.4byte	0x61b
+ 1028 0614 14       		.uleb128 0x14
+ 1029 0615 01       		.uleb128 0x1
+ 1030 0616 51       		.byte	0x51
+ 1031 0617 02       		.uleb128 0x2
+ 1032 0618 08       		.byte	0x8
+ 1033 0619 22       		.byte	0x22
+ 1034 061a 00       		.byte	0
+ 1035 061b 10       		.uleb128 0x10
+ 1036 061c CE000000 		.4byte	.LVL30
+ 1037 0620 1A080000 		.4byte	0x81a
+ 1038 0624 13       		.uleb128 0x13
+ 1039 0625 D4000000 		.4byte	.LVL31
+ 1040 0629 D7070000 		.4byte	0x7d7
+ 1041 062d 37060000 		.4byte	0x637
+ 1042 0631 14       		.uleb128 0x14
+ 1043 0632 01       		.uleb128 0x1
+ 1044 0633 50       		.byte	0x50
+ 1045 0634 01       		.uleb128 0x1
+ 1046 0635 35       		.byte	0x35
+ 1047 0636 00       		.byte	0
+ 1048 0637 10       		.uleb128 0x10
+ 1049 0638 D8000000 		.4byte	.LVL32
+ 1050 063c 21080000 		.4byte	0x821
+ 1051 0640 10       		.uleb128 0x10
+ 1052 0641 DC000000 		.4byte	.LVL33
+ 1053 0645 2E080000 		.4byte	0x82e
+ 1054 0649 13       		.uleb128 0x13
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 23
+
+
+ 1055 064a E2000000 		.4byte	.LVL34
+ 1056 064e 0D070000 		.4byte	0x70d
+ 1057 0652 60060000 		.4byte	0x660
+ 1058 0656 14       		.uleb128 0x14
+ 1059 0657 01       		.uleb128 0x1
+ 1060 0658 50       		.byte	0x50
+ 1061 0659 05       		.uleb128 0x5
+ 1062 065a 03       		.byte	0x3
+ 1063 065b 94000000 		.4byte	.LC22
+ 1064 065f 00       		.byte	0
+ 1065 0660 10       		.uleb128 0x10
+ 1066 0661 E6000000 		.4byte	.LVL35
+ 1067 0665 06070000 		.4byte	0x706
+ 1068 0669 10       		.uleb128 0x10
+ 1069 066a EA000000 		.4byte	.LVL36
+ 1070 066e CF070000 		.4byte	0x7cf
+ 1071 0672 00       		.byte	0
+ 1072 0673 15       		.uleb128 0x15
+ 1073 0674 B0080000 		.4byte	.LASF139
+ 1074 0678 06       		.byte	0x6
+ 1075 0679 DA09     		.2byte	0x9da
+ 1076 067b 31040000 		.4byte	0x431
+ 1077 067f 16       		.uleb128 0x16
+ 1078 0680 A9000000 		.4byte	0xa9
+ 1079 0684 8F060000 		.4byte	0x68f
+ 1080 0688 17       		.uleb128 0x17
+ 1081 0689 D4000000 		.4byte	0xd4
+ 1082 068d 31       		.byte	0x31
+ 1083 068e 00       		.byte	0
+ 1084 068f 18       		.uleb128 0x18
+ 1085 0690 52050000 		.4byte	.LASF140
+ 1086 0694 07       		.byte	0x7
+ 1087 0695 12       		.byte	0x12
+ 1088 0696 7F060000 		.4byte	0x67f
+ 1089 069a 05       		.uleb128 0x5
+ 1090 069b 03       		.byte	0x3
+ 1091 069c 00000000 		.4byte	debugStr
+ 1092 06a0 19       		.uleb128 0x19
+ 1093 06a1 6B090000 		.4byte	.LASF141
+ 1094 06a5 07       		.byte	0x7
+ 1095 06a6 1B       		.byte	0x1b
+ 1096 06a7 77000000 		.4byte	0x77
+ 1097 06ab 19       		.uleb128 0x19
+ 1098 06ac 5B050000 		.4byte	.LASF142
+ 1099 06b0 07       		.byte	0x7
+ 1100 06b1 1C       		.byte	0x1c
+ 1101 06b2 77000000 		.4byte	0x77
+ 1102 06b6 19       		.uleb128 0x19
+ 1103 06b7 33100000 		.4byte	.LASF143
+ 1104 06bb 07       		.byte	0x7
+ 1105 06bc 20       		.byte	0x20
+ 1106 06bd 6B000000 		.4byte	0x6b
+ 1107 06c1 18       		.uleb128 0x18
+ 1108 06c2 9D000000 		.4byte	.LASF144
+ 1109 06c6 08       		.byte	0x8
+ 1110 06c7 0E       		.byte	0xe
+ 1111 06c8 DB030000 		.4byte	0x3db
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 24
+
+
+ 1112 06cc 05       		.uleb128 0x5
+ 1113 06cd 03       		.byte	0x3
+ 1114 06ce 00000000 		.4byte	connectionHandle
+ 1115 06d2 18       		.uleb128 0x18
+ 1116 06d3 900A0000 		.4byte	.LASF145
+ 1117 06d7 08       		.byte	0x8
+ 1118 06d8 0F       		.byte	0xf
+ 1119 06d9 6A030000 		.4byte	0x36a
+ 1120 06dd 05       		.uleb128 0x5
+ 1121 06de 03       		.byte	0x3
+ 1122 06df 00000000 		.4byte	apiResult
+ 1123 06e3 18       		.uleb128 0x18
+ 1124 06e4 580D0000 		.4byte	.LASF146
+ 1125 06e8 08       		.byte	0x8
+ 1126 06e9 10       		.byte	0x10
+ 1127 06ea 9F030000 		.4byte	0x39f
+ 1128 06ee 05       		.uleb128 0x5
+ 1129 06ef 03       		.byte	0x3
+ 1130 06f0 00000000 		.4byte	lpMode
+ 1131 06f4 1A       		.uleb128 0x1a
+ 1132 06f5 A8060000 		.4byte	.LASF159
+ 1133 06f9 13       		.byte	0x13
+ 1134 06fa 39       		.byte	0x39
+ 1135 06fb 6B000000 		.4byte	0x6b
+ 1136 06ff 1B       		.uleb128 0x1b
+ 1137 0700 E30E0000 		.4byte	.LASF147
+ 1138 0704 09       		.byte	0x9
+ 1139 0705 1F       		.byte	0x1f
+ 1140 0706 1B       		.uleb128 0x1b
+ 1141 0707 A60E0000 		.4byte	.LASF148
+ 1142 070b 09       		.byte	0x9
+ 1143 070c 2A       		.byte	0x2a
+ 1144 070d 1C       		.uleb128 0x1c
+ 1145 070e 0F080000 		.4byte	.LASF150
+ 1146 0712 09       		.byte	0x9
+ 1147 0713 26       		.byte	0x26
+ 1148 0714 1E070000 		.4byte	0x71e
+ 1149 0718 0E       		.uleb128 0xe
+ 1150 0719 1E070000 		.4byte	0x71e
+ 1151 071d 00       		.byte	0
+ 1152 071e 06       		.uleb128 0x6
+ 1153 071f 04       		.byte	0x4
+ 1154 0720 24070000 		.4byte	0x724
+ 1155 0724 1D       		.uleb128 0x1d
+ 1156 0725 9D000000 		.4byte	0x9d
+ 1157 0729 1B       		.uleb128 0x1b
+ 1158 072a 1C040000 		.4byte	.LASF149
+ 1159 072e 0A       		.byte	0xa
+ 1160 072f 98       		.byte	0x98
+ 1161 0730 1C       		.uleb128 0x1c
+ 1162 0731 48100000 		.4byte	.LASF151
+ 1163 0735 0B       		.byte	0xb
+ 1164 0736 36       		.byte	0x36
+ 1165 0737 41070000 		.4byte	0x741
+ 1166 073b 0E       		.uleb128 0xe
+ 1167 073c 6B000000 		.4byte	0x6b
+ 1168 0740 00       		.byte	0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 25
+
+
+ 1169 0741 1C       		.uleb128 0x1c
+ 1170 0742 54010000 		.4byte	.LASF152
+ 1171 0746 0C       		.byte	0xc
+ 1172 0747 36       		.byte	0x36
+ 1173 0748 52070000 		.4byte	0x752
+ 1174 074c 0E       		.uleb128 0xe
+ 1175 074d 6B000000 		.4byte	0x6b
+ 1176 0751 00       		.byte	0
+ 1177 0752 1B       		.uleb128 0x1b
+ 1178 0753 23000000 		.4byte	.LASF153
+ 1179 0757 0D       		.byte	0xd
+ 1180 0758 5A       		.byte	0x5a
+ 1181 0759 1C       		.uleb128 0x1c
+ 1182 075a 9C0C0000 		.4byte	.LASF154
+ 1183 075e 0E       		.byte	0xe
+ 1184 075f 18       		.byte	0x18
+ 1185 0760 6A070000 		.4byte	0x76a
+ 1186 0764 0E       		.uleb128 0xe
+ 1187 0765 C1000000 		.4byte	0xc1
+ 1188 0769 00       		.byte	0
+ 1189 076a 1C       		.uleb128 0x1c
+ 1190 076b 72080000 		.4byte	.LASF155
+ 1191 076f 0F       		.byte	0xf
+ 1192 0770 18       		.byte	0x18
+ 1193 0771 7B070000 		.4byte	0x77b
+ 1194 0775 0E       		.uleb128 0xe
+ 1195 0776 C1000000 		.4byte	0xc1
+ 1196 077a 00       		.byte	0
+ 1197 077b 1C       		.uleb128 0x1c
+ 1198 077c 1F080000 		.4byte	.LASF156
+ 1199 0780 10       		.byte	0x10
+ 1200 0781 18       		.byte	0x18
+ 1201 0782 8C070000 		.4byte	0x78c
+ 1202 0786 0E       		.uleb128 0xe
+ 1203 0787 C1000000 		.4byte	0xc1
+ 1204 078b 00       		.byte	0
+ 1205 078c 1C       		.uleb128 0x1c
+ 1206 078d 4F060000 		.4byte	.LASF157
+ 1207 0791 11       		.byte	0x11
+ 1208 0792 18       		.byte	0x18
+ 1209 0793 9D070000 		.4byte	0x79d
+ 1210 0797 0E       		.uleb128 0xe
+ 1211 0798 C1000000 		.4byte	0xc1
+ 1212 079c 00       		.byte	0
+ 1213 079d 1C       		.uleb128 0x1c
+ 1214 079e 87020000 		.4byte	.LASF158
+ 1215 07a2 12       		.byte	0x12
+ 1216 07a3 18       		.byte	0x18
+ 1217 07a4 AE070000 		.4byte	0x7ae
+ 1218 07a8 0E       		.uleb128 0xe
+ 1219 07a9 C1000000 		.4byte	0xc1
+ 1220 07ad 00       		.byte	0
+ 1221 07ae 1A       		.uleb128 0x1a
+ 1222 07af 77040000 		.4byte	.LASF160
+ 1223 07b3 14       		.byte	0x14
+ 1224 07b4 5D       		.byte	0x5d
+ 1225 07b5 83000000 		.4byte	0x83
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 26
+
+
+ 1226 07b9 1E       		.uleb128 0x1e
+ 1227 07ba A4080000 		.4byte	.LASF172
+ 1228 07be 05       		.byte	0x5
+ 1229 07bf 5202     		.2byte	0x252
+ 1230 07c1 6A030000 		.4byte	0x36a
+ 1231 07c5 CF070000 		.4byte	0x7cf
+ 1232 07c9 0E       		.uleb128 0xe
+ 1233 07ca E7030000 		.4byte	0x3e7
+ 1234 07ce 00       		.byte	0
+ 1235 07cf 1F       		.uleb128 0x1f
+ 1236 07d0 600A0000 		.4byte	.LASF161
+ 1237 07d4 03       		.byte	0x3
+ 1238 07d5 4C06     		.2byte	0x64c
+ 1239 07d7 1C       		.uleb128 0x1c
+ 1240 07d8 800E0000 		.4byte	.LASF162
+ 1241 07dc 15       		.byte	0x15
+ 1242 07dd D7       		.byte	0xd7
+ 1243 07de E8070000 		.4byte	0x7e8
+ 1244 07e2 0E       		.uleb128 0xe
+ 1245 07e3 83000000 		.4byte	0x83
+ 1246 07e7 00       		.byte	0
+ 1247 07e8 1C       		.uleb128 0x1c
+ 1248 07e9 3E0B0000 		.4byte	.LASF163
+ 1249 07ed 16       		.byte	0x16
+ 1250 07ee 33       		.byte	0x33
+ 1251 07ef F9070000 		.4byte	0x7f9
+ 1252 07f3 0E       		.uleb128 0xe
+ 1253 07f4 6B000000 		.4byte	0x6b
+ 1254 07f8 00       		.byte	0
+ 1255 07f9 1A       		.uleb128 0x1a
+ 1256 07fa B5040000 		.4byte	.LASF164
+ 1257 07fe 17       		.byte	0x17
+ 1258 07ff 3F       		.byte	0x3f
+ 1259 0800 6B000000 		.4byte	0x6b
+ 1260 0804 1C       		.uleb128 0x1c
+ 1261 0805 49090000 		.4byte	.LASF165
+ 1262 0809 08       		.byte	0x8
+ 1263 080a 22       		.byte	0x22
+ 1264 080b 1A080000 		.4byte	0x81a
+ 1265 080f 0E       		.uleb128 0xe
+ 1266 0810 6B000000 		.4byte	0x6b
+ 1267 0814 0E       		.uleb128 0xe
+ 1268 0815 AB030000 		.4byte	0x3ab
+ 1269 0819 00       		.byte	0
+ 1270 081a 1B       		.uleb128 0x1b
+ 1271 081b 75030000 		.4byte	.LASF166
+ 1272 081f 18       		.byte	0x18
+ 1273 0820 6E       		.byte	0x6e
+ 1274 0821 20       		.uleb128 0x20
+ 1275 0822 9B090000 		.4byte	.LASF173
+ 1276 0826 17       		.byte	0x17
+ 1277 0827 20       		.byte	0x20
+ 1278 0828 2E080000 		.4byte	0x82e
+ 1279 082c 21       		.uleb128 0x21
+ 1280 082d 00       		.byte	0
+ 1281 082e 22       		.uleb128 0x22
+ 1282 082f 03070000 		.4byte	.LASF167
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 27
+
+
+ 1283 0833 17       		.byte	0x17
+ 1284 0834 14       		.byte	0x14
+ 1285 0835 3F080000 		.4byte	0x83f
+ 1286 0839 3F080000 		.4byte	0x83f
+ 1287 083d 21       		.uleb128 0x21
+ 1288 083e 00       		.byte	0
+ 1289 083f 02       		.uleb128 0x2
+ 1290 0840 01       		.byte	0x1
+ 1291 0841 02       		.byte	0x2
+ 1292 0842 8A0B0000 		.4byte	.LASF168
+ 1293 0846 00       		.byte	0
+ 1294              		.section	.debug_abbrev,"",%progbits
+ 1295              	.Ldebug_abbrev0:
+ 1296 0000 01       		.uleb128 0x1
+ 1297 0001 11       		.uleb128 0x11
+ 1298 0002 01       		.byte	0x1
+ 1299 0003 25       		.uleb128 0x25
+ 1300 0004 0E       		.uleb128 0xe
+ 1301 0005 13       		.uleb128 0x13
+ 1302 0006 0B       		.uleb128 0xb
+ 1303 0007 03       		.uleb128 0x3
+ 1304 0008 0E       		.uleb128 0xe
+ 1305 0009 1B       		.uleb128 0x1b
+ 1306 000a 0E       		.uleb128 0xe
+ 1307 000b 55       		.uleb128 0x55
+ 1308 000c 17       		.uleb128 0x17
+ 1309 000d 11       		.uleb128 0x11
+ 1310 000e 01       		.uleb128 0x1
+ 1311 000f 10       		.uleb128 0x10
+ 1312 0010 17       		.uleb128 0x17
+ 1313 0011 00       		.byte	0
+ 1314 0012 00       		.byte	0
+ 1315 0013 02       		.uleb128 0x2
+ 1316 0014 24       		.uleb128 0x24
+ 1317 0015 00       		.byte	0
+ 1318 0016 0B       		.uleb128 0xb
+ 1319 0017 0B       		.uleb128 0xb
+ 1320 0018 3E       		.uleb128 0x3e
+ 1321 0019 0B       		.uleb128 0xb
+ 1322 001a 03       		.uleb128 0x3
+ 1323 001b 0E       		.uleb128 0xe
+ 1324 001c 00       		.byte	0
+ 1325 001d 00       		.byte	0
+ 1326 001e 03       		.uleb128 0x3
+ 1327 001f 24       		.uleb128 0x24
+ 1328 0020 00       		.byte	0
+ 1329 0021 0B       		.uleb128 0xb
+ 1330 0022 0B       		.uleb128 0xb
+ 1331 0023 3E       		.uleb128 0x3e
+ 1332 0024 0B       		.uleb128 0xb
+ 1333 0025 03       		.uleb128 0x3
+ 1334 0026 08       		.uleb128 0x8
+ 1335 0027 00       		.byte	0
+ 1336 0028 00       		.byte	0
+ 1337 0029 04       		.uleb128 0x4
+ 1338 002a 16       		.uleb128 0x16
+ 1339 002b 00       		.byte	0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 28
+
+
+ 1340 002c 03       		.uleb128 0x3
+ 1341 002d 0E       		.uleb128 0xe
+ 1342 002e 3A       		.uleb128 0x3a
+ 1343 002f 0B       		.uleb128 0xb
+ 1344 0030 3B       		.uleb128 0x3b
+ 1345 0031 05       		.uleb128 0x5
+ 1346 0032 49       		.uleb128 0x49
+ 1347 0033 13       		.uleb128 0x13
+ 1348 0034 00       		.byte	0
+ 1349 0035 00       		.byte	0
+ 1350 0036 05       		.uleb128 0x5
+ 1351 0037 35       		.uleb128 0x35
+ 1352 0038 00       		.byte	0
+ 1353 0039 49       		.uleb128 0x49
+ 1354 003a 13       		.uleb128 0x13
+ 1355 003b 00       		.byte	0
+ 1356 003c 00       		.byte	0
+ 1357 003d 06       		.uleb128 0x6
+ 1358 003e 0F       		.uleb128 0xf
+ 1359 003f 00       		.byte	0
+ 1360 0040 0B       		.uleb128 0xb
+ 1361 0041 0B       		.uleb128 0xb
+ 1362 0042 49       		.uleb128 0x49
+ 1363 0043 13       		.uleb128 0x13
+ 1364 0044 00       		.byte	0
+ 1365 0045 00       		.byte	0
+ 1366 0046 07       		.uleb128 0x7
+ 1367 0047 15       		.uleb128 0x15
+ 1368 0048 00       		.byte	0
+ 1369 0049 27       		.uleb128 0x27
+ 1370 004a 19       		.uleb128 0x19
+ 1371 004b 00       		.byte	0
+ 1372 004c 00       		.byte	0
+ 1373 004d 08       		.uleb128 0x8
+ 1374 004e 0F       		.uleb128 0xf
+ 1375 004f 00       		.byte	0
+ 1376 0050 0B       		.uleb128 0xb
+ 1377 0051 0B       		.uleb128 0xb
+ 1378 0052 00       		.byte	0
+ 1379 0053 00       		.byte	0
+ 1380 0054 09       		.uleb128 0x9
+ 1381 0055 04       		.uleb128 0x4
+ 1382 0056 01       		.byte	0x1
+ 1383 0057 0B       		.uleb128 0xb
+ 1384 0058 0B       		.uleb128 0xb
+ 1385 0059 3A       		.uleb128 0x3a
+ 1386 005a 0B       		.uleb128 0xb
+ 1387 005b 3B       		.uleb128 0x3b
+ 1388 005c 05       		.uleb128 0x5
+ 1389 005d 01       		.uleb128 0x1
+ 1390 005e 13       		.uleb128 0x13
+ 1391 005f 00       		.byte	0
+ 1392 0060 00       		.byte	0
+ 1393 0061 0A       		.uleb128 0xa
+ 1394 0062 28       		.uleb128 0x28
+ 1395 0063 00       		.byte	0
+ 1396 0064 03       		.uleb128 0x3
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 29
+
+
+ 1397 0065 0E       		.uleb128 0xe
+ 1398 0066 1C       		.uleb128 0x1c
+ 1399 0067 0D       		.uleb128 0xd
+ 1400 0068 00       		.byte	0
+ 1401 0069 00       		.byte	0
+ 1402 006a 0B       		.uleb128 0xb
+ 1403 006b 13       		.uleb128 0x13
+ 1404 006c 01       		.byte	0x1
+ 1405 006d 0B       		.uleb128 0xb
+ 1406 006e 0B       		.uleb128 0xb
+ 1407 006f 3A       		.uleb128 0x3a
+ 1408 0070 0B       		.uleb128 0xb
+ 1409 0071 3B       		.uleb128 0x3b
+ 1410 0072 05       		.uleb128 0x5
+ 1411 0073 01       		.uleb128 0x1
+ 1412 0074 13       		.uleb128 0x13
+ 1413 0075 00       		.byte	0
+ 1414 0076 00       		.byte	0
+ 1415 0077 0C       		.uleb128 0xc
+ 1416 0078 0D       		.uleb128 0xd
+ 1417 0079 00       		.byte	0
+ 1418 007a 03       		.uleb128 0x3
+ 1419 007b 0E       		.uleb128 0xe
+ 1420 007c 3A       		.uleb128 0x3a
+ 1421 007d 0B       		.uleb128 0xb
+ 1422 007e 3B       		.uleb128 0x3b
+ 1423 007f 05       		.uleb128 0x5
+ 1424 0080 49       		.uleb128 0x49
+ 1425 0081 13       		.uleb128 0x13
+ 1426 0082 38       		.uleb128 0x38
+ 1427 0083 0B       		.uleb128 0xb
+ 1428 0084 00       		.byte	0
+ 1429 0085 00       		.byte	0
+ 1430 0086 0D       		.uleb128 0xd
+ 1431 0087 15       		.uleb128 0x15
+ 1432 0088 01       		.byte	0x1
+ 1433 0089 27       		.uleb128 0x27
+ 1434 008a 19       		.uleb128 0x19
+ 1435 008b 01       		.uleb128 0x1
+ 1436 008c 13       		.uleb128 0x13
+ 1437 008d 00       		.byte	0
+ 1438 008e 00       		.byte	0
+ 1439 008f 0E       		.uleb128 0xe
+ 1440 0090 05       		.uleb128 0x5
+ 1441 0091 00       		.byte	0
+ 1442 0092 49       		.uleb128 0x49
+ 1443 0093 13       		.uleb128 0x13
+ 1444 0094 00       		.byte	0
+ 1445 0095 00       		.byte	0
+ 1446 0096 0F       		.uleb128 0xf
+ 1447 0097 2E       		.uleb128 0x2e
+ 1448 0098 01       		.byte	0x1
+ 1449 0099 3F       		.uleb128 0x3f
+ 1450 009a 19       		.uleb128 0x19
+ 1451 009b 03       		.uleb128 0x3
+ 1452 009c 0E       		.uleb128 0xe
+ 1453 009d 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 30
+
+
+ 1454 009e 0B       		.uleb128 0xb
+ 1455 009f 3B       		.uleb128 0x3b
+ 1456 00a0 0B       		.uleb128 0xb
+ 1457 00a1 27       		.uleb128 0x27
+ 1458 00a2 19       		.uleb128 0x19
+ 1459 00a3 11       		.uleb128 0x11
+ 1460 00a4 01       		.uleb128 0x1
+ 1461 00a5 12       		.uleb128 0x12
+ 1462 00a6 06       		.uleb128 0x6
+ 1463 00a7 40       		.uleb128 0x40
+ 1464 00a8 18       		.uleb128 0x18
+ 1465 00a9 9742     		.uleb128 0x2117
+ 1466 00ab 19       		.uleb128 0x19
+ 1467 00ac 01       		.uleb128 0x1
+ 1468 00ad 13       		.uleb128 0x13
+ 1469 00ae 00       		.byte	0
+ 1470 00af 00       		.byte	0
+ 1471 00b0 10       		.uleb128 0x10
+ 1472 00b1 898201   		.uleb128 0x4109
+ 1473 00b4 00       		.byte	0
+ 1474 00b5 11       		.uleb128 0x11
+ 1475 00b6 01       		.uleb128 0x1
+ 1476 00b7 31       		.uleb128 0x31
+ 1477 00b8 13       		.uleb128 0x13
+ 1478 00b9 00       		.byte	0
+ 1479 00ba 00       		.byte	0
+ 1480 00bb 11       		.uleb128 0x11
+ 1481 00bc 2E       		.uleb128 0x2e
+ 1482 00bd 01       		.byte	0x1
+ 1483 00be 3F       		.uleb128 0x3f
+ 1484 00bf 19       		.uleb128 0x19
+ 1485 00c0 03       		.uleb128 0x3
+ 1486 00c1 0E       		.uleb128 0xe
+ 1487 00c2 3A       		.uleb128 0x3a
+ 1488 00c3 0B       		.uleb128 0xb
+ 1489 00c4 3B       		.uleb128 0x3b
+ 1490 00c5 0B       		.uleb128 0xb
+ 1491 00c6 49       		.uleb128 0x49
+ 1492 00c7 13       		.uleb128 0x13
+ 1493 00c8 11       		.uleb128 0x11
+ 1494 00c9 01       		.uleb128 0x1
+ 1495 00ca 12       		.uleb128 0x12
+ 1496 00cb 06       		.uleb128 0x6
+ 1497 00cc 40       		.uleb128 0x40
+ 1498 00cd 18       		.uleb128 0x18
+ 1499 00ce 9742     		.uleb128 0x2117
+ 1500 00d0 19       		.uleb128 0x19
+ 1501 00d1 01       		.uleb128 0x1
+ 1502 00d2 13       		.uleb128 0x13
+ 1503 00d3 00       		.byte	0
+ 1504 00d4 00       		.byte	0
+ 1505 00d5 12       		.uleb128 0x12
+ 1506 00d6 34       		.uleb128 0x34
+ 1507 00d7 00       		.byte	0
+ 1508 00d8 03       		.uleb128 0x3
+ 1509 00d9 0E       		.uleb128 0xe
+ 1510 00da 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 31
+
+
+ 1511 00db 0B       		.uleb128 0xb
+ 1512 00dc 3B       		.uleb128 0x3b
+ 1513 00dd 0B       		.uleb128 0xb
+ 1514 00de 49       		.uleb128 0x49
+ 1515 00df 13       		.uleb128 0x13
+ 1516 00e0 02       		.uleb128 0x2
+ 1517 00e1 17       		.uleb128 0x17
+ 1518 00e2 00       		.byte	0
+ 1519 00e3 00       		.byte	0
+ 1520 00e4 13       		.uleb128 0x13
+ 1521 00e5 898201   		.uleb128 0x4109
+ 1522 00e8 01       		.byte	0x1
+ 1523 00e9 11       		.uleb128 0x11
+ 1524 00ea 01       		.uleb128 0x1
+ 1525 00eb 31       		.uleb128 0x31
+ 1526 00ec 13       		.uleb128 0x13
+ 1527 00ed 01       		.uleb128 0x1
+ 1528 00ee 13       		.uleb128 0x13
+ 1529 00ef 00       		.byte	0
+ 1530 00f0 00       		.byte	0
+ 1531 00f1 14       		.uleb128 0x14
+ 1532 00f2 8A8201   		.uleb128 0x410a
+ 1533 00f5 00       		.byte	0
+ 1534 00f6 02       		.uleb128 0x2
+ 1535 00f7 18       		.uleb128 0x18
+ 1536 00f8 9142     		.uleb128 0x2111
+ 1537 00fa 18       		.uleb128 0x18
+ 1538 00fb 00       		.byte	0
+ 1539 00fc 00       		.byte	0
+ 1540 00fd 15       		.uleb128 0x15
+ 1541 00fe 34       		.uleb128 0x34
+ 1542 00ff 00       		.byte	0
+ 1543 0100 03       		.uleb128 0x3
+ 1544 0101 0E       		.uleb128 0xe
+ 1545 0102 3A       		.uleb128 0x3a
+ 1546 0103 0B       		.uleb128 0xb
+ 1547 0104 3B       		.uleb128 0x3b
+ 1548 0105 05       		.uleb128 0x5
+ 1549 0106 49       		.uleb128 0x49
+ 1550 0107 13       		.uleb128 0x13
+ 1551 0108 3F       		.uleb128 0x3f
+ 1552 0109 19       		.uleb128 0x19
+ 1553 010a 3C       		.uleb128 0x3c
+ 1554 010b 19       		.uleb128 0x19
+ 1555 010c 00       		.byte	0
+ 1556 010d 00       		.byte	0
+ 1557 010e 16       		.uleb128 0x16
+ 1558 010f 01       		.uleb128 0x1
+ 1559 0110 01       		.byte	0x1
+ 1560 0111 49       		.uleb128 0x49
+ 1561 0112 13       		.uleb128 0x13
+ 1562 0113 01       		.uleb128 0x1
+ 1563 0114 13       		.uleb128 0x13
+ 1564 0115 00       		.byte	0
+ 1565 0116 00       		.byte	0
+ 1566 0117 17       		.uleb128 0x17
+ 1567 0118 21       		.uleb128 0x21
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 32
+
+
+ 1568 0119 00       		.byte	0
+ 1569 011a 49       		.uleb128 0x49
+ 1570 011b 13       		.uleb128 0x13
+ 1571 011c 2F       		.uleb128 0x2f
+ 1572 011d 0B       		.uleb128 0xb
+ 1573 011e 00       		.byte	0
+ 1574 011f 00       		.byte	0
+ 1575 0120 18       		.uleb128 0x18
+ 1576 0121 34       		.uleb128 0x34
+ 1577 0122 00       		.byte	0
+ 1578 0123 03       		.uleb128 0x3
+ 1579 0124 0E       		.uleb128 0xe
+ 1580 0125 3A       		.uleb128 0x3a
+ 1581 0126 0B       		.uleb128 0xb
+ 1582 0127 3B       		.uleb128 0x3b
+ 1583 0128 0B       		.uleb128 0xb
+ 1584 0129 49       		.uleb128 0x49
+ 1585 012a 13       		.uleb128 0x13
+ 1586 012b 3F       		.uleb128 0x3f
+ 1587 012c 19       		.uleb128 0x19
+ 1588 012d 02       		.uleb128 0x2
+ 1589 012e 18       		.uleb128 0x18
+ 1590 012f 00       		.byte	0
+ 1591 0130 00       		.byte	0
+ 1592 0131 19       		.uleb128 0x19
+ 1593 0132 34       		.uleb128 0x34
+ 1594 0133 00       		.byte	0
+ 1595 0134 03       		.uleb128 0x3
+ 1596 0135 0E       		.uleb128 0xe
+ 1597 0136 3A       		.uleb128 0x3a
+ 1598 0137 0B       		.uleb128 0xb
+ 1599 0138 3B       		.uleb128 0x3b
+ 1600 0139 0B       		.uleb128 0xb
+ 1601 013a 49       		.uleb128 0x49
+ 1602 013b 13       		.uleb128 0x13
+ 1603 013c 3F       		.uleb128 0x3f
+ 1604 013d 19       		.uleb128 0x19
+ 1605 013e 3C       		.uleb128 0x3c
+ 1606 013f 19       		.uleb128 0x19
+ 1607 0140 00       		.byte	0
+ 1608 0141 00       		.byte	0
+ 1609 0142 1A       		.uleb128 0x1a
+ 1610 0143 2E       		.uleb128 0x2e
+ 1611 0144 00       		.byte	0
+ 1612 0145 3F       		.uleb128 0x3f
+ 1613 0146 19       		.uleb128 0x19
+ 1614 0147 03       		.uleb128 0x3
+ 1615 0148 0E       		.uleb128 0xe
+ 1616 0149 3A       		.uleb128 0x3a
+ 1617 014a 0B       		.uleb128 0xb
+ 1618 014b 3B       		.uleb128 0x3b
+ 1619 014c 0B       		.uleb128 0xb
+ 1620 014d 27       		.uleb128 0x27
+ 1621 014e 19       		.uleb128 0x19
+ 1622 014f 49       		.uleb128 0x49
+ 1623 0150 13       		.uleb128 0x13
+ 1624 0151 3C       		.uleb128 0x3c
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 33
+
+
+ 1625 0152 19       		.uleb128 0x19
+ 1626 0153 00       		.byte	0
+ 1627 0154 00       		.byte	0
+ 1628 0155 1B       		.uleb128 0x1b
+ 1629 0156 2E       		.uleb128 0x2e
+ 1630 0157 00       		.byte	0
+ 1631 0158 3F       		.uleb128 0x3f
+ 1632 0159 19       		.uleb128 0x19
+ 1633 015a 03       		.uleb128 0x3
+ 1634 015b 0E       		.uleb128 0xe
+ 1635 015c 3A       		.uleb128 0x3a
+ 1636 015d 0B       		.uleb128 0xb
+ 1637 015e 3B       		.uleb128 0x3b
+ 1638 015f 0B       		.uleb128 0xb
+ 1639 0160 27       		.uleb128 0x27
+ 1640 0161 19       		.uleb128 0x19
+ 1641 0162 3C       		.uleb128 0x3c
+ 1642 0163 19       		.uleb128 0x19
+ 1643 0164 00       		.byte	0
+ 1644 0165 00       		.byte	0
+ 1645 0166 1C       		.uleb128 0x1c
+ 1646 0167 2E       		.uleb128 0x2e
+ 1647 0168 01       		.byte	0x1
+ 1648 0169 3F       		.uleb128 0x3f
+ 1649 016a 19       		.uleb128 0x19
+ 1650 016b 03       		.uleb128 0x3
+ 1651 016c 0E       		.uleb128 0xe
+ 1652 016d 3A       		.uleb128 0x3a
+ 1653 016e 0B       		.uleb128 0xb
+ 1654 016f 3B       		.uleb128 0x3b
+ 1655 0170 0B       		.uleb128 0xb
+ 1656 0171 27       		.uleb128 0x27
+ 1657 0172 19       		.uleb128 0x19
+ 1658 0173 3C       		.uleb128 0x3c
+ 1659 0174 19       		.uleb128 0x19
+ 1660 0175 01       		.uleb128 0x1
+ 1661 0176 13       		.uleb128 0x13
+ 1662 0177 00       		.byte	0
+ 1663 0178 00       		.byte	0
+ 1664 0179 1D       		.uleb128 0x1d
+ 1665 017a 26       		.uleb128 0x26
+ 1666 017b 00       		.byte	0
+ 1667 017c 49       		.uleb128 0x49
+ 1668 017d 13       		.uleb128 0x13
+ 1669 017e 00       		.byte	0
+ 1670 017f 00       		.byte	0
+ 1671 0180 1E       		.uleb128 0x1e
+ 1672 0181 2E       		.uleb128 0x2e
+ 1673 0182 01       		.byte	0x1
+ 1674 0183 3F       		.uleb128 0x3f
+ 1675 0184 19       		.uleb128 0x19
+ 1676 0185 03       		.uleb128 0x3
+ 1677 0186 0E       		.uleb128 0xe
+ 1678 0187 3A       		.uleb128 0x3a
+ 1679 0188 0B       		.uleb128 0xb
+ 1680 0189 3B       		.uleb128 0x3b
+ 1681 018a 05       		.uleb128 0x5
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 34
+
+
+ 1682 018b 27       		.uleb128 0x27
+ 1683 018c 19       		.uleb128 0x19
+ 1684 018d 49       		.uleb128 0x49
+ 1685 018e 13       		.uleb128 0x13
+ 1686 018f 3C       		.uleb128 0x3c
+ 1687 0190 19       		.uleb128 0x19
+ 1688 0191 01       		.uleb128 0x1
+ 1689 0192 13       		.uleb128 0x13
+ 1690 0193 00       		.byte	0
+ 1691 0194 00       		.byte	0
+ 1692 0195 1F       		.uleb128 0x1f
+ 1693 0196 2E       		.uleb128 0x2e
+ 1694 0197 00       		.byte	0
+ 1695 0198 3F       		.uleb128 0x3f
+ 1696 0199 19       		.uleb128 0x19
+ 1697 019a 03       		.uleb128 0x3
+ 1698 019b 0E       		.uleb128 0xe
+ 1699 019c 3A       		.uleb128 0x3a
+ 1700 019d 0B       		.uleb128 0xb
+ 1701 019e 3B       		.uleb128 0x3b
+ 1702 019f 05       		.uleb128 0x5
+ 1703 01a0 27       		.uleb128 0x27
+ 1704 01a1 19       		.uleb128 0x19
+ 1705 01a2 3C       		.uleb128 0x3c
+ 1706 01a3 19       		.uleb128 0x19
+ 1707 01a4 00       		.byte	0
+ 1708 01a5 00       		.byte	0
+ 1709 01a6 20       		.uleb128 0x20
+ 1710 01a7 2E       		.uleb128 0x2e
+ 1711 01a8 01       		.byte	0x1
+ 1712 01a9 3F       		.uleb128 0x3f
+ 1713 01aa 19       		.uleb128 0x19
+ 1714 01ab 03       		.uleb128 0x3
+ 1715 01ac 0E       		.uleb128 0xe
+ 1716 01ad 3A       		.uleb128 0x3a
+ 1717 01ae 0B       		.uleb128 0xb
+ 1718 01af 3B       		.uleb128 0x3b
+ 1719 01b0 0B       		.uleb128 0xb
+ 1720 01b1 3C       		.uleb128 0x3c
+ 1721 01b2 19       		.uleb128 0x19
+ 1722 01b3 01       		.uleb128 0x1
+ 1723 01b4 13       		.uleb128 0x13
+ 1724 01b5 00       		.byte	0
+ 1725 01b6 00       		.byte	0
+ 1726 01b7 21       		.uleb128 0x21
+ 1727 01b8 18       		.uleb128 0x18
+ 1728 01b9 00       		.byte	0
+ 1729 01ba 00       		.byte	0
+ 1730 01bb 00       		.byte	0
+ 1731 01bc 22       		.uleb128 0x22
+ 1732 01bd 2E       		.uleb128 0x2e
+ 1733 01be 01       		.byte	0x1
+ 1734 01bf 3F       		.uleb128 0x3f
+ 1735 01c0 19       		.uleb128 0x19
+ 1736 01c1 03       		.uleb128 0x3
+ 1737 01c2 0E       		.uleb128 0xe
+ 1738 01c3 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 35
+
+
+ 1739 01c4 0B       		.uleb128 0xb
+ 1740 01c5 3B       		.uleb128 0x3b
+ 1741 01c6 0B       		.uleb128 0xb
+ 1742 01c7 49       		.uleb128 0x49
+ 1743 01c8 13       		.uleb128 0x13
+ 1744 01c9 3C       		.uleb128 0x3c
+ 1745 01ca 19       		.uleb128 0x19
+ 1746 01cb 01       		.uleb128 0x1
+ 1747 01cc 13       		.uleb128 0x13
+ 1748 01cd 00       		.byte	0
+ 1749 01ce 00       		.byte	0
+ 1750 01cf 00       		.byte	0
+ 1751              		.section	.debug_loc,"",%progbits
+ 1752              	.Ldebug_loc0:
+ 1753              	.LLST0:
+ 1754 0000 5E000000 		.4byte	.LVL16
+ 1755 0004 60000000 		.4byte	.LVL17
+ 1756 0008 0100     		.2byte	0x1
+ 1757 000a 50       		.byte	0x50
+ 1758 000b 60000000 		.4byte	.LVL17
+ 1759 000f 30010000 		.4byte	.LFE38
+ 1760 0013 0100     		.2byte	0x1
+ 1761 0015 54       		.byte	0x54
+ 1762 0016 00000000 		.4byte	0
+ 1763 001a 00000000 		.4byte	0
+ 1764              	.LLST1:
+ 1765 001e B8000000 		.4byte	.LVL28
+ 1766 0022 C9000000 		.4byte	.LVL29-1
+ 1767 0026 0100     		.2byte	0x1
+ 1768 0028 50       		.byte	0x50
+ 1769 0029 00000000 		.4byte	0
+ 1770 002d 00000000 		.4byte	0
+ 1771              		.section	.debug_aranges,"",%progbits
+ 1772 0000 24000000 		.4byte	0x24
+ 1773 0004 0200     		.2byte	0x2
+ 1774 0006 00000000 		.4byte	.Ldebug_info0
+ 1775 000a 04       		.byte	0x4
+ 1776 000b 00       		.byte	0
+ 1777 000c 0000     		.2byte	0
+ 1778 000e 0000     		.2byte	0
+ 1779 0010 00000000 		.4byte	.LFB37
+ 1780 0014 10000000 		.4byte	.LFE37-.LFB37
+ 1781 0018 00000000 		.4byte	.LFB38
+ 1782 001c 30010000 		.4byte	.LFE38-.LFB38
+ 1783 0020 00000000 		.4byte	0
+ 1784 0024 00000000 		.4byte	0
+ 1785              		.section	.debug_ranges,"",%progbits
+ 1786              	.Ldebug_ranges0:
+ 1787 0000 00000000 		.4byte	.LFB37
+ 1788 0004 10000000 		.4byte	.LFE37
+ 1789 0008 00000000 		.4byte	.LFB38
+ 1790 000c 30010000 		.4byte	.LFE38
+ 1791 0010 00000000 		.4byte	0
+ 1792 0014 00000000 		.4byte	0
+ 1793              		.section	.debug_line,"",%progbits
+ 1794              	.Ldebug_line0:
+ 1795 0000 E4010000 		.section	.debug_str,"MS",%progbits,1
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 36
+
+
+ 1795      02008701 
+ 1795      00000201 
+ 1795      FB0E0D00 
+ 1795      01010101 
+ 1796              	.LASF79:
+ 1797 0000 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_RX_CREDIT_IND\000"
+ 1797      455F4556 
+ 1797      545F4C32 
+ 1797      4341505F 
+ 1797      43424643 
+ 1798              	.LASF153:
+ 1799 0023 54696D65 		.ascii	"Timer_1_Start\000"
+ 1799      725F315F 
+ 1799      53746172 
+ 1799      7400
+ 1800              	.LASF129:
+ 1801 0031 4359424C 		.ascii	"CYBLE_STATE_STOPPED\000"
+ 1801      455F5354 
+ 1801      4154455F 
+ 1801      53544F50 
+ 1801      50454400 
+ 1802              	.LASF78:
+ 1803 0045 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DATA_READ\000"
+ 1803      455F4556 
+ 1803      545F4C32 
+ 1803      4341505F 
+ 1803      43424643 
+ 1804              	.LASF127:
+ 1805 0064 4359424C 		.ascii	"CYBLE_CONN_HANDLE_T\000"
+ 1805      455F434F 
+ 1805      4E4E5F48 
+ 1805      414E444C 
+ 1805      455F5400 
+ 1806              	.LASF88:
+ 1807 0078 4359424C 		.ascii	"CYBLE_ERROR_MEMORY_ALLOCATION_FAILED\000"
+ 1807      455F4552 
+ 1807      524F525F 
+ 1807      4D454D4F 
+ 1807      52595F41 
+ 1808              	.LASF144:
+ 1809 009d 636F6E6E 		.ascii	"connectionHandle\000"
+ 1809      65637469 
+ 1809      6F6E4861 
+ 1809      6E646C65 
+ 1809      00
+ 1810              	.LASF36:
+ 1811 00ae 4359424C 		.ascii	"CYBLE_EVT_GAP_CONNECTION_UPDATE_COMPLETE\000"
+ 1811      455F4556 
+ 1811      545F4741 
+ 1811      505F434F 
+ 1811      4E4E4543 
+ 1812              	.LASF77:
+ 1813 00d7 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DISCONN_CNF\000"
+ 1813      455F4556 
+ 1813      545F4C32 
+ 1813      4341505F 
+ 1813      43424643 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 37
+
+
+ 1814              	.LASF109:
+ 1815 00f8 4359424C 		.ascii	"CYBLE_ERROR_UNSUPPORTED_FEATURE_OR_PARAMETER_VALUE\000"
+ 1815      455F4552 
+ 1815      524F525F 
+ 1815      554E5355 
+ 1815      50504F52 
+ 1816              	.LASF41:
+ 1817 012b 4359424C 		.ascii	"CYBLE_EVT_GAP_OOB_GENERATED_NOTIFICATION\000"
+ 1817      455F4556 
+ 1817      545F4741 
+ 1817      505F4F4F 
+ 1817      425F4745 
+ 1818              	.LASF152:
+ 1819 0154 4932434D 		.ascii	"I2CM_sda_SetDriveMode\000"
+ 1819      5F736461 
+ 1819      5F536574 
+ 1819      44726976 
+ 1819      654D6F64 
+ 1820              	.LASF24:
+ 1821 016a 4359424C 		.ascii	"CYBLE_EVT_STACK_BUSY_STATUS\000"
+ 1821      455F4556 
+ 1821      545F5354 
+ 1821      41434B5F 
+ 1821      42555359 
+ 1822              	.LASF57:
+ 1823 0186 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_MULTI_RSP\000"
+ 1823      455F4556 
+ 1823      545F4741 
+ 1823      5454435F 
+ 1823      52454144 
+ 1824              	.LASF62:
+ 1825 01a5 4359424C 		.ascii	"CYBLE_EVT_GATTS_EXEC_WRITE_REQ\000"
+ 1825      455F4556 
+ 1825      545F4741 
+ 1825      5454535F 
+ 1825      45584543 
+ 1826              	.LASF123:
+ 1827 01c4 4359424C 		.ascii	"CYBLE_LP_MODE_T\000"
+ 1827      455F4C50 
+ 1827      5F4D4F44 
+ 1827      455F5400 
+ 1828              	.LASF74:
+ 1829 01d4 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_CONN_IND\000"
+ 1829      455F4556 
+ 1829      545F4C32 
+ 1829      4341505F 
+ 1829      43424643 
+ 1830              	.LASF21:
+ 1831 01f2 4359424C 		.ascii	"CYBLE_EVT_TIMEOUT\000"
+ 1831      455F4556 
+ 1831      545F5449 
+ 1831      4D454F55 
+ 1831      5400
+ 1832              	.LASF4:
+ 1833 0204 6C6F6E67 		.ascii	"long int\000"
+ 1833      20696E74 
+ 1833      00
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 38
+
+
+ 1834              	.LASF108:
+ 1835 020d 4359424C 		.ascii	"CYBLE_ERROR_HARDWARE_FAILURE\000"
+ 1835      455F4552 
+ 1835      524F525F 
+ 1835      48415244 
+ 1835      57415245 
+ 1836              	.LASF98:
+ 1837 022a 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_PSM_WRONG_ENCODING\000"
+ 1837      455F4552 
+ 1837      524F525F 
+ 1837      4C324341 
+ 1837      505F5053 
+ 1838              	.LASF89:
+ 1839 024f 4359424C 		.ascii	"CYBLE_ERROR_INSUFFICIENT_RESOURCES\000"
+ 1839      455F4552 
+ 1839      524F525F 
+ 1839      494E5355 
+ 1839      46464943 
+ 1840              	.LASF23:
+ 1841 0272 4359424C 		.ascii	"CYBLE_EVT_HCI_STATUS\000"
+ 1841      455F4556 
+ 1841      545F4843 
+ 1841      495F5354 
+ 1841      41545553 
+ 1842              	.LASF158:
+ 1843 0287 6973725F 		.ascii	"isr_CombinedPort_StartEx\000"
+ 1843      436F6D62 
+ 1843      696E6564 
+ 1843      506F7274 
+ 1843      5F537461 
+ 1844              	.LASF37:
+ 1845 02a0 4359424C 		.ascii	"CYBLE_EVT_GAPC_SCAN_START_STOP\000"
+ 1845      455F4556 
+ 1845      545F4741 
+ 1845      50435F53 
+ 1845      43414E5F 
+ 1846              	.LASF82:
+ 1847 02bf 4359424C 		.ascii	"CYBLE_EVT_PENDING_FLASH_WRITE\000"
+ 1847      455F4556 
+ 1847      545F5045 
+ 1847      4E44494E 
+ 1847      475F464C 
+ 1848              	.LASF97:
+ 1849 02dd 4359424C 		.ascii	"CYBLE_ERROR_SEC_FAILED\000"
+ 1849      455F4552 
+ 1849      524F525F 
+ 1849      5345435F 
+ 1849      4641494C 
+ 1850              	.LASF35:
+ 1851 02f4 4359424C 		.ascii	"CYBLE_EVT_GAP_ENCRYPT_CHANGE\000"
+ 1851      455F4556 
+ 1851      545F4741 
+ 1851      505F454E 
+ 1851      43525950 
+ 1852              	.LASF39:
+ 1853 0311 4359424C 		.ascii	"CYBLE_EVT_GAP_NUMERIC_COMPARISON_REQUEST\000"
+ 1853      455F4556 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 39
+
+
+ 1853      545F4741 
+ 1853      505F4E55 
+ 1853      4D455249 
+ 1854              	.LASF80:
+ 1855 033a 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_TX_CREDIT_IND\000"
+ 1855      455F4556 
+ 1855      545F4C32 
+ 1855      4341505F 
+ 1855      43424643 
+ 1856              	.LASF132:
+ 1857 035d 4359424C 		.ascii	"CYBLE_STATE_ADVERTISING\000"
+ 1857      455F5354 
+ 1857      4154455F 
+ 1857      41445645 
+ 1857      52544953 
+ 1858              	.LASF166:
+ 1859 0375 4932434D 		.ascii	"I2CM_Start\000"
+ 1859      5F537461 
+ 1859      727400
+ 1860              	.LASF6:
+ 1861 0380 6C6F6E67 		.ascii	"long long int\000"
+ 1861      206C6F6E 
+ 1861      6720696E 
+ 1861      7400
+ 1862              	.LASF0:
+ 1863 038e 7369676E 		.ascii	"signed char\000"
+ 1863      65642063 
+ 1863      68617200 
+ 1864              	.LASF20:
+ 1865 039a 4359424C 		.ascii	"CYBLE_EVT_STACK_ON\000"
+ 1865      455F4556 
+ 1865      545F5354 
+ 1865      41434B5F 
+ 1865      4F4E00
+ 1866              	.LASF105:
+ 1867 03ad 4359424C 		.ascii	"CYBLE_ERROR_DEVICE_ALREADY_EXISTS\000"
+ 1867      455F4552 
+ 1867      524F525F 
+ 1867      44455649 
+ 1867      43455F41 
+ 1868              	.LASF92:
+ 1869 03cf 4359424C 		.ascii	"CYBLE_ERROR_NO_DEVICE_ENTITY\000"
+ 1869      455F4552 
+ 1869      524F525F 
+ 1869      4E4F5F44 
+ 1869      45564943 
+ 1870              	.LASF27:
+ 1871 03ec 4359424C 		.ascii	"CYBLE_EVT_GAP_AUTH_REQ\000"
+ 1871      455F4556 
+ 1871      545F4741 
+ 1871      505F4155 
+ 1871      54485F52 
+ 1872              	.LASF55:
+ 1873 0403 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_RSP\000"
+ 1873      455F4556 
+ 1873      545F4741 
+ 1873      5454435F 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 40
+
+
+ 1873      52454144 
+ 1874              	.LASF149:
+ 1875 041c 4144435F 		.ascii	"ADC_Start\000"
+ 1875      53746172 
+ 1875      7400
+ 1876              	.LASF116:
+ 1877 0426 4359424C 		.ascii	"CYBLE_ERROR_INVALID_STATE\000"
+ 1877      455F4552 
+ 1877      524F525F 
+ 1877      494E5641 
+ 1877      4C49445F 
+ 1878              	.LASF60:
+ 1879 0440 4359424C 		.ascii	"CYBLE_EVT_GATTS_WRITE_CMD_REQ\000"
+ 1879      455F4556 
+ 1879      545F4741 
+ 1879      5454535F 
+ 1879      57524954 
+ 1880              	.LASF133:
+ 1881 045e 4359424C 		.ascii	"CYBLE_STATE_DISCONNECTED\000"
+ 1881      455F5354 
+ 1881      4154455F 
+ 1881      44495343 
+ 1881      4F4E4E45 
+ 1882              	.LASF160:
+ 1883 0477 43795379 		.ascii	"CySysPmGetResetReason\000"
+ 1883      73506D47 
+ 1883      65745265 
+ 1883      73657452 
+ 1883      6561736F 
+ 1884              	.LASF32:
+ 1885 048d 4359424C 		.ascii	"CYBLE_EVT_GAPP_ADVERTISEMENT_START_STOP\000"
+ 1885      455F4556 
+ 1885      545F4741 
+ 1885      50505F41 
+ 1885      44564552 
+ 1886              	.LASF164:
+ 1887 04b5 4D656173 		.ascii	"MeasureBattery\000"
+ 1887      75726542 
+ 1887      61747465 
+ 1887      727900
+ 1888              	.LASF103:
+ 1889 04c4 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_PSM_NOT_IN_RANGE\000"
+ 1889      455F4552 
+ 1889      524F525F 
+ 1889      4C324341 
+ 1889      505F5053 
+ 1890              	.LASF9:
+ 1891 04e7 75696E74 		.ascii	"uint8\000"
+ 1891      3800
+ 1892              	.LASF63:
+ 1893 04ed 4359424C 		.ascii	"CYBLE_EVT_GATTC_EXEC_WRITE_RSP\000"
+ 1893      455F4556 
+ 1893      545F4741 
+ 1893      5454435F 
+ 1893      45584543 
+ 1894              	.LASF13:
+ 1895 050c 646F7562 		.ascii	"double\000"
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 41
+
+
+ 1895      6C6500
+ 1896              	.LASF76:
+ 1897 0513 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DISCONN_IND\000"
+ 1897      455F4556 
+ 1897      545F4C32 
+ 1897      4341505F 
+ 1897      43424643 
+ 1898              	.LASF86:
+ 1899 0534 4359424C 		.ascii	"CYBLE_ERROR_INVALID_PARAMETER\000"
+ 1899      455F4552 
+ 1899      524F525F 
+ 1899      494E5641 
+ 1899      4C49445F 
+ 1900              	.LASF140:
+ 1901 0552 64656275 		.ascii	"debugStr\000"
+ 1901      67537472 
+ 1901      00
+ 1902              	.LASF142:
+ 1903 055b 6F766572 		.ascii	"overall_pulses\000"
+ 1903      616C6C5F 
+ 1903      70756C73 
+ 1903      657300
+ 1904              	.LASF11:
+ 1905 056a 75696E74 		.ascii	"uint32\000"
+ 1905      333200
+ 1906              	.LASF81:
+ 1907 0571 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DATA_WRITE_IND\000"
+ 1907      455F4556 
+ 1907      545F4C32 
+ 1907      4341505F 
+ 1907      43424643 
+ 1908              	.LASF84:
+ 1909 0595 4359424C 		.ascii	"CYBLE_EVT_MAX\000"
+ 1909      455F4556 
+ 1909      545F4D41 
+ 1909      5800
+ 1910              	.LASF85:
+ 1911 05a3 4359424C 		.ascii	"CYBLE_ERROR_OK\000"
+ 1911      455F4552 
+ 1911      524F525F 
+ 1911      4F4B00
+ 1912              	.LASF46:
+ 1913 05b2 4359424C 		.ascii	"CYBLE_EVT_GATTC_ERROR_RSP\000"
+ 1913      455F4556 
+ 1913      545F4741 
+ 1913      5454435F 
+ 1913      4552524F 
+ 1914              	.LASF71:
+ 1915 05cc 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CONN_PARAM_UPDATE_REQ\000"
+ 1915      455F4556 
+ 1915      545F4C32 
+ 1915      4341505F 
+ 1915      434F4E4E 
+ 1916              	.LASF38:
+ 1917 05f2 4359424C 		.ascii	"CYBLE_EVT_GAP_KEYINFO_EXCHNGE_CMPLT\000"
+ 1917      455F4556 
+ 1917      545F4741 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 42
+
+
+ 1917      505F4B45 
+ 1917      59494E46 
+ 1918              	.LASF7:
+ 1919 0616 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1919      206C6F6E 
+ 1919      6720756E 
+ 1919      7369676E 
+ 1919      65642069 
+ 1920              	.LASF68:
+ 1921 062d 4359424C 		.ascii	"CYBLE_EVT_GATTC_STOP_CMD_COMPLETE\000"
+ 1921      455F4556 
+ 1921      545F4741 
+ 1921      5454435F 
+ 1921      53544F50 
+ 1922              	.LASF157:
+ 1923 064f 4953525F 		.ascii	"ISR_btn_StartEx\000"
+ 1923      62746E5F 
+ 1923      53746172 
+ 1923      74457800 
+ 1924              	.LASF90:
+ 1925 065f 4359424C 		.ascii	"CYBLE_ERROR_OOB_NOT_AVAILABLE\000"
+ 1925      455F4552 
+ 1925      524F525F 
+ 1925      4F4F425F 
+ 1925      4E4F545F 
+ 1926              	.LASF83:
+ 1927 067d 4359424C 		.ascii	"CYBLE_EVT_LE_PING_AUTH_TIMEOUT\000"
+ 1927      455F4556 
+ 1927      545F4C45 
+ 1927      5F50494E 
+ 1927      475F4155 
+ 1928              	.LASF135:
+ 1929 069c 69737243 		.ascii	"isrCombined\000"
+ 1929      6F6D6269 
+ 1929      6E656400 
+ 1930              	.LASF159:
+ 1931 06a8 50696E5F 		.ascii	"Pin_CombinedIntr_ClearInterrupt\000"
+ 1931      436F6D62 
+ 1931      696E6564 
+ 1931      496E7472 
+ 1931      5F436C65 
+ 1932              	.LASF99:
+ 1933 06c8 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_PSM_ALREADY_REGISTERED\000"
+ 1933      455F4552 
+ 1933      524F525F 
+ 1933      4C324341 
+ 1933      505F5053 
+ 1934              	.LASF5:
+ 1935 06f1 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1935      20756E73 
+ 1935      69676E65 
+ 1935      6420696E 
+ 1935      7400
+ 1936              	.LASF167:
+ 1937 0703 696E6974 		.ascii	"initAcc\000"
+ 1937      41636300 
+ 1938              	.LASF122:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 43
+
+
+ 1939 070b 4359424C 		.ascii	"CYBLE_BLESS_INVALID\000"
+ 1939      455F424C 
+ 1939      4553535F 
+ 1939      494E5641 
+ 1939      4C494400 
+ 1940              	.LASF50:
+ 1941 071f 4359424C 		.ascii	"CYBLE_EVT_GATTC_XCHNG_MTU_RSP\000"
+ 1941      455F4556 
+ 1941      545F4741 
+ 1941      5454435F 
+ 1941      5843484E 
+ 1942              	.LASF67:
+ 1943 073d 4359424C 		.ascii	"CYBLE_EVT_GATTS_DATA_SIGNED_CMD_REQ\000"
+ 1943      455F4556 
+ 1943      545F4741 
+ 1943      5454535F 
+ 1943      44415441 
+ 1944              	.LASF70:
+ 1945 0761 4359424C 		.ascii	"CYBLE_EVT_GATTC_LONG_PROCEDURE_END\000"
+ 1945      455F4556 
+ 1945      545F4741 
+ 1945      5454435F 
+ 1945      4C4F4E47 
+ 1946              	.LASF102:
+ 1947 0784 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_CHANNEL_NOT_FOUND\000"
+ 1947      455F4552 
+ 1947      524F525F 
+ 1947      4C324341 
+ 1947      505F4348 
+ 1948              	.LASF113:
+ 1949 07a8 4359424C 		.ascii	"CYBLE_ERROR_NTF_DISABLED\000"
+ 1949      455F4552 
+ 1949      524F525F 
+ 1949      4E54465F 
+ 1949      44495341 
+ 1950              	.LASF19:
+ 1951 07c1 4359424C 		.ascii	"CYBLE_EVT_HOST_INVALID\000"
+ 1951      455F4556 
+ 1951      545F484F 
+ 1951      53545F49 
+ 1951      4E56414C 
+ 1952              	.LASF53:
+ 1953 07d8 4359424C 		.ascii	"CYBLE_EVT_GATTC_FIND_INFO_RSP\000"
+ 1953      455F4556 
+ 1953      545F4741 
+ 1953      5454435F 
+ 1953      46494E44 
+ 1954              	.LASF25:
+ 1955 07f6 4359424C 		.ascii	"CYBLE_EVT_MEMORY_REQUEST\000"
+ 1955      455F4556 
+ 1955      545F4D45 
+ 1955      4D4F5259 
+ 1955      5F524551 
+ 1956              	.LASF150:
+ 1957 080f 53575F54 		.ascii	"SW_TX_PutString\000"
+ 1957      585F5075 
+ 1957      74537472 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 44
+
+
+ 1957      696E6700 
+ 1958              	.LASF156:
+ 1959 081f 4953525F 		.ascii	"ISR_acc_StartEx\000"
+ 1959      6163635F 
+ 1959      53746172 
+ 1959      74457800 
+ 1960              	.LASF28:
+ 1961 082f 4359424C 		.ascii	"CYBLE_EVT_GAP_PASSKEY_ENTRY_REQUEST\000"
+ 1961      455F4556 
+ 1961      545F4741 
+ 1961      505F5041 
+ 1961      53534B45 
+ 1962              	.LASF33:
+ 1963 0853 4359424C 		.ascii	"CYBLE_EVT_GAP_DEVICE_CONNECTED\000"
+ 1963      455F4556 
+ 1963      545F4741 
+ 1963      505F4445 
+ 1963      56494345 
+ 1964              	.LASF155:
+ 1965 0872 4953525F 		.ascii	"ISR_hall_StartEx\000"
+ 1965      68616C6C 
+ 1965      5F537461 
+ 1965      72744578 
+ 1965      00
+ 1966              	.LASF170:
+ 1967 0883 6D61696E 		.ascii	"main.c\000"
+ 1967      2E6300
+ 1968              	.LASF58:
+ 1969 088a 4359424C 		.ascii	"CYBLE_EVT_GATTS_WRITE_REQ\000"
+ 1969      455F4556 
+ 1969      545F4741 
+ 1969      5454535F 
+ 1969      57524954 
+ 1970              	.LASF172:
+ 1971 08a4 4379426C 		.ascii	"CyBle_Start\000"
+ 1971      655F5374 
+ 1971      61727400 
+ 1972              	.LASF139:
+ 1973 08b0 6379426C 		.ascii	"cyBle_state\000"
+ 1973      655F7374 
+ 1973      61746500 
+ 1974              	.LASF29:
+ 1975 08bc 4359424C 		.ascii	"CYBLE_EVT_GAP_PASSKEY_DISPLAY_REQUEST\000"
+ 1975      455F4556 
+ 1975      545F4741 
+ 1975      505F5041 
+ 1975      53534B45 
+ 1976              	.LASF47:
+ 1977 08e2 4359424C 		.ascii	"CYBLE_EVT_GATT_CONNECT_IND\000"
+ 1977      455F4556 
+ 1977      545F4741 
+ 1977      54545F43 
+ 1977      4F4E4E45 
+ 1978              	.LASF73:
+ 1979 08fd 4359424C 		.ascii	"CYBLE_EVT_L2CAP_COMMAND_REJ\000"
+ 1979      455F4556 
+ 1979      545F4C32 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 45
+
+
+ 1979      4341505F 
+ 1979      434F4D4D 
+ 1980              	.LASF16:
+ 1981 0919 72656733 		.ascii	"reg32\000"
+ 1981      3200
+ 1982              	.LASF26:
+ 1983 091f 4359424C 		.ascii	"CYBLE_EVT_GAPC_SCAN_PROGRESS_RESULT\000"
+ 1983      455F4556 
+ 1983      545F4741 
+ 1983      50435F53 
+ 1983      43414E5F 
+ 1984              	.LASF126:
+ 1985 0943 61747449 		.ascii	"attId\000"
+ 1985      6400
+ 1986              	.LASF165:
+ 1987 0949 77726974 		.ascii	"writeUint8ToBLEdb\000"
+ 1987      6555696E 
+ 1987      7438546F 
+ 1987      424C4564 
+ 1987      6200
+ 1988              	.LASF112:
+ 1989 095b 4359424C 		.ascii	"CYBLE_ERROR_MAX\000"
+ 1989      455F4552 
+ 1989      524F525F 
+ 1989      4D415800 
+ 1990              	.LASF141:
+ 1991 096b 6F766572 		.ascii	"overall_volume\000"
+ 1991      616C6C5F 
+ 1991      766F6C75 
+ 1991      6D6500
+ 1992              	.LASF52:
+ 1993 097a 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BY_TYPE_RSP\000"
+ 1993      455F4556 
+ 1993      545F4741 
+ 1993      5454435F 
+ 1993      52454144 
+ 1994              	.LASF173:
+ 1995 099b 696E6974 		.ascii	"initBLEcharacteristics\000"
+ 1995      424C4563 
+ 1995      68617261 
+ 1995      63746572 
+ 1995      69737469 
+ 1996              	.LASF18:
+ 1997 09b2 73697A65 		.ascii	"sizetype\000"
+ 1997      74797065 
+ 1997      00
+ 1998              	.LASF130:
+ 1999 09bb 4359424C 		.ascii	"CYBLE_STATE_INITIALIZING\000"
+ 1999      455F5354 
+ 1999      4154455F 
+ 1999      494E4954 
+ 1999      49414C49 
+ 2000              	.LASF31:
+ 2001 09d4 4359424C 		.ascii	"CYBLE_EVT_GAP_AUTH_FAILED\000"
+ 2001      455F4556 
+ 2001      545F4741 
+ 2001      505F4155 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 46
+
+
+ 2001      54485F46 
+ 2002              	.LASF59:
+ 2003 09ee 4359424C 		.ascii	"CYBLE_EVT_GATTC_WRITE_RSP\000"
+ 2003      455F4556 
+ 2003      545F4741 
+ 2003      5454435F 
+ 2003      57524954 
+ 2004              	.LASF44:
+ 2005 0a08 4359424C 		.ascii	"CYBLE_EVT_GAPC_DIRECT_ADV_REPORT\000"
+ 2005      455F4556 
+ 2005      545F4741 
+ 2005      50435F44 
+ 2005      49524543 
+ 2006              	.LASF121:
+ 2007 0a29 4359424C 		.ascii	"CYBLE_BLESS_HIBERNATE\000"
+ 2007      455F424C 
+ 2007      4553535F 
+ 2007      48494245 
+ 2007      524E4154 
+ 2008              	.LASF42:
+ 2009 0a3f 4359424C 		.ascii	"CYBLE_EVT_GAP_DATA_LENGTH_CHANGE\000"
+ 2009      455F4556 
+ 2009      545F4741 
+ 2009      505F4441 
+ 2009      54415F4C 
+ 2010              	.LASF161:
+ 2011 0a60 4379426C 		.ascii	"CyBle_ProcessEvents\000"
+ 2011      655F5072 
+ 2011      6F636573 
+ 2011      73457665 
+ 2011      6E747300 
+ 2012              	.LASF30:
+ 2013 0a74 4359424C 		.ascii	"CYBLE_EVT_GAP_AUTH_COMPLETE\000"
+ 2013      455F4556 
+ 2013      545F4741 
+ 2013      505F4155 
+ 2013      54485F43 
+ 2014              	.LASF145:
+ 2015 0a90 61706952 		.ascii	"apiResult\000"
+ 2015      6573756C 
+ 2015      7400
+ 2016              	.LASF117:
+ 2017 0a9a 4359424C 		.ascii	"CYBLE_API_RESULT_T\000"
+ 2017      455F4150 
+ 2017      495F5245 
+ 2017      53554C54 
+ 2017      5F5400
+ 2018              	.LASF64:
+ 2019 0aad 4359424C 		.ascii	"CYBLE_EVT_GATTC_HANDLE_VALUE_NTF\000"
+ 2019      455F4556 
+ 2019      545F4741 
+ 2019      5454435F 
+ 2019      48414E44 
+ 2020              	.LASF114:
+ 2021 0ace 4359424C 		.ascii	"CYBLE_ERROR_IND_DISABLED\000"
+ 2021      455F4552 
+ 2021      524F525F 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 47
+
+
+ 2021      494E445F 
+ 2021      44495341 
+ 2022              	.LASF75:
+ 2023 0ae7 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_CONN_CNF\000"
+ 2023      455F4556 
+ 2023      545F4C32 
+ 2023      4341505F 
+ 2023      43424643 
+ 2024              	.LASF51:
+ 2025 0b05 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BY_GROUP_TYPE_RSP\000"
+ 2025      455F4556 
+ 2025      545F4741 
+ 2025      5454435F 
+ 2025      52454144 
+ 2026              	.LASF12:
+ 2027 0b2c 666C6F61 		.ascii	"float\000"
+ 2027      7400
+ 2028              	.LASF138:
+ 2029 0b32 6E657742 		.ascii	"newBatLevel\000"
+ 2029      61744C65 
+ 2029      76656C00 
+ 2030              	.LASF163:
+ 2031 0b3e 5643435F 		.ascii	"VCC_hall_Write\000"
+ 2031      68616C6C 
+ 2031      5F577269 
+ 2031      746500
+ 2032              	.LASF95:
+ 2033 0b4d 4359424C 		.ascii	"CYBLE_ERROR_TX_POWER_READ\000"
+ 2033      455F4552 
+ 2033      524F525F 
+ 2033      54585F50 
+ 2033      4F574552 
+ 2034              	.LASF115:
+ 2035 0b67 4359424C 		.ascii	"CYBLE_ERROR_CHAR_IS_NOT_DISCOVERED\000"
+ 2035      455F4552 
+ 2035      524F525F 
+ 2035      43484152 
+ 2035      5F49535F 
+ 2036              	.LASF168:
+ 2037 0b8a 5F426F6F 		.ascii	"_Bool\000"
+ 2037      6C00
+ 2038              	.LASF1:
+ 2039 0b90 756E7369 		.ascii	"unsigned char\000"
+ 2039      676E6564 
+ 2039      20636861 
+ 2039      7200
+ 2040              	.LASF10:
+ 2041 0b9e 75696E74 		.ascii	"uint16\000"
+ 2041      313600
+ 2042              	.LASF40:
+ 2043 0ba5 4359424C 		.ascii	"CYBLE_EVT_GAP_KEYPRESS_NOTIFICATION\000"
+ 2043      455F4556 
+ 2043      545F4741 
+ 2043      505F4B45 
+ 2043      59505245 
+ 2044              	.LASF169:
+ 2045 0bc9 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 48
+
+
+ 2045      4320342E 
+ 2045      392E3320 
+ 2045      32303135 
+ 2045      30333033 
+ 2046 0bfc 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 2046      20726576 
+ 2046      6973696F 
+ 2046      6E203232 
+ 2046      31323230 
+ 2047 0c2f 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2047      66756E63 
+ 2047      74696F6E 
+ 2047      2D736563 
+ 2047      74696F6E 
+ 2048              	.LASF2:
+ 2049 0c57 73686F72 		.ascii	"short int\000"
+ 2049      7420696E 
+ 2049      7400
+ 2050              	.LASF65:
+ 2051 0c61 4359424C 		.ascii	"CYBLE_EVT_GATTC_HANDLE_VALUE_IND\000"
+ 2051      455F4556 
+ 2051      545F4741 
+ 2051      5454435F 
+ 2051      48414E44 
+ 2052              	.LASF91:
+ 2053 0c82 4359424C 		.ascii	"CYBLE_ERROR_NO_CONNECTION\000"
+ 2053      455F4552 
+ 2053      524F525F 
+ 2053      4E4F5F43 
+ 2053      4F4E4E45 
+ 2054              	.LASF154:
+ 2055 0c9c 4953525F 		.ascii	"ISR_everySecond_StartEx\000"
+ 2055      65766572 
+ 2055      79536563 
+ 2055      6F6E645F 
+ 2055      53746172 
+ 2056              	.LASF110:
+ 2057 0cb4 4359424C 		.ascii	"CYBLE_ERROR_FLASH_WRITE\000"
+ 2057      455F4552 
+ 2057      524F525F 
+ 2057      464C4153 
+ 2057      485F5752 
+ 2058              	.LASF61:
+ 2059 0ccc 4359424C 		.ascii	"CYBLE_EVT_GATTS_PREP_WRITE_REQ\000"
+ 2059      455F4556 
+ 2059      545F4741 
+ 2059      5454535F 
+ 2059      50524550 
+ 2060              	.LASF137:
+ 2061 0ceb 72656173 		.ascii	"reason\000"
+ 2061      6F6E00
+ 2062              	.LASF66:
+ 2063 0cf2 4359424C 		.ascii	"CYBLE_EVT_GATTS_HANDLE_VALUE_CNF\000"
+ 2063      455F4556 
+ 2063      545F4741 
+ 2063      5454535F 
+ 2063      48414E44 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 49
+
+
+ 2064              	.LASF93:
+ 2065 0d13 4359424C 		.ascii	"CYBLE_ERROR_REPEATED_ATTEMPTS\000"
+ 2065      455F4552 
+ 2065      524F525F 
+ 2065      52455045 
+ 2065      41544544 
+ 2066              	.LASF45:
+ 2067 0d31 4359424C 		.ascii	"CYBLE_EVT_GAP_SMP_NEGOTIATED_AUTH_INFO\000"
+ 2067      455F4556 
+ 2067      545F4741 
+ 2067      505F534D 
+ 2067      505F4E45 
+ 2068              	.LASF146:
+ 2069 0d58 6C704D6F 		.ascii	"lpMode\000"
+ 2069      646500
+ 2070              	.LASF15:
+ 2071 0d5f 63686172 		.ascii	"char\000"
+ 2071      00
+ 2072              	.LASF119:
+ 2073 0d64 4359424C 		.ascii	"CYBLE_BLESS_SLEEP\000"
+ 2073      455F424C 
+ 2073      4553535F 
+ 2073      534C4545 
+ 2073      5000
+ 2074              	.LASF96:
+ 2075 0d76 4359424C 		.ascii	"CYBLE_ERROR_BT_ON_NOT_COMPLETED\000"
+ 2075      455F4552 
+ 2075      524F525F 
+ 2075      42545F4F 
+ 2075      4E5F4E4F 
+ 2076              	.LASF34:
+ 2077 0d96 4359424C 		.ascii	"CYBLE_EVT_GAP_DEVICE_DISCONNECTED\000"
+ 2077      455F4556 
+ 2077      545F4741 
+ 2077      505F4445 
+ 2077      56494345 
+ 2078              	.LASF17:
+ 2079 0db8 63796973 		.ascii	"cyisraddress\000"
+ 2079      72616464 
+ 2079      72657373 
+ 2079      00
+ 2080              	.LASF8:
+ 2081 0dc5 756E7369 		.ascii	"unsigned int\000"
+ 2081      676E6564 
+ 2081      20696E74 
+ 2081      00
+ 2082              	.LASF69:
+ 2083 0dd2 4359424C 		.ascii	"CYBLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ\000"
+ 2083      455F4556 
+ 2083      545F4741 
+ 2083      5454535F 
+ 2083      52454144 
+ 2084              	.LASF14:
+ 2085 0dfb 63686172 		.ascii	"char8\000"
+ 2085      3800
+ 2086              	.LASF106:
+ 2087 0e01 4359424C 		.ascii	"CYBLE_ERROR_FLASH_WRITE_NOT_PERMITED\000"
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 50
+
+
+ 2087      455F4552 
+ 2087      524F525F 
+ 2087      464C4153 
+ 2087      485F5752 
+ 2088              	.LASF101:
+ 2089 0e26 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_CONNECTION_ENTITY_NOT_FOUND\000"
+ 2089      455F4552 
+ 2089      524F525F 
+ 2089      4C324341 
+ 2089      505F434F 
+ 2090              	.LASF22:
+ 2091 0e54 4359424C 		.ascii	"CYBLE_EVT_HARDWARE_ERROR\000"
+ 2091      455F4556 
+ 2091      545F4841 
+ 2091      52445741 
+ 2091      52455F45 
+ 2092              	.LASF3:
+ 2093 0e6d 73686F72 		.ascii	"short unsigned int\000"
+ 2093      7420756E 
+ 2093      7369676E 
+ 2093      65642069 
+ 2093      6E7400
+ 2094              	.LASF162:
+ 2095 0e80 43794465 		.ascii	"CyDelay\000"
+ 2095      6C617900 
+ 2096              	.LASF87:
+ 2097 0e88 4359424C 		.ascii	"CYBLE_ERROR_INVALID_OPERATION\000"
+ 2097      455F4552 
+ 2097      524F525F 
+ 2097      494E5641 
+ 2097      4C49445F 
+ 2098              	.LASF148:
+ 2099 0ea6 53575F54 		.ascii	"SW_TX_PutCRLF\000"
+ 2099      585F5075 
+ 2099      7443524C 
+ 2099      4600
+ 2100              	.LASF128:
+ 2101 0eb4 4359424C 		.ascii	"CYBLE_CALLBACK_T\000"
+ 2101      455F4341 
+ 2101      4C4C4241 
+ 2101      434B5F54 
+ 2101      00
+ 2102              	.LASF49:
+ 2103 0ec5 4359424C 		.ascii	"CYBLE_EVT_GATTS_XCNHG_MTU_REQ\000"
+ 2103      455F4556 
+ 2103      545F4741 
+ 2103      5454535F 
+ 2103      58434E48 
+ 2104              	.LASF147:
+ 2105 0ee3 53575F54 		.ascii	"SW_TX_Start\000"
+ 2105      585F5374 
+ 2105      61727400 
+ 2106              	.LASF134:
+ 2107 0eef 4359424C 		.ascii	"CYBLE_STATE_T\000"
+ 2107      455F5354 
+ 2107      4154455F 
+ 2107      5400
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 51
+
+
+ 2108              	.LASF171:
+ 2109 0efd 433A5C55 		.ascii	"C:\\Users\\Jannai\\Documents\\GitHub\\hydrobserve_f"
+ 2109      73657273 
+ 2109      5C4A616E 
+ 2109      6E61695C 
+ 2109      446F6375 
+ 2110 0f2b 69726D77 		.ascii	"irmware\\HydrobServe\\HydobServe.cydsn\000"
+ 2110      6172655C 
+ 2110      48796472 
+ 2110      6F625365 
+ 2110      7276655C 
+ 2111              	.LASF56:
+ 2112 0f50 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BLOB_RSP\000"
+ 2112      455F4556 
+ 2112      545F4741 
+ 2112      5454435F 
+ 2112      52454144 
+ 2113              	.LASF111:
+ 2114 0f6e 4359424C 		.ascii	"CYBLE_ERROR_CONTROLLER_BUSY\000"
+ 2114      455F4552 
+ 2114      524F525F 
+ 2114      434F4E54 
+ 2114      524F4C4C 
+ 2115              	.LASF107:
+ 2116 0f8a 4359424C 		.ascii	"CYBLE_ERROR_MIC_AUTH_FAILED\000"
+ 2116      455F4552 
+ 2116      524F525F 
+ 2116      4D49435F 
+ 2116      41555448 
+ 2117              	.LASF100:
+ 2118 0fa6 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_PSM_NOT_REGISTERED\000"
+ 2118      455F4552 
+ 2118      524F525F 
+ 2118      4C324341 
+ 2118      505F5053 
+ 2119              	.LASF131:
+ 2120 0fcb 4359424C 		.ascii	"CYBLE_STATE_CONNECTED\000"
+ 2120      455F5354 
+ 2120      4154455F 
+ 2120      434F4E4E 
+ 2120      45435445 
+ 2121              	.LASF120:
+ 2122 0fe1 4359424C 		.ascii	"CYBLE_BLESS_DEEPSLEEP\000"
+ 2122      455F424C 
+ 2122      4553535F 
+ 2122      44454550 
+ 2122      534C4545 
+ 2123              	.LASF54:
+ 2124 0ff7 4359424C 		.ascii	"CYBLE_EVT_GATTC_FIND_BY_TYPE_VALUE_RSP\000"
+ 2124      455F4556 
+ 2124      545F4741 
+ 2124      5454435F 
+ 2124      46494E44 
+ 2125              	.LASF94:
+ 2126 101e 4359424C 		.ascii	"CYBLE_ERROR_GAP_ROLE\000"
+ 2126      455F4552 
+ 2126      524F525F 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccyALZpC.s 			page 52
+
+
+ 2126      4741505F 
+ 2126      524F4C45 
+ 2127              	.LASF143:
+ 2128 1033 6F6C6442 		.ascii	"oldBatLevel\000"
+ 2128      61744C65 
+ 2128      76656C00 
+ 2129              	.LASF125:
+ 2130 103f 62644861 		.ascii	"bdHandle\000"
+ 2130      6E646C65 
+ 2130      00
+ 2131              	.LASF151:
+ 2132 1048 4932434D 		.ascii	"I2CM_scl_SetDriveMode\000"
+ 2132      5F73636C 
+ 2132      5F536574 
+ 2132      44726976 
+ 2132      654D6F64 
+ 2133              	.LASF72:
+ 2134 105e 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CONN_PARAM_UPDATE_RSP\000"
+ 2134      455F4556 
+ 2134      545F4C32 
+ 2134      4341505F 
+ 2134      434F4E4E 
+ 2135              	.LASF136:
+ 2136 1084 6D61696E 		.ascii	"main\000"
+ 2136      00
+ 2137              	.LASF118:
+ 2138 1089 4359424C 		.ascii	"CYBLE_BLESS_ACTIVE\000"
+ 2138      455F424C 
+ 2138      4553535F 
+ 2138      41435449 
+ 2138      564500
+ 2139              	.LASF43:
+ 2140 109c 4359424C 		.ascii	"CYBLE_EVT_GAP_ENHANCE_CONN_COMPLETE\000"
+ 2140      455F4556 
+ 2140      545F4741 
+ 2140      505F454E 
+ 2140      48414E43 
+ 2141              	.LASF124:
+ 2142 10c0 4359424C 		.ascii	"CYBLE_GATT_DB_ATTR_HANDLE_T\000"
+ 2142      455F4741 
+ 2142      54545F44 
+ 2142      425F4154 
+ 2142      54525F48 
+ 2143              	.LASF48:
+ 2144 10dc 4359424C 		.ascii	"CYBLE_EVT_GATT_DISCONNECT_IND\000"
+ 2144      455F4556 
+ 2144      545F4741 
+ 2144      54545F44 
+ 2144      4953434F 
+ 2145              	.LASF104:
+ 2146 10fa 4359424C 		.ascii	"CYBLE_ERROR_GATT_DB_INVALID_ATTR_HANDLE\000"
+ 2146      455F4552 
+ 2146      524F525F 
+ 2146      47415454 
+ 2146      5F44425F 
+ 2147              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

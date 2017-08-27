@@ -1,0 +1,5 @@
+C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\HydobServe.cyprj|363629db-fc67-43a7-ab28-db4e14e07b23
+C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|fe5a2f10-8e02-46de-92a1-8d56b64c1874
+C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|c24d848f-2fcf-4564-932a-9ee3787a6c06
+C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|bf2d6a40-0a5d-442c-b718-afbc0ca42ae2
+C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|8fcbe497-7d2e-45fe-8292-e1b6d8d1752f

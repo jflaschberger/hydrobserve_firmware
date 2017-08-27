@@ -1,0 +1,921 @@
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"Vref.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Vref_Write,"ax",%progbits
+  18              		.align	2
+  19              		.global	Vref_Write
+  20              		.code	16
+  21              		.thumb_func
+  22              		.type	Vref_Write, %function
+  23              	Vref_Write:
+  24              	.LFB0:
+  25              		.file 1 "Generated_Source\\PSoC4\\Vref.c"
+   1:Generated_Source\PSoC4/Vref.c **** /*******************************************************************************
+   2:Generated_Source\PSoC4/Vref.c **** * File Name: Vref.c  
+   3:Generated_Source\PSoC4/Vref.c **** * Version 2.10
+   4:Generated_Source\PSoC4/Vref.c **** *
+   5:Generated_Source\PSoC4/Vref.c **** * Description:
+   6:Generated_Source\PSoC4/Vref.c **** *  This file contains API to enable firmware control of a Pins component.
+   7:Generated_Source\PSoC4/Vref.c **** *
+   8:Generated_Source\PSoC4/Vref.c **** * Note:
+   9:Generated_Source\PSoC4/Vref.c **** *
+  10:Generated_Source\PSoC4/Vref.c **** ********************************************************************************
+  11:Generated_Source\PSoC4/Vref.c **** * Copyright 2008-2014, Cypress Semiconductor Corporation.  All rights reserved.
+  12:Generated_Source\PSoC4/Vref.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  13:Generated_Source\PSoC4/Vref.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  14:Generated_Source\PSoC4/Vref.c **** * the software package with which this file was provided.
+  15:Generated_Source\PSoC4/Vref.c **** *******************************************************************************/
+  16:Generated_Source\PSoC4/Vref.c **** 
+  17:Generated_Source\PSoC4/Vref.c **** #include "cytypes.h"
+  18:Generated_Source\PSoC4/Vref.c **** #include "Vref.h"
+  19:Generated_Source\PSoC4/Vref.c **** 
+  20:Generated_Source\PSoC4/Vref.c **** #define SetP4PinDriveMode(shift, mode)  \
+  21:Generated_Source\PSoC4/Vref.c ****     do { \
+  22:Generated_Source\PSoC4/Vref.c ****         Vref_PC =   (Vref_PC & \
+  23:Generated_Source\PSoC4/Vref.c ****                                 (uint32)(~(uint32)(Vref_DRIVE_MODE_IND_MASK << (Vref_DRIVE_MODE_BIT
+  24:Generated_Source\PSoC4/Vref.c ****                                 (uint32)((uint32)(mode) << (Vref_DRIVE_MODE_BITS * (shift))); \
+  25:Generated_Source\PSoC4/Vref.c ****     } while (0)
+  26:Generated_Source\PSoC4/Vref.c **** 
+  27:Generated_Source\PSoC4/Vref.c **** 
+  28:Generated_Source\PSoC4/Vref.c **** /*******************************************************************************
+  29:Generated_Source\PSoC4/Vref.c **** * Function Name: Vref_Write
+  30:Generated_Source\PSoC4/Vref.c **** ********************************************************************************
+  31:Generated_Source\PSoC4/Vref.c **** *
+  32:Generated_Source\PSoC4/Vref.c **** * Summary:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 2
+
+
+  33:Generated_Source\PSoC4/Vref.c **** *  Assign a new value to the digital port's data output register.  
+  34:Generated_Source\PSoC4/Vref.c **** *
+  35:Generated_Source\PSoC4/Vref.c **** * Parameters:  
+  36:Generated_Source\PSoC4/Vref.c **** *  prtValue:  The value to be assigned to the Digital Port. 
+  37:Generated_Source\PSoC4/Vref.c **** *
+  38:Generated_Source\PSoC4/Vref.c **** * Return: 
+  39:Generated_Source\PSoC4/Vref.c **** *  None 
+  40:Generated_Source\PSoC4/Vref.c **** *  
+  41:Generated_Source\PSoC4/Vref.c **** *******************************************************************************/
+  42:Generated_Source\PSoC4/Vref.c **** void Vref_Write(uint8 value) 
+  43:Generated_Source\PSoC4/Vref.c **** {
+  26              		.loc 1 43 0
+  27              		.cfi_startproc
+  28              	.LVL0:
+  44:Generated_Source\PSoC4/Vref.c ****     uint8 drVal = (uint8)(Vref_DR & (uint8)(~Vref_MASK));
+  29              		.loc 1 44 0
+  30 0000 0449     		ldr	r1, .L2
+  31 0002 0A68     		ldr	r2, [r1]
+  32 0004 FB23     		mov	r3, #251
+  33 0006 1A40     		and	r2, r3
+  34              	.LVL1:
+  45:Generated_Source\PSoC4/Vref.c ****     drVal = (drVal | ((uint8)(value << Vref_SHIFT) & Vref_MASK));
+  35              		.loc 1 45 0
+  36 0008 8000     		lsl	r0, r0, #2
+  37              	.LVL2:
+  38 000a F73B     		sub	r3, r3, #247
+  39 000c 1840     		and	r0, r3
+  40 000e 1043     		orr	r0, r2
+  41              	.LVL3:
+  46:Generated_Source\PSoC4/Vref.c ****     Vref_DR = (uint32)drVal;
+  42              		.loc 1 46 0
+  43 0010 0860     		str	r0, [r1]
+  47:Generated_Source\PSoC4/Vref.c **** }
+  44              		.loc 1 47 0
+  45              		@ sp needed
+  46 0012 7047     		bx	lr
+  47              	.L3:
+  48              		.align	2
+  49              	.L2:
+  50 0014 00030440 		.word	1074004736
+  51              		.cfi_endproc
+  52              	.LFE0:
+  53              		.size	Vref_Write, .-Vref_Write
+  54              		.section	.text.Vref_SetDriveMode,"ax",%progbits
+  55              		.align	2
+  56              		.global	Vref_SetDriveMode
+  57              		.code	16
+  58              		.thumb_func
+  59              		.type	Vref_SetDriveMode, %function
+  60              	Vref_SetDriveMode:
+  61              	.LFB1:
+  48:Generated_Source\PSoC4/Vref.c **** 
+  49:Generated_Source\PSoC4/Vref.c **** 
+  50:Generated_Source\PSoC4/Vref.c **** /*******************************************************************************
+  51:Generated_Source\PSoC4/Vref.c **** * Function Name: Vref_SetDriveMode
+  52:Generated_Source\PSoC4/Vref.c **** ********************************************************************************
+  53:Generated_Source\PSoC4/Vref.c **** *
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 3
+
+
+  54:Generated_Source\PSoC4/Vref.c **** * Summary:
+  55:Generated_Source\PSoC4/Vref.c **** *  Change the drive mode on the pins of the port.
+  56:Generated_Source\PSoC4/Vref.c **** * 
+  57:Generated_Source\PSoC4/Vref.c **** * Parameters:  
+  58:Generated_Source\PSoC4/Vref.c **** *  mode:  Change the pins to one of the following drive modes.
+  59:Generated_Source\PSoC4/Vref.c **** *
+  60:Generated_Source\PSoC4/Vref.c **** *  Vref_DM_STRONG     Strong Drive 
+  61:Generated_Source\PSoC4/Vref.c **** *  Vref_DM_OD_HI      Open Drain, Drives High 
+  62:Generated_Source\PSoC4/Vref.c **** *  Vref_DM_OD_LO      Open Drain, Drives Low 
+  63:Generated_Source\PSoC4/Vref.c **** *  Vref_DM_RES_UP     Resistive Pull Up 
+  64:Generated_Source\PSoC4/Vref.c **** *  Vref_DM_RES_DWN    Resistive Pull Down 
+  65:Generated_Source\PSoC4/Vref.c **** *  Vref_DM_RES_UPDWN  Resistive Pull Up/Down 
+  66:Generated_Source\PSoC4/Vref.c **** *  Vref_DM_DIG_HIZ    High Impedance Digital 
+  67:Generated_Source\PSoC4/Vref.c **** *  Vref_DM_ALG_HIZ    High Impedance Analog 
+  68:Generated_Source\PSoC4/Vref.c **** *
+  69:Generated_Source\PSoC4/Vref.c **** * Return: 
+  70:Generated_Source\PSoC4/Vref.c **** *  None
+  71:Generated_Source\PSoC4/Vref.c **** *
+  72:Generated_Source\PSoC4/Vref.c **** *******************************************************************************/
+  73:Generated_Source\PSoC4/Vref.c **** void Vref_SetDriveMode(uint8 mode) 
+  74:Generated_Source\PSoC4/Vref.c **** {
+  62              		.loc 1 74 0
+  63              		.cfi_startproc
+  64              	.LVL4:
+  75:Generated_Source\PSoC4/Vref.c **** 	SetP4PinDriveMode(Vref__0__SHIFT, mode);
+  65              		.loc 1 75 0
+  66 0000 034A     		ldr	r2, .L5
+  67 0002 1168     		ldr	r1, [r2]
+  68 0004 034B     		ldr	r3, .L5+4
+  69 0006 0B40     		and	r3, r1
+  70 0008 8001     		lsl	r0, r0, #6
+  71              	.LVL5:
+  72 000a 1843     		orr	r0, r3
+  73 000c 1060     		str	r0, [r2]
+  76:Generated_Source\PSoC4/Vref.c **** }
+  74              		.loc 1 76 0
+  75              		@ sp needed
+  76 000e 7047     		bx	lr
+  77              	.L6:
+  78              		.align	2
+  79              	.L5:
+  80 0010 08030440 		.word	1074004744
+  81 0014 3FFEFFFF 		.word	-449
+  82              		.cfi_endproc
+  83              	.LFE1:
+  84              		.size	Vref_SetDriveMode, .-Vref_SetDriveMode
+  85              		.section	.text.Vref_Read,"ax",%progbits
+  86              		.align	2
+  87              		.global	Vref_Read
+  88              		.code	16
+  89              		.thumb_func
+  90              		.type	Vref_Read, %function
+  91              	Vref_Read:
+  92              	.LFB2:
+  77:Generated_Source\PSoC4/Vref.c **** 
+  78:Generated_Source\PSoC4/Vref.c **** 
+  79:Generated_Source\PSoC4/Vref.c **** /*******************************************************************************
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 4
+
+
+  80:Generated_Source\PSoC4/Vref.c **** * Function Name: Vref_Read
+  81:Generated_Source\PSoC4/Vref.c **** ********************************************************************************
+  82:Generated_Source\PSoC4/Vref.c **** *
+  83:Generated_Source\PSoC4/Vref.c **** * Summary:
+  84:Generated_Source\PSoC4/Vref.c **** *  Read the current value on the pins of the Digital Port in right justified 
+  85:Generated_Source\PSoC4/Vref.c **** *  form.
+  86:Generated_Source\PSoC4/Vref.c **** *
+  87:Generated_Source\PSoC4/Vref.c **** * Parameters:  
+  88:Generated_Source\PSoC4/Vref.c **** *  None 
+  89:Generated_Source\PSoC4/Vref.c **** *
+  90:Generated_Source\PSoC4/Vref.c **** * Return: 
+  91:Generated_Source\PSoC4/Vref.c **** *  Returns the current value of the Digital Port as a right justified number
+  92:Generated_Source\PSoC4/Vref.c **** *  
+  93:Generated_Source\PSoC4/Vref.c **** * Note:
+  94:Generated_Source\PSoC4/Vref.c **** *  Macro Vref_ReadPS calls this function. 
+  95:Generated_Source\PSoC4/Vref.c **** *  
+  96:Generated_Source\PSoC4/Vref.c **** *******************************************************************************/
+  97:Generated_Source\PSoC4/Vref.c **** uint8 Vref_Read(void) 
+  98:Generated_Source\PSoC4/Vref.c **** {
+  93              		.loc 1 98 0
+  94              		.cfi_startproc
+  99:Generated_Source\PSoC4/Vref.c ****     return (uint8)((Vref_PS & Vref_MASK) >> Vref_SHIFT);
+  95              		.loc 1 99 0
+  96 0000 024B     		ldr	r3, .L8
+  97 0002 1868     		ldr	r0, [r3]
+  98 0004 4007     		lsl	r0, r0, #29
+  99 0006 C00F     		lsr	r0, r0, #31
+ 100:Generated_Source\PSoC4/Vref.c **** }
+ 100              		.loc 1 100 0
+ 101              		@ sp needed
+ 102 0008 7047     		bx	lr
+ 103              	.L9:
+ 104 000a C046     		.align	2
+ 105              	.L8:
+ 106 000c 04030440 		.word	1074004740
+ 107              		.cfi_endproc
+ 108              	.LFE2:
+ 109              		.size	Vref_Read, .-Vref_Read
+ 110              		.section	.text.Vref_ReadDataReg,"ax",%progbits
+ 111              		.align	2
+ 112              		.global	Vref_ReadDataReg
+ 113              		.code	16
+ 114              		.thumb_func
+ 115              		.type	Vref_ReadDataReg, %function
+ 116              	Vref_ReadDataReg:
+ 117              	.LFB3:
+ 101:Generated_Source\PSoC4/Vref.c **** 
+ 102:Generated_Source\PSoC4/Vref.c **** 
+ 103:Generated_Source\PSoC4/Vref.c **** /*******************************************************************************
+ 104:Generated_Source\PSoC4/Vref.c **** * Function Name: Vref_ReadDataReg
+ 105:Generated_Source\PSoC4/Vref.c **** ********************************************************************************
+ 106:Generated_Source\PSoC4/Vref.c **** *
+ 107:Generated_Source\PSoC4/Vref.c **** * Summary:
+ 108:Generated_Source\PSoC4/Vref.c **** *  Read the current value assigned to a Digital Port's data output register
+ 109:Generated_Source\PSoC4/Vref.c **** *
+ 110:Generated_Source\PSoC4/Vref.c **** * Parameters:  
+ 111:Generated_Source\PSoC4/Vref.c **** *  None 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 5
+
+
+ 112:Generated_Source\PSoC4/Vref.c **** *
+ 113:Generated_Source\PSoC4/Vref.c **** * Return: 
+ 114:Generated_Source\PSoC4/Vref.c **** *  Returns the current value assigned to the Digital Port's data output register
+ 115:Generated_Source\PSoC4/Vref.c **** *  
+ 116:Generated_Source\PSoC4/Vref.c **** *******************************************************************************/
+ 117:Generated_Source\PSoC4/Vref.c **** uint8 Vref_ReadDataReg(void) 
+ 118:Generated_Source\PSoC4/Vref.c **** {
+ 118              		.loc 1 118 0
+ 119              		.cfi_startproc
+ 119:Generated_Source\PSoC4/Vref.c ****     return (uint8)((Vref_DR & Vref_MASK) >> Vref_SHIFT);
+ 120              		.loc 1 119 0
+ 121 0000 024B     		ldr	r3, .L11
+ 122 0002 1868     		ldr	r0, [r3]
+ 123 0004 4007     		lsl	r0, r0, #29
+ 124 0006 C00F     		lsr	r0, r0, #31
+ 120:Generated_Source\PSoC4/Vref.c **** }
+ 125              		.loc 1 120 0
+ 126              		@ sp needed
+ 127 0008 7047     		bx	lr
+ 128              	.L12:
+ 129 000a C046     		.align	2
+ 130              	.L11:
+ 131 000c 00030440 		.word	1074004736
+ 132              		.cfi_endproc
+ 133              	.LFE3:
+ 134              		.size	Vref_ReadDataReg, .-Vref_ReadDataReg
+ 135              		.section	.text.Vref_ClearInterrupt,"ax",%progbits
+ 136              		.align	2
+ 137              		.global	Vref_ClearInterrupt
+ 138              		.code	16
+ 139              		.thumb_func
+ 140              		.type	Vref_ClearInterrupt, %function
+ 141              	Vref_ClearInterrupt:
+ 142              	.LFB4:
+ 121:Generated_Source\PSoC4/Vref.c **** 
+ 122:Generated_Source\PSoC4/Vref.c **** 
+ 123:Generated_Source\PSoC4/Vref.c **** /* If Interrupts Are Enabled for this Pins component */ 
+ 124:Generated_Source\PSoC4/Vref.c **** #if defined(Vref_INTSTAT) 
+ 125:Generated_Source\PSoC4/Vref.c **** 
+ 126:Generated_Source\PSoC4/Vref.c ****     /*******************************************************************************
+ 127:Generated_Source\PSoC4/Vref.c ****     * Function Name: Vref_ClearInterrupt
+ 128:Generated_Source\PSoC4/Vref.c ****     ********************************************************************************
+ 129:Generated_Source\PSoC4/Vref.c ****     *
+ 130:Generated_Source\PSoC4/Vref.c ****     * Summary:
+ 131:Generated_Source\PSoC4/Vref.c ****     *  Clears any active interrupts attached to port and returns the value of the 
+ 132:Generated_Source\PSoC4/Vref.c ****     *  interrupt status register.
+ 133:Generated_Source\PSoC4/Vref.c ****     *
+ 134:Generated_Source\PSoC4/Vref.c ****     * Parameters:  
+ 135:Generated_Source\PSoC4/Vref.c ****     *  None 
+ 136:Generated_Source\PSoC4/Vref.c ****     *
+ 137:Generated_Source\PSoC4/Vref.c ****     * Return: 
+ 138:Generated_Source\PSoC4/Vref.c ****     *  Returns the value of the interrupt status register
+ 139:Generated_Source\PSoC4/Vref.c ****     *  
+ 140:Generated_Source\PSoC4/Vref.c ****     *******************************************************************************/
+ 141:Generated_Source\PSoC4/Vref.c ****     uint8 Vref_ClearInterrupt(void) 
+ 142:Generated_Source\PSoC4/Vref.c ****     {
+ 143              		.loc 1 142 0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 6
+
+
+ 144              		.cfi_startproc
+ 143:Generated_Source\PSoC4/Vref.c **** 		uint8 maskedStatus = (uint8)(Vref_INTSTAT & Vref_MASK);
+ 145              		.loc 1 143 0
+ 146 0000 034A     		ldr	r2, .L14
+ 147 0002 1068     		ldr	r0, [r2]
+ 148 0004 0423     		mov	r3, #4
+ 149 0006 1840     		and	r0, r3
+ 150              	.LVL6:
+ 144:Generated_Source\PSoC4/Vref.c **** 		Vref_INTSTAT = maskedStatus;
+ 151              		.loc 1 144 0
+ 152 0008 1060     		str	r0, [r2]
+ 145:Generated_Source\PSoC4/Vref.c ****         return maskedStatus >> Vref_SHIFT;
+ 153              		.loc 1 145 0
+ 154 000a 8008     		lsr	r0, r0, #2
+ 155              	.LVL7:
+ 156 000c C0B2     		uxtb	r0, r0
+ 146:Generated_Source\PSoC4/Vref.c ****     }
+ 157              		.loc 1 146 0
+ 158              		@ sp needed
+ 159 000e 7047     		bx	lr
+ 160              	.L15:
+ 161              		.align	2
+ 162              	.L14:
+ 163 0010 10030440 		.word	1074004752
+ 164              		.cfi_endproc
+ 165              	.LFE4:
+ 166              		.size	Vref_ClearInterrupt, .-Vref_ClearInterrupt
+ 167              		.text
+ 168              	.Letext0:
+ 169              		.file 2 "Generated_Source\\PSoC4\\cytypes.h"
+ 170              		.section	.debug_info,"",%progbits
+ 171              	.Ldebug_info0:
+ 172 0000 4E010000 		.4byte	0x14e
+ 173 0004 0400     		.2byte	0x4
+ 174 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 175 000a 04       		.byte	0x4
+ 176 000b 01       		.uleb128 0x1
+ 177 000c 4B010000 		.4byte	.LASF24
+ 178 0010 01       		.byte	0x1
+ 179 0011 1E000000 		.4byte	.LASF25
+ 180 0015 D8000000 		.4byte	.LASF26
+ 181 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 182 001d 00000000 		.4byte	0
+ 183 0021 00000000 		.4byte	.Ldebug_line0
+ 184 0025 02       		.uleb128 0x2
+ 185 0026 01       		.byte	0x1
+ 186 0027 06       		.byte	0x6
+ 187 0028 06020000 		.4byte	.LASF0
+ 188 002c 02       		.uleb128 0x2
+ 189 002d 01       		.byte	0x1
+ 190 002e 08       		.byte	0x8
+ 191 002f 42000000 		.4byte	.LASF1
+ 192 0033 02       		.uleb128 0x2
+ 193 0034 02       		.byte	0x2
+ 194 0035 05       		.byte	0x5
+ 195 0036 ED010000 		.4byte	.LASF2
+ 196 003a 02       		.uleb128 0x2
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 7
+
+
+ 197 003b 02       		.byte	0x2
+ 198 003c 07       		.byte	0x7
+ 199 003d 72000000 		.4byte	.LASF3
+ 200 0041 02       		.uleb128 0x2
+ 201 0042 04       		.byte	0x4
+ 202 0043 05       		.byte	0x5
+ 203 0044 FD010000 		.4byte	.LASF4
+ 204 0048 02       		.uleb128 0x2
+ 205 0049 04       		.byte	0x4
+ 206 004a 07       		.byte	0x7
+ 207 004b 60000000 		.4byte	.LASF5
+ 208 004f 02       		.uleb128 0x2
+ 209 0050 08       		.byte	0x8
+ 210 0051 05       		.byte	0x5
+ 211 0052 2B010000 		.4byte	.LASF6
+ 212 0056 02       		.uleb128 0x2
+ 213 0057 08       		.byte	0x8
+ 214 0058 07       		.byte	0x7
+ 215 0059 BC000000 		.4byte	.LASF7
+ 216 005d 03       		.uleb128 0x3
+ 217 005e 04       		.byte	0x4
+ 218 005f 05       		.byte	0x5
+ 219 0060 696E7400 		.ascii	"int\000"
+ 220 0064 02       		.uleb128 0x2
+ 221 0065 04       		.byte	0x4
+ 222 0066 07       		.byte	0x7
+ 223 0067 AF000000 		.4byte	.LASF8
+ 224 006b 04       		.uleb128 0x4
+ 225 006c F7010000 		.4byte	.LASF9
+ 226 0070 02       		.byte	0x2
+ 227 0071 9801     		.2byte	0x198
+ 228 0073 2C000000 		.4byte	0x2c
+ 229 0077 04       		.uleb128 0x4
+ 230 0078 A8000000 		.4byte	.LASF10
+ 231 007c 02       		.byte	0x2
+ 232 007d 9A01     		.2byte	0x19a
+ 233 007f 48000000 		.4byte	0x48
+ 234 0083 02       		.uleb128 0x2
+ 235 0084 04       		.byte	0x4
+ 236 0085 04       		.byte	0x4
+ 237 0086 3C000000 		.4byte	.LASF11
+ 238 008a 02       		.uleb128 0x2
+ 239 008b 08       		.byte	0x8
+ 240 008c 04       		.byte	0x4
+ 241 008d 90000000 		.4byte	.LASF12
+ 242 0091 02       		.uleb128 0x2
+ 243 0092 01       		.byte	0x1
+ 244 0093 08       		.byte	0x8
+ 245 0094 46010000 		.4byte	.LASF13
+ 246 0098 04       		.uleb128 0x4
+ 247 0099 00000000 		.4byte	.LASF14
+ 248 009d 02       		.byte	0x2
+ 249 009e 4402     		.2byte	0x244
+ 250 00a0 A4000000 		.4byte	0xa4
+ 251 00a4 05       		.uleb128 0x5
+ 252 00a5 77000000 		.4byte	0x77
+ 253 00a9 06       		.uleb128 0x6
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 8
+
+
+ 254 00aa 85000000 		.4byte	.LASF15
+ 255 00ae 01       		.byte	0x1
+ 256 00af 2A       		.byte	0x2a
+ 257 00b0 00000000 		.4byte	.LFB0
+ 258 00b4 18000000 		.4byte	.LFE0-.LFB0
+ 259 00b8 01       		.uleb128 0x1
+ 260 00b9 9C       		.byte	0x9c
+ 261 00ba DD000000 		.4byte	0xdd
+ 262 00be 07       		.uleb128 0x7
+ 263 00bf 18000000 		.4byte	.LASF17
+ 264 00c3 01       		.byte	0x1
+ 265 00c4 2A       		.byte	0x2a
+ 266 00c5 6B000000 		.4byte	0x6b
+ 267 00c9 00000000 		.4byte	.LLST0
+ 268 00cd 08       		.uleb128 0x8
+ 269 00ce 5A000000 		.4byte	.LASF22
+ 270 00d2 01       		.byte	0x1
+ 271 00d3 2C       		.byte	0x2c
+ 272 00d4 6B000000 		.4byte	0x6b
+ 273 00d8 21000000 		.4byte	.LLST1
+ 274 00dc 00       		.byte	0
+ 275 00dd 06       		.uleb128 0x6
+ 276 00de 06000000 		.4byte	.LASF16
+ 277 00e2 01       		.byte	0x1
+ 278 00e3 49       		.byte	0x49
+ 279 00e4 00000000 		.4byte	.LFB1
+ 280 00e8 18000000 		.4byte	.LFE1-.LFB1
+ 281 00ec 01       		.uleb128 0x1
+ 282 00ed 9C       		.byte	0x9c
+ 283 00ee 02010000 		.4byte	0x102
+ 284 00f2 07       		.uleb128 0x7
+ 285 00f3 D3000000 		.4byte	.LASF18
+ 286 00f7 01       		.byte	0x1
+ 287 00f8 49       		.byte	0x49
+ 288 00f9 6B000000 		.4byte	0x6b
+ 289 00fd 3F000000 		.4byte	.LLST2
+ 290 0101 00       		.byte	0
+ 291 0102 09       		.uleb128 0x9
+ 292 0103 50000000 		.4byte	.LASF19
+ 293 0107 01       		.byte	0x1
+ 294 0108 61       		.byte	0x61
+ 295 0109 6B000000 		.4byte	0x6b
+ 296 010d 00000000 		.4byte	.LFB2
+ 297 0111 10000000 		.4byte	.LFE2-.LFB2
+ 298 0115 01       		.uleb128 0x1
+ 299 0116 9C       		.byte	0x9c
+ 300 0117 09       		.uleb128 0x9
+ 301 0118 97000000 		.4byte	.LASF20
+ 302 011c 01       		.byte	0x1
+ 303 011d 75       		.byte	0x75
+ 304 011e 6B000000 		.4byte	0x6b
+ 305 0122 00000000 		.4byte	.LFB3
+ 306 0126 10000000 		.4byte	.LFE3-.LFB3
+ 307 012a 01       		.uleb128 0x1
+ 308 012b 9C       		.byte	0x9c
+ 309 012c 0A       		.uleb128 0xa
+ 310 012d D9010000 		.4byte	.LASF21
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 9
+
+
+ 311 0131 01       		.byte	0x1
+ 312 0132 8D       		.byte	0x8d
+ 313 0133 6B000000 		.4byte	0x6b
+ 314 0137 00000000 		.4byte	.LFB4
+ 315 013b 14000000 		.4byte	.LFE4-.LFB4
+ 316 013f 01       		.uleb128 0x1
+ 317 0140 9C       		.byte	0x9c
+ 318 0141 08       		.uleb128 0x8
+ 319 0142 39010000 		.4byte	.LASF23
+ 320 0146 01       		.byte	0x1
+ 321 0147 8F       		.byte	0x8f
+ 322 0148 6B000000 		.4byte	0x6b
+ 323 014c 60000000 		.4byte	.LLST3
+ 324 0150 00       		.byte	0
+ 325 0151 00       		.byte	0
+ 326              		.section	.debug_abbrev,"",%progbits
+ 327              	.Ldebug_abbrev0:
+ 328 0000 01       		.uleb128 0x1
+ 329 0001 11       		.uleb128 0x11
+ 330 0002 01       		.byte	0x1
+ 331 0003 25       		.uleb128 0x25
+ 332 0004 0E       		.uleb128 0xe
+ 333 0005 13       		.uleb128 0x13
+ 334 0006 0B       		.uleb128 0xb
+ 335 0007 03       		.uleb128 0x3
+ 336 0008 0E       		.uleb128 0xe
+ 337 0009 1B       		.uleb128 0x1b
+ 338 000a 0E       		.uleb128 0xe
+ 339 000b 55       		.uleb128 0x55
+ 340 000c 17       		.uleb128 0x17
+ 341 000d 11       		.uleb128 0x11
+ 342 000e 01       		.uleb128 0x1
+ 343 000f 10       		.uleb128 0x10
+ 344 0010 17       		.uleb128 0x17
+ 345 0011 00       		.byte	0
+ 346 0012 00       		.byte	0
+ 347 0013 02       		.uleb128 0x2
+ 348 0014 24       		.uleb128 0x24
+ 349 0015 00       		.byte	0
+ 350 0016 0B       		.uleb128 0xb
+ 351 0017 0B       		.uleb128 0xb
+ 352 0018 3E       		.uleb128 0x3e
+ 353 0019 0B       		.uleb128 0xb
+ 354 001a 03       		.uleb128 0x3
+ 355 001b 0E       		.uleb128 0xe
+ 356 001c 00       		.byte	0
+ 357 001d 00       		.byte	0
+ 358 001e 03       		.uleb128 0x3
+ 359 001f 24       		.uleb128 0x24
+ 360 0020 00       		.byte	0
+ 361 0021 0B       		.uleb128 0xb
+ 362 0022 0B       		.uleb128 0xb
+ 363 0023 3E       		.uleb128 0x3e
+ 364 0024 0B       		.uleb128 0xb
+ 365 0025 03       		.uleb128 0x3
+ 366 0026 08       		.uleb128 0x8
+ 367 0027 00       		.byte	0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 10
+
+
+ 368 0028 00       		.byte	0
+ 369 0029 04       		.uleb128 0x4
+ 370 002a 16       		.uleb128 0x16
+ 371 002b 00       		.byte	0
+ 372 002c 03       		.uleb128 0x3
+ 373 002d 0E       		.uleb128 0xe
+ 374 002e 3A       		.uleb128 0x3a
+ 375 002f 0B       		.uleb128 0xb
+ 376 0030 3B       		.uleb128 0x3b
+ 377 0031 05       		.uleb128 0x5
+ 378 0032 49       		.uleb128 0x49
+ 379 0033 13       		.uleb128 0x13
+ 380 0034 00       		.byte	0
+ 381 0035 00       		.byte	0
+ 382 0036 05       		.uleb128 0x5
+ 383 0037 35       		.uleb128 0x35
+ 384 0038 00       		.byte	0
+ 385 0039 49       		.uleb128 0x49
+ 386 003a 13       		.uleb128 0x13
+ 387 003b 00       		.byte	0
+ 388 003c 00       		.byte	0
+ 389 003d 06       		.uleb128 0x6
+ 390 003e 2E       		.uleb128 0x2e
+ 391 003f 01       		.byte	0x1
+ 392 0040 3F       		.uleb128 0x3f
+ 393 0041 19       		.uleb128 0x19
+ 394 0042 03       		.uleb128 0x3
+ 395 0043 0E       		.uleb128 0xe
+ 396 0044 3A       		.uleb128 0x3a
+ 397 0045 0B       		.uleb128 0xb
+ 398 0046 3B       		.uleb128 0x3b
+ 399 0047 0B       		.uleb128 0xb
+ 400 0048 27       		.uleb128 0x27
+ 401 0049 19       		.uleb128 0x19
+ 402 004a 11       		.uleb128 0x11
+ 403 004b 01       		.uleb128 0x1
+ 404 004c 12       		.uleb128 0x12
+ 405 004d 06       		.uleb128 0x6
+ 406 004e 40       		.uleb128 0x40
+ 407 004f 18       		.uleb128 0x18
+ 408 0050 9742     		.uleb128 0x2117
+ 409 0052 19       		.uleb128 0x19
+ 410 0053 01       		.uleb128 0x1
+ 411 0054 13       		.uleb128 0x13
+ 412 0055 00       		.byte	0
+ 413 0056 00       		.byte	0
+ 414 0057 07       		.uleb128 0x7
+ 415 0058 05       		.uleb128 0x5
+ 416 0059 00       		.byte	0
+ 417 005a 03       		.uleb128 0x3
+ 418 005b 0E       		.uleb128 0xe
+ 419 005c 3A       		.uleb128 0x3a
+ 420 005d 0B       		.uleb128 0xb
+ 421 005e 3B       		.uleb128 0x3b
+ 422 005f 0B       		.uleb128 0xb
+ 423 0060 49       		.uleb128 0x49
+ 424 0061 13       		.uleb128 0x13
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 11
+
+
+ 425 0062 02       		.uleb128 0x2
+ 426 0063 17       		.uleb128 0x17
+ 427 0064 00       		.byte	0
+ 428 0065 00       		.byte	0
+ 429 0066 08       		.uleb128 0x8
+ 430 0067 34       		.uleb128 0x34
+ 431 0068 00       		.byte	0
+ 432 0069 03       		.uleb128 0x3
+ 433 006a 0E       		.uleb128 0xe
+ 434 006b 3A       		.uleb128 0x3a
+ 435 006c 0B       		.uleb128 0xb
+ 436 006d 3B       		.uleb128 0x3b
+ 437 006e 0B       		.uleb128 0xb
+ 438 006f 49       		.uleb128 0x49
+ 439 0070 13       		.uleb128 0x13
+ 440 0071 02       		.uleb128 0x2
+ 441 0072 17       		.uleb128 0x17
+ 442 0073 00       		.byte	0
+ 443 0074 00       		.byte	0
+ 444 0075 09       		.uleb128 0x9
+ 445 0076 2E       		.uleb128 0x2e
+ 446 0077 00       		.byte	0
+ 447 0078 3F       		.uleb128 0x3f
+ 448 0079 19       		.uleb128 0x19
+ 449 007a 03       		.uleb128 0x3
+ 450 007b 0E       		.uleb128 0xe
+ 451 007c 3A       		.uleb128 0x3a
+ 452 007d 0B       		.uleb128 0xb
+ 453 007e 3B       		.uleb128 0x3b
+ 454 007f 0B       		.uleb128 0xb
+ 455 0080 27       		.uleb128 0x27
+ 456 0081 19       		.uleb128 0x19
+ 457 0082 49       		.uleb128 0x49
+ 458 0083 13       		.uleb128 0x13
+ 459 0084 11       		.uleb128 0x11
+ 460 0085 01       		.uleb128 0x1
+ 461 0086 12       		.uleb128 0x12
+ 462 0087 06       		.uleb128 0x6
+ 463 0088 40       		.uleb128 0x40
+ 464 0089 18       		.uleb128 0x18
+ 465 008a 9742     		.uleb128 0x2117
+ 466 008c 19       		.uleb128 0x19
+ 467 008d 00       		.byte	0
+ 468 008e 00       		.byte	0
+ 469 008f 0A       		.uleb128 0xa
+ 470 0090 2E       		.uleb128 0x2e
+ 471 0091 01       		.byte	0x1
+ 472 0092 3F       		.uleb128 0x3f
+ 473 0093 19       		.uleb128 0x19
+ 474 0094 03       		.uleb128 0x3
+ 475 0095 0E       		.uleb128 0xe
+ 476 0096 3A       		.uleb128 0x3a
+ 477 0097 0B       		.uleb128 0xb
+ 478 0098 3B       		.uleb128 0x3b
+ 479 0099 0B       		.uleb128 0xb
+ 480 009a 27       		.uleb128 0x27
+ 481 009b 19       		.uleb128 0x19
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 12
+
+
+ 482 009c 49       		.uleb128 0x49
+ 483 009d 13       		.uleb128 0x13
+ 484 009e 11       		.uleb128 0x11
+ 485 009f 01       		.uleb128 0x1
+ 486 00a0 12       		.uleb128 0x12
+ 487 00a1 06       		.uleb128 0x6
+ 488 00a2 40       		.uleb128 0x40
+ 489 00a3 18       		.uleb128 0x18
+ 490 00a4 9742     		.uleb128 0x2117
+ 491 00a6 19       		.uleb128 0x19
+ 492 00a7 00       		.byte	0
+ 493 00a8 00       		.byte	0
+ 494 00a9 00       		.byte	0
+ 495              		.section	.debug_loc,"",%progbits
+ 496              	.Ldebug_loc0:
+ 497              	.LLST0:
+ 498 0000 00000000 		.4byte	.LVL0
+ 499 0004 0A000000 		.4byte	.LVL2
+ 500 0008 0100     		.2byte	0x1
+ 501 000a 50       		.byte	0x50
+ 502 000b 0A000000 		.4byte	.LVL2
+ 503 000f 18000000 		.4byte	.LFE0
+ 504 0013 0400     		.2byte	0x4
+ 505 0015 F3       		.byte	0xf3
+ 506 0016 01       		.uleb128 0x1
+ 507 0017 50       		.byte	0x50
+ 508 0018 9F       		.byte	0x9f
+ 509 0019 00000000 		.4byte	0
+ 510 001d 00000000 		.4byte	0
+ 511              	.LLST1:
+ 512 0021 08000000 		.4byte	.LVL1
+ 513 0025 10000000 		.4byte	.LVL3
+ 514 0029 0100     		.2byte	0x1
+ 515 002b 52       		.byte	0x52
+ 516 002c 10000000 		.4byte	.LVL3
+ 517 0030 18000000 		.4byte	.LFE0
+ 518 0034 0100     		.2byte	0x1
+ 519 0036 50       		.byte	0x50
+ 520 0037 00000000 		.4byte	0
+ 521 003b 00000000 		.4byte	0
+ 522              	.LLST2:
+ 523 003f 00000000 		.4byte	.LVL4
+ 524 0043 0A000000 		.4byte	.LVL5
+ 525 0047 0100     		.2byte	0x1
+ 526 0049 50       		.byte	0x50
+ 527 004a 0A000000 		.4byte	.LVL5
+ 528 004e 18000000 		.4byte	.LFE1
+ 529 0052 0400     		.2byte	0x4
+ 530 0054 F3       		.byte	0xf3
+ 531 0055 01       		.uleb128 0x1
+ 532 0056 50       		.byte	0x50
+ 533 0057 9F       		.byte	0x9f
+ 534 0058 00000000 		.4byte	0
+ 535 005c 00000000 		.4byte	0
+ 536              	.LLST3:
+ 537 0060 08000000 		.4byte	.LVL6
+ 538 0064 0C000000 		.4byte	.LVL7
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 13
+
+
+ 539 0068 0100     		.2byte	0x1
+ 540 006a 50       		.byte	0x50
+ 541 006b 0C000000 		.4byte	.LVL7
+ 542 006f 14000000 		.4byte	.LFE4
+ 543 0073 0400     		.2byte	0x4
+ 544 0075 72       		.byte	0x72
+ 545 0076 00       		.sleb128 0
+ 546 0077 06       		.byte	0x6
+ 547 0078 9F       		.byte	0x9f
+ 548 0079 00000000 		.4byte	0
+ 549 007d 00000000 		.4byte	0
+ 550              		.section	.debug_aranges,"",%progbits
+ 551 0000 3C000000 		.4byte	0x3c
+ 552 0004 0200     		.2byte	0x2
+ 553 0006 00000000 		.4byte	.Ldebug_info0
+ 554 000a 04       		.byte	0x4
+ 555 000b 00       		.byte	0
+ 556 000c 0000     		.2byte	0
+ 557 000e 0000     		.2byte	0
+ 558 0010 00000000 		.4byte	.LFB0
+ 559 0014 18000000 		.4byte	.LFE0-.LFB0
+ 560 0018 00000000 		.4byte	.LFB1
+ 561 001c 18000000 		.4byte	.LFE1-.LFB1
+ 562 0020 00000000 		.4byte	.LFB2
+ 563 0024 10000000 		.4byte	.LFE2-.LFB2
+ 564 0028 00000000 		.4byte	.LFB3
+ 565 002c 10000000 		.4byte	.LFE3-.LFB3
+ 566 0030 00000000 		.4byte	.LFB4
+ 567 0034 14000000 		.4byte	.LFE4-.LFB4
+ 568 0038 00000000 		.4byte	0
+ 569 003c 00000000 		.4byte	0
+ 570              		.section	.debug_ranges,"",%progbits
+ 571              	.Ldebug_ranges0:
+ 572 0000 00000000 		.4byte	.LFB0
+ 573 0004 18000000 		.4byte	.LFE0
+ 574 0008 00000000 		.4byte	.LFB1
+ 575 000c 18000000 		.4byte	.LFE1
+ 576 0010 00000000 		.4byte	.LFB2
+ 577 0014 10000000 		.4byte	.LFE2
+ 578 0018 00000000 		.4byte	.LFB3
+ 579 001c 10000000 		.4byte	.LFE3
+ 580 0020 00000000 		.4byte	.LFB4
+ 581 0024 14000000 		.4byte	.LFE4
+ 582 0028 00000000 		.4byte	0
+ 583 002c 00000000 		.4byte	0
+ 584              		.section	.debug_line,"",%progbits
+ 585              	.Ldebug_line0:
+ 586 0000 A4000000 		.section	.debug_str,"MS",%progbits,1
+ 586      02004100 
+ 586      00000201 
+ 586      FB0E0D00 
+ 586      01010101 
+ 587              	.LASF14:
+ 588 0000 72656733 		.ascii	"reg32\000"
+ 588      3200
+ 589              	.LASF16:
+ 590 0006 56726566 		.ascii	"Vref_SetDriveMode\000"
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 14
+
+
+ 590      5F536574 
+ 590      44726976 
+ 590      654D6F64 
+ 590      6500
+ 591              	.LASF17:
+ 592 0018 76616C75 		.ascii	"value\000"
+ 592      6500
+ 593              	.LASF25:
+ 594 001e 47656E65 		.ascii	"Generated_Source\\PSoC4\\Vref.c\000"
+ 594      72617465 
+ 594      645F536F 
+ 594      75726365 
+ 594      5C50536F 
+ 595              	.LASF11:
+ 596 003c 666C6F61 		.ascii	"float\000"
+ 596      7400
+ 597              	.LASF1:
+ 598 0042 756E7369 		.ascii	"unsigned char\000"
+ 598      676E6564 
+ 598      20636861 
+ 598      7200
+ 599              	.LASF19:
+ 600 0050 56726566 		.ascii	"Vref_Read\000"
+ 600      5F526561 
+ 600      6400
+ 601              	.LASF22:
+ 602 005a 64725661 		.ascii	"drVal\000"
+ 602      6C00
+ 603              	.LASF5:
+ 604 0060 6C6F6E67 		.ascii	"long unsigned int\000"
+ 604      20756E73 
+ 604      69676E65 
+ 604      6420696E 
+ 604      7400
+ 605              	.LASF3:
+ 606 0072 73686F72 		.ascii	"short unsigned int\000"
+ 606      7420756E 
+ 606      7369676E 
+ 606      65642069 
+ 606      6E7400
+ 607              	.LASF15:
+ 608 0085 56726566 		.ascii	"Vref_Write\000"
+ 608      5F577269 
+ 608      746500
+ 609              	.LASF12:
+ 610 0090 646F7562 		.ascii	"double\000"
+ 610      6C6500
+ 611              	.LASF20:
+ 612 0097 56726566 		.ascii	"Vref_ReadDataReg\000"
+ 612      5F526561 
+ 612      64446174 
+ 612      61526567 
+ 612      00
+ 613              	.LASF10:
+ 614 00a8 75696E74 		.ascii	"uint32\000"
+ 614      333200
+ 615              	.LASF8:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 15
+
+
+ 616 00af 756E7369 		.ascii	"unsigned int\000"
+ 616      676E6564 
+ 616      20696E74 
+ 616      00
+ 617              	.LASF7:
+ 618 00bc 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 618      206C6F6E 
+ 618      6720756E 
+ 618      7369676E 
+ 618      65642069 
+ 619              	.LASF18:
+ 620 00d3 6D6F6465 		.ascii	"mode\000"
+ 620      00
+ 621              	.LASF26:
+ 622 00d8 433A5C55 		.ascii	"C:\\Users\\Jannai\\Documents\\GitHub\\hydrobserve_f"
+ 622      73657273 
+ 622      5C4A616E 
+ 622      6E61695C 
+ 622      446F6375 
+ 623 0106 69726D77 		.ascii	"irmware\\HydrobServe\\HydobServe.cydsn\000"
+ 623      6172655C 
+ 623      48796472 
+ 623      6F625365 
+ 623      7276655C 
+ 624              	.LASF6:
+ 625 012b 6C6F6E67 		.ascii	"long long int\000"
+ 625      206C6F6E 
+ 625      6720696E 
+ 625      7400
+ 626              	.LASF23:
+ 627 0139 6D61736B 		.ascii	"maskedStatus\000"
+ 627      65645374 
+ 627      61747573 
+ 627      00
+ 628              	.LASF13:
+ 629 0146 63686172 		.ascii	"char\000"
+ 629      00
+ 630              	.LASF24:
+ 631 014b 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 631      4320342E 
+ 631      392E3320 
+ 631      32303135 
+ 631      30333033 
+ 632 017e 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 632      20726576 
+ 632      6973696F 
+ 632      6E203232 
+ 632      31323230 
+ 633 01b1 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 633      66756E63 
+ 633      74696F6E 
+ 633      2D736563 
+ 633      74696F6E 
+ 634              	.LASF21:
+ 635 01d9 56726566 		.ascii	"Vref_ClearInterrupt\000"
+ 635      5F436C65 
+ 635      6172496E 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\ccM81tA3.s 			page 16
+
+
+ 635      74657272 
+ 635      75707400 
+ 636              	.LASF2:
+ 637 01ed 73686F72 		.ascii	"short int\000"
+ 637      7420696E 
+ 637      7400
+ 638              	.LASF9:
+ 639 01f7 75696E74 		.ascii	"uint8\000"
+ 639      3800
+ 640              	.LASF4:
+ 641 01fd 6C6F6E67 		.ascii	"long int\000"
+ 641      20696E74 
+ 641      00
+ 642              	.LASF0:
+ 643 0206 7369676E 		.ascii	"signed char\000"
+ 643      65642063 
+ 643      68617200 
+ 644              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

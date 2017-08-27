@@ -1,0 +1,4629 @@
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"I2C_EEPROM.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.readOneByteFromEEPROM,"ax",%progbits
+  18              		.align	2
+  19              		.global	readOneByteFromEEPROM
+  20              		.code	16
+  21              		.thumb_func
+  22              		.type	readOneByteFromEEPROM, %function
+  23              	readOneByteFromEEPROM:
+  24              	.LFB37:
+  25              		.file 1 "I2C_EEPROM.c"
+   1:I2C_EEPROM.c  **** /* ========================================
+   2:I2C_EEPROM.c  ****  *
+   3:I2C_EEPROM.c  ****  * Copyright YOUR COMPANY, THE YEAR
+   4:I2C_EEPROM.c  ****  * All Rights Reserved
+   5:I2C_EEPROM.c  ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:I2C_EEPROM.c  ****  *
+   7:I2C_EEPROM.c  ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:I2C_EEPROM.c  ****  * WHICH IS THE PROPERTY OF your company.
+   9:I2C_EEPROM.c  ****  *
+  10:I2C_EEPROM.c  ****  * ========================================
+  11:I2C_EEPROM.c  **** */
+  12:I2C_EEPROM.c  **** 
+  13:I2C_EEPROM.c  **** #include "I2C_EEPROM.h"
+  14:I2C_EEPROM.c  **** 
+  15:I2C_EEPROM.c  **** 
+  16:I2C_EEPROM.c  **** uint8 readOneByteFromEEPROM(uint8 regAdr)
+  17:I2C_EEPROM.c  **** {
+  26              		.loc 1 17 0
+  27              		.cfi_startproc
+  28              	.LVL0:
+  29 0000 10B5     		push	{r4, lr}
+  30              		.cfi_def_cfa_offset 8
+  31              		.cfi_offset 4, -8
+  32              		.cfi_offset 14, -4
+  33 0002 041C     		mov	r4, r0
+  18:I2C_EEPROM.c  ****    
+  19:I2C_EEPROM.c  ****     CyDelay(2);
+  34              		.loc 1 19 0
+  35 0004 0220     		mov	r0, #2
+  36              	.LVL1:
+  37 0006 FFF7FEFF 		bl	CyDelay
+  38              	.LVL2:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 2
+
+
+  20:I2C_EEPROM.c  ****     
+  21:I2C_EEPROM.c  ****     //first do a dummy write to set current address to regAdr
+  22:I2C_EEPROM.c  ****     uint8 value;
+  23:I2C_EEPROM.c  ****     
+  24:I2C_EEPROM.c  ****     //clear master status
+  25:I2C_EEPROM.c  ****     //uint8 status = I2CM_I2CMasterClearStatus();  
+  26:I2C_EEPROM.c  ****     //debugI2CMasterStatus(status);
+  27:I2C_EEPROM.c  ****     uint8 indicator = I2CM_I2CMasterSendStart(EEPROM_ADDRESS, I2CM_I2C_WRITE_XFER_MODE);
+  39              		.loc 1 27 0
+  40 000a 5020     		mov	r0, #80
+  41 000c 0021     		mov	r1, #0
+  42 000e FFF7FEFF 		bl	I2CM_I2CMasterSendStart
+  43              	.LVL3:
+  44 0012 C0B2     		uxtb	r0, r0
+  45              	.LVL4:
+  28:I2C_EEPROM.c  ****     //debugI2CTransfer(indicator);
+  29:I2C_EEPROM.c  ****     
+  30:I2C_EEPROM.c  ****     //do transfer if ready
+  31:I2C_EEPROM.c  ****     if(indicator == I2CM_I2C_MSTR_NO_ERROR)
+  46              		.loc 1 31 0
+  47 0014 0028     		cmp	r0, #0
+  48 0016 03D1     		bne	.L2
+  32:I2C_EEPROM.c  ****     {
+  33:I2C_EEPROM.c  ****         I2CM_I2CMasterWriteByte(regAdr);
+  49              		.loc 1 33 0
+  50 0018 201C     		mov	r0, r4
+  51              	.LVL5:
+  52 001a FFF7FEFF 		bl	I2CM_I2CMasterWriteByte
+  53              	.LVL6:
+  54 001e 04E0     		b	.L3
+  55              	.LVL7:
+  56              	.L2:
+  34:I2C_EEPROM.c  ****     }
+  35:I2C_EEPROM.c  ****     else
+  36:I2C_EEPROM.c  ****     {
+  37:I2C_EEPROM.c  ****         SW_TX_PutString("Could not beginn I2C transmittion (EEPROM, read), read aborted"); SW_TX_Pu
+  57              		.loc 1 37 0
+  58 0020 0848     		ldr	r0, .L4
+  59              	.LVL8:
+  60 0022 FFF7FEFF 		bl	SW_TX_PutString
+  61              	.LVL9:
+  62 0026 FFF7FEFF 		bl	SW_TX_PutCRLF
+  63              	.LVL10:
+  64              	.L3:
+  38:I2C_EEPROM.c  ****         
+  39:I2C_EEPROM.c  ****         }
+  40:I2C_EEPROM.c  ****         
+  41:I2C_EEPROM.c  ****     //now send another (re)start condition to initiate reading process
+  42:I2C_EEPROM.c  ****     indicator = I2CM_I2CMasterSendRestart(EEPROM_ADDRESS, I2CM_I2C_READ_XFER_MODE);
+  65              		.loc 1 42 0
+  66 002a 5020     		mov	r0, #80
+  67 002c 0121     		mov	r1, #1
+  68 002e FFF7FEFF 		bl	I2CM_I2CMasterSendRestart
+  69              	.LVL11:
+  43:I2C_EEPROM.c  ****     //debugI2CTransfer(indicator);
+  44:I2C_EEPROM.c  ****     
+  45:I2C_EEPROM.c  ****     value = I2CM_I2CMasterReadByte(I2CM_I2C_NAK_DATA);
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 3
+
+
+  70              		.loc 1 45 0
+  71 0032 0120     		mov	r0, #1
+  72 0034 FFF7FEFF 		bl	I2CM_I2CMasterReadByte
+  73              	.LVL12:
+  74 0038 C4B2     		uxtb	r4, r0
+  75              	.LVL13:
+  46:I2C_EEPROM.c  ****     I2CM_I2CMasterSendStop();
+  76              		.loc 1 46 0
+  77 003a FFF7FEFF 		bl	I2CM_I2CMasterSendStop
+  78              	.LVL14:
+  47:I2C_EEPROM.c  ****     
+  48:I2C_EEPROM.c  ****     return value;
+  49:I2C_EEPROM.c  **** }
+  79              		.loc 1 49 0
+  80 003e 201C     		mov	r0, r4
+  81              		@ sp needed
+  82              	.LVL15:
+  83 0040 10BD     		pop	{r4, pc}
+  84              	.L5:
+  85 0042 C046     		.align	2
+  86              	.L4:
+  87 0044 00000000 		.word	.LC0
+  88              		.cfi_endproc
+  89              	.LFE37:
+  90              		.size	readOneByteFromEEPROM, .-readOneByteFromEEPROM
+  91              		.section	.text.readFloat32FromEEPROM,"ax",%progbits
+  92              		.align	2
+  93              		.global	readFloat32FromEEPROM
+  94              		.code	16
+  95              		.thumb_func
+  96              		.type	readFloat32FromEEPROM, %function
+  97              	readFloat32FromEEPROM:
+  98              	.LFB38:
+  50:I2C_EEPROM.c  **** 
+  51:I2C_EEPROM.c  **** float32 readFloat32FromEEPROM(uint8 regAdr)
+  52:I2C_EEPROM.c  **** {
+  99              		.loc 1 52 0
+ 100              		.cfi_startproc
+ 101              	.LVL16:
+ 102 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 103              		.cfi_def_cfa_offset 24
+ 104              		.cfi_offset 3, -24
+ 105              		.cfi_offset 4, -20
+ 106              		.cfi_offset 5, -16
+ 107              		.cfi_offset 6, -12
+ 108              		.cfi_offset 7, -8
+ 109              		.cfi_offset 14, -4
+ 110 0002 041C     		mov	r4, r0
+  53:I2C_EEPROM.c  ****     CyDelay(5);
+ 111              		.loc 1 53 0
+ 112 0004 0520     		mov	r0, #5
+ 113              	.LVL17:
+ 114 0006 FFF7FEFF 		bl	CyDelay
+ 115              	.LVL18:
+  54:I2C_EEPROM.c  ****     
+  55:I2C_EEPROM.c  ****      //first do a dummy write to set current address to regAdr
+  56:I2C_EEPROM.c  ****     uint8 byte1, byte2, byte3, byte4;
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 4
+
+
+  57:I2C_EEPROM.c  ****     
+  58:I2C_EEPROM.c  ****     //clear master status
+  59:I2C_EEPROM.c  ****     uint8 status = I2CM_I2CMasterClearStatus();  
+ 116              		.loc 1 59 0
+ 117 000a FFF7FEFF 		bl	I2CM_I2CMasterClearStatus
+ 118              	.LVL19:
+  60:I2C_EEPROM.c  ****     //debugI2CMasterStatus(status);
+  61:I2C_EEPROM.c  ****     uint8 indicator = I2CM_I2CMasterSendStart(EEPROM_ADDRESS, I2CM_I2C_WRITE_XFER_MODE);
+ 119              		.loc 1 61 0
+ 120 000e 5020     		mov	r0, #80
+ 121 0010 0021     		mov	r1, #0
+ 122 0012 FFF7FEFF 		bl	I2CM_I2CMasterSendStart
+ 123              	.LVL20:
+ 124 0016 C0B2     		uxtb	r0, r0
+ 125              	.LVL21:
+  62:I2C_EEPROM.c  ****     //debugI2CTransfer(indicator);
+  63:I2C_EEPROM.c  ****     
+  64:I2C_EEPROM.c  ****     //do transfer if ready
+  65:I2C_EEPROM.c  ****     if(indicator == I2CM_I2C_MSTR_NO_ERROR)
+ 126              		.loc 1 65 0
+ 127 0018 0028     		cmp	r0, #0
+ 128 001a 03D1     		bne	.L7
+  66:I2C_EEPROM.c  ****     {
+  67:I2C_EEPROM.c  ****         I2CM_I2CMasterWriteByte(regAdr);
+ 129              		.loc 1 67 0
+ 130 001c 201C     		mov	r0, r4
+ 131              	.LVL22:
+ 132 001e FFF7FEFF 		bl	I2CM_I2CMasterWriteByte
+ 133              	.LVL23:
+ 134 0022 04E0     		b	.L8
+ 135              	.LVL24:
+ 136              	.L7:
+  68:I2C_EEPROM.c  ****     }
+  69:I2C_EEPROM.c  ****     else
+  70:I2C_EEPROM.c  ****     {
+  71:I2C_EEPROM.c  ****         SW_TX_PutString("Could not beginn I2C transmittion (EEPROM, read), read aborted"); SW_TX_Pu
+ 137              		.loc 1 71 0
+ 138 0024 1348     		ldr	r0, .L9
+ 139              	.LVL25:
+ 140 0026 FFF7FEFF 		bl	SW_TX_PutString
+ 141              	.LVL26:
+ 142 002a FFF7FEFF 		bl	SW_TX_PutCRLF
+ 143              	.LVL27:
+ 144              	.L8:
+  72:I2C_EEPROM.c  ****     }
+  73:I2C_EEPROM.c  ****         
+  74:I2C_EEPROM.c  ****     //now send another (re)start condition to initiate reading process
+  75:I2C_EEPROM.c  ****     indicator = I2CM_I2CMasterSendRestart(EEPROM_ADDRESS, I2CM_I2C_READ_XFER_MODE);
+ 145              		.loc 1 75 0
+ 146 002e 5020     		mov	r0, #80
+ 147 0030 0121     		mov	r1, #1
+ 148 0032 FFF7FEFF 		bl	I2CM_I2CMasterSendRestart
+ 149              	.LVL28:
+  76:I2C_EEPROM.c  ****     //debugI2CTransfer(indicator);
+  77:I2C_EEPROM.c  ****     
+  78:I2C_EEPROM.c  ****     byte1 = I2CM_I2CMasterReadByte(I2CM_I2C_ACK_DATA);
+ 150              		.loc 1 78 0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 5
+
+
+ 151 0036 0020     		mov	r0, #0
+ 152 0038 FFF7FEFF 		bl	I2CM_I2CMasterReadByte
+ 153              	.LVL29:
+ 154 003c 061C     		mov	r6, r0
+ 155              	.LVL30:
+  79:I2C_EEPROM.c  ****     byte2 = I2CM_I2CMasterReadByte(I2CM_I2C_ACK_DATA);
+ 156              		.loc 1 79 0
+ 157 003e 0020     		mov	r0, #0
+ 158 0040 FFF7FEFF 		bl	I2CM_I2CMasterReadByte
+ 159              	.LVL31:
+ 160 0044 041C     		mov	r4, r0
+ 161              	.LVL32:
+  80:I2C_EEPROM.c  ****     byte3 = I2CM_I2CMasterReadByte(I2CM_I2C_ACK_DATA);
+ 162              		.loc 1 80 0
+ 163 0046 0020     		mov	r0, #0
+ 164 0048 FFF7FEFF 		bl	I2CM_I2CMasterReadByte
+ 165              	.LVL33:
+ 166 004c 051C     		mov	r5, r0
+ 167              	.LVL34:
+  81:I2C_EEPROM.c  ****     byte4 = I2CM_I2CMasterReadByte(I2CM_I2C_NAK_DATA);
+ 168              		.loc 1 81 0
+ 169 004e 0120     		mov	r0, #1
+ 170 0050 FFF7FEFF 		bl	I2CM_I2CMasterReadByte
+ 171              	.LVL35:
+ 172 0054 071C     		mov	r7, r0
+ 173              	.LVL36:
+  82:I2C_EEPROM.c  ****     I2CM_I2CMasterSendStop();
+ 174              		.loc 1 82 0
+ 175 0056 FFF7FEFF 		bl	I2CM_I2CMasterSendStop
+ 176              	.LVL37:
+ 177 005a FF23     		mov	r3, #255
+  83:I2C_EEPROM.c  ****     
+  84:I2C_EEPROM.c  ****     //sprintf(debugStr, "float bytes: %i, %i, %i, %i", byte1, byte2, byte3, byte4);
+  85:I2C_EEPROM.c  ****     //SW_TX_PutString(debugStr);
+  86:I2C_EEPROM.c  ****     
+  87:I2C_EEPROM.c  ****     //build float from four bytes
+  88:I2C_EEPROM.c  ****     uint32_t iHelper = byte4<<24 | byte3<<16 | byte2<<8 | byte1;
+ 178              		.loc 1 88 0
+ 179 005c 3806     		lsl	r0, r7, #24
+ 180 005e 1D40     		and	r5, r3
+ 181              	.LVL38:
+ 182 0060 2D04     		lsl	r5, r5, #16
+ 183 0062 2843     		orr	r0, r5
+ 184 0064 1C40     		and	r4, r3
+ 185              	.LVL39:
+ 186 0066 2402     		lsl	r4, r4, #8
+ 187 0068 0443     		orr	r4, r0
+ 188 006a 3340     		and	r3, r6
+ 189 006c 181C     		mov	r0, r3
+ 190              	.LVL40:
+  89:I2C_EEPROM.c  ****     float32 f = *((float32*)&iHelper);
+ 191              		.loc 1 89 0
+ 192 006e 2043     		orr	r0, r4
+ 193              	.LVL41:
+  90:I2C_EEPROM.c  ****     
+  91:I2C_EEPROM.c  ****     return f;
+  92:I2C_EEPROM.c  **** }
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 6
+
+
+ 194              		.loc 1 92 0
+ 195              		@ sp needed
+ 196              	.LVL42:
+ 197              	.LVL43:
+ 198 0070 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 199              	.L10:
+ 200 0072 C046     		.align	2
+ 201              	.L9:
+ 202 0074 00000000 		.word	.LC0
+ 203              		.cfi_endproc
+ 204              	.LFE38:
+ 205              		.size	readFloat32FromEEPROM, .-readFloat32FromEEPROM
+ 206              		.section	.text.readUint16FromEEPROM,"ax",%progbits
+ 207              		.align	2
+ 208              		.global	readUint16FromEEPROM
+ 209              		.code	16
+ 210              		.thumb_func
+ 211              		.type	readUint16FromEEPROM, %function
+ 212              	readUint16FromEEPROM:
+ 213              	.LFB39:
+  93:I2C_EEPROM.c  **** 
+  94:I2C_EEPROM.c  ****     
+  95:I2C_EEPROM.c  **** 
+  96:I2C_EEPROM.c  **** uint16 readUint16FromEEPROM(uint8 regAdr)
+  97:I2C_EEPROM.c  **** {
+ 214              		.loc 1 97 0
+ 215              		.cfi_startproc
+ 216              	.LVL44:
+ 217 0000 38B5     		push	{r3, r4, r5, lr}
+ 218              		.cfi_def_cfa_offset 16
+ 219              		.cfi_offset 3, -16
+ 220              		.cfi_offset 4, -12
+ 221              		.cfi_offset 5, -8
+ 222              		.cfi_offset 14, -4
+ 223 0002 041C     		mov	r4, r0
+  98:I2C_EEPROM.c  ****     CyDelay(5);
+ 224              		.loc 1 98 0
+ 225 0004 0520     		mov	r0, #5
+ 226              	.LVL45:
+ 227 0006 FFF7FEFF 		bl	CyDelay
+ 228              	.LVL46:
+  99:I2C_EEPROM.c  ****     
+ 100:I2C_EEPROM.c  ****      //first do a dummy write to set current address to regAdr
+ 101:I2C_EEPROM.c  ****     uint8 byte1, byte2;
+ 102:I2C_EEPROM.c  ****     
+ 103:I2C_EEPROM.c  ****     //clear master status
+ 104:I2C_EEPROM.c  ****     uint8 status = I2CM_I2CMasterClearStatus();  
+ 229              		.loc 1 104 0
+ 230 000a FFF7FEFF 		bl	I2CM_I2CMasterClearStatus
+ 231              	.LVL47:
+ 105:I2C_EEPROM.c  ****     //debugI2CMasterStatus(status);
+ 106:I2C_EEPROM.c  ****     uint8 indicator = I2CM_I2CMasterSendStart(EEPROM_ADDRESS, I2CM_I2C_WRITE_XFER_MODE);
+ 232              		.loc 1 106 0
+ 233 000e 5020     		mov	r0, #80
+ 234 0010 0021     		mov	r1, #0
+ 235 0012 FFF7FEFF 		bl	I2CM_I2CMasterSendStart
+ 236              	.LVL48:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 7
+
+
+ 237 0016 C0B2     		uxtb	r0, r0
+ 238              	.LVL49:
+ 107:I2C_EEPROM.c  ****     //debugI2CTransfer(indicator);
+ 108:I2C_EEPROM.c  ****     
+ 109:I2C_EEPROM.c  ****     //do transfer if ready
+ 110:I2C_EEPROM.c  ****     if(indicator == I2CM_I2C_MSTR_NO_ERROR)
+ 239              		.loc 1 110 0
+ 240 0018 0028     		cmp	r0, #0
+ 241 001a 03D1     		bne	.L12
+ 111:I2C_EEPROM.c  ****     {
+ 112:I2C_EEPROM.c  ****         I2CM_I2CMasterWriteByte(regAdr);
+ 242              		.loc 1 112 0
+ 243 001c 201C     		mov	r0, r4
+ 244              	.LVL50:
+ 245 001e FFF7FEFF 		bl	I2CM_I2CMasterWriteByte
+ 246              	.LVL51:
+ 247 0022 04E0     		b	.L13
+ 248              	.LVL52:
+ 249              	.L12:
+ 113:I2C_EEPROM.c  ****     }
+ 114:I2C_EEPROM.c  ****     else
+ 115:I2C_EEPROM.c  ****     {
+ 116:I2C_EEPROM.c  ****         SW_TX_PutString("Could not beginn I2C transmittion (EEPROM, read), read aborted"); SW_TX_Pu
+ 250              		.loc 1 116 0
+ 251 0024 0B48     		ldr	r0, .L14
+ 252              	.LVL53:
+ 253 0026 FFF7FEFF 		bl	SW_TX_PutString
+ 254              	.LVL54:
+ 255 002a FFF7FEFF 		bl	SW_TX_PutCRLF
+ 256              	.LVL55:
+ 257              	.L13:
+ 117:I2C_EEPROM.c  ****         
+ 118:I2C_EEPROM.c  ****         }
+ 119:I2C_EEPROM.c  ****         
+ 120:I2C_EEPROM.c  ****     //now send another (re)start condition to initiate reading process
+ 121:I2C_EEPROM.c  ****     indicator = I2CM_I2CMasterSendRestart(EEPROM_ADDRESS, I2CM_I2C_READ_XFER_MODE);
+ 258              		.loc 1 121 0
+ 259 002e 5020     		mov	r0, #80
+ 260 0030 0121     		mov	r1, #1
+ 261 0032 FFF7FEFF 		bl	I2CM_I2CMasterSendRestart
+ 262              	.LVL56:
+ 122:I2C_EEPROM.c  ****     //debugI2CTransfer(indicator);
+ 123:I2C_EEPROM.c  ****     
+ 124:I2C_EEPROM.c  ****     byte1 = I2CM_I2CMasterReadByte(I2CM_I2C_ACK_DATA);
+ 263              		.loc 1 124 0
+ 264 0036 0020     		mov	r0, #0
+ 265 0038 FFF7FEFF 		bl	I2CM_I2CMasterReadByte
+ 266              	.LVL57:
+ 267 003c C4B2     		uxtb	r4, r0
+ 268              	.LVL58:
+ 125:I2C_EEPROM.c  ****     byte2 = I2CM_I2CMasterReadByte(I2CM_I2C_NAK_DATA);
+ 269              		.loc 1 125 0
+ 270 003e 0120     		mov	r0, #1
+ 271 0040 FFF7FEFF 		bl	I2CM_I2CMasterReadByte
+ 272              	.LVL59:
+ 273 0044 051C     		mov	r5, r0
+ 274              	.LVL60:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 8
+
+
+ 126:I2C_EEPROM.c  ****     I2CM_I2CMasterSendStop();
+ 275              		.loc 1 126 0
+ 276 0046 FFF7FEFF 		bl	I2CM_I2CMasterSendStop
+ 277              	.LVL61:
+ 278 004a FF20     		mov	r0, #255
+ 279 004c 2840     		and	r0, r5
+ 127:I2C_EEPROM.c  ****     
+ 128:I2C_EEPROM.c  ****     //build uint16 from two bytes
+ 129:I2C_EEPROM.c  ****     uint16 output = byte2<<8 | byte1;
+ 280              		.loc 1 129 0
+ 281 004e 0002     		lsl	r0, r0, #8
+ 282 0050 2043     		orr	r0, r4
+ 283              	.LVL62:
+ 130:I2C_EEPROM.c  ****     
+ 131:I2C_EEPROM.c  ****     
+ 132:I2C_EEPROM.c  ****     return output;
+ 133:I2C_EEPROM.c  **** }
+ 284              		.loc 1 133 0
+ 285              		@ sp needed
+ 286              	.LVL63:
+ 287              	.LVL64:
+ 288 0052 38BD     		pop	{r3, r4, r5, pc}
+ 289              	.L15:
+ 290              		.align	2
+ 291              	.L14:
+ 292 0054 00000000 		.word	.LC0
+ 293              		.cfi_endproc
+ 294              	.LFE39:
+ 295              		.size	readUint16FromEEPROM, .-readUint16FromEEPROM
+ 296              		.section	.text.writeOneByteToEEPROM,"ax",%progbits
+ 297              		.align	2
+ 298              		.global	writeOneByteToEEPROM
+ 299              		.code	16
+ 300              		.thumb_func
+ 301              		.type	writeOneByteToEEPROM, %function
+ 302              	writeOneByteToEEPROM:
+ 303              	.LFB40:
+ 134:I2C_EEPROM.c  **** 
+ 135:I2C_EEPROM.c  **** /*uint16 readint16FromEEPROM(uint8 regAdr)
+ 136:I2C_EEPROM.c  **** {
+ 137:I2C_EEPROM.c  ****     CyDelay(5);
+ 138:I2C_EEPROM.c  ****     
+ 139:I2C_EEPROM.c  ****      //first do a dummy write to set current address to regAdr
+ 140:I2C_EEPROM.c  ****     uint8 byte1, byte2;
+ 141:I2C_EEPROM.c  ****     
+ 142:I2C_EEPROM.c  ****     //clear master status
+ 143:I2C_EEPROM.c  ****     uint8 status = I2CM_I2CMasterClearStatus();  
+ 144:I2C_EEPROM.c  ****     //debugI2CMasterStatus(status);
+ 145:I2C_EEPROM.c  ****     uint8 indicator = I2CM_I2CMasterSendStart(EEPROM_ADDRESS, I2CM_I2C_WRITE_XFER_MODE);
+ 146:I2C_EEPROM.c  ****     //debugI2CTransfer(indicator);
+ 147:I2C_EEPROM.c  ****     
+ 148:I2C_EEPROM.c  ****     //do transfer if ready
+ 149:I2C_EEPROM.c  ****     if(indicator == I2CM_I2C_MSTR_NO_ERROR)
+ 150:I2C_EEPROM.c  ****     {
+ 151:I2C_EEPROM.c  ****         I2CM_I2CMasterWriteByte(regAdr);
+ 152:I2C_EEPROM.c  ****     }
+ 153:I2C_EEPROM.c  ****     else
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 9
+
+
+ 154:I2C_EEPROM.c  ****     {
+ 155:I2C_EEPROM.c  ****         SW_TX_PutString("Could not beginn I2C transmittion (EEPROM, read), read aborted"); SW_TX_Pu
+ 156:I2C_EEPROM.c  ****     }
+ 157:I2C_EEPROM.c  ****         
+ 158:I2C_EEPROM.c  ****     //now send another (re)start condition to initiate reading process
+ 159:I2C_EEPROM.c  ****     indicator = I2CM_I2CMasterSendRestart(EEPROM_ADDRESS, I2CM_I2C_READ_XFER_MODE);
+ 160:I2C_EEPROM.c  ****     //debugI2CTransfer(indicator);
+ 161:I2C_EEPROM.c  ****     
+ 162:I2C_EEPROM.c  ****     byte1 = I2CM_I2CMasterReadByte(I2CM_I2C_ACK_DATA);
+ 163:I2C_EEPROM.c  ****     byte2 = I2CM_I2CMasterReadByte(I2CM_I2C_NAK_DATA);
+ 164:I2C_EEPROM.c  ****     I2CM_I2CMasterSendStop();
+ 165:I2C_EEPROM.c  ****     
+ 166:I2C_EEPROM.c  ****     //build uint16 from two bytes
+ 167:I2C_EEPROM.c  ****     int16 output = byte2<<8 | byte1;
+ 168:I2C_EEPROM.c  ****     
+ 169:I2C_EEPROM.c  ****     
+ 170:I2C_EEPROM.c  ****     return output;
+ 171:I2C_EEPROM.c  **** }*/
+ 172:I2C_EEPROM.c  **** 
+ 173:I2C_EEPROM.c  **** 
+ 174:I2C_EEPROM.c  **** void writeOneByteToEEPROM(uint8 regAdr, uint8 value)    
+ 175:I2C_EEPROM.c  **** {    
+ 304              		.loc 1 175 0
+ 305              		.cfi_startproc
+ 306              	.LVL65:
+ 307 0000 70B5     		push	{r4, r5, r6, lr}
+ 308              		.cfi_def_cfa_offset 16
+ 309              		.cfi_offset 4, -16
+ 310              		.cfi_offset 5, -12
+ 311              		.cfi_offset 6, -8
+ 312              		.cfi_offset 14, -4
+ 313 0002 061C     		mov	r6, r0
+ 314 0004 0D1C     		mov	r5, r1
+ 176:I2C_EEPROM.c  ****     CyDelay(5);
+ 315              		.loc 1 176 0
+ 316 0006 0520     		mov	r0, #5
+ 317              	.LVL66:
+ 318 0008 FFF7FEFF 		bl	CyDelay
+ 319              	.LVL67:
+ 177:I2C_EEPROM.c  ****     
+ 178:I2C_EEPROM.c  ****     //clear master status
+ 179:I2C_EEPROM.c  ****     uint8 status = I2CM_I2CMasterClearStatus();
+ 320              		.loc 1 179 0
+ 321 000c FFF7FEFF 		bl	I2CM_I2CMasterClearStatus
+ 322              	.LVL68:
+ 180:I2C_EEPROM.c  ****     //debugI2CMasterStatus(status);
+ 181:I2C_EEPROM.c  ****     
+ 182:I2C_EEPROM.c  ****     uint8 indicator = I2CM_I2CMasterSendStart(EEPROM_ADDRESS, I2CM_I2C_WRITE_XFER_MODE);
+ 323              		.loc 1 182 0
+ 324 0010 5020     		mov	r0, #80
+ 325 0012 0021     		mov	r1, #0
+ 326 0014 FFF7FEFF 		bl	I2CM_I2CMasterSendStart
+ 327              	.LVL69:
+ 328 0018 C4B2     		uxtb	r4, r0
+ 329              	.LVL70:
+ 183:I2C_EEPROM.c  ****     //debugI2CTransfer(indicator);
+ 184:I2C_EEPROM.c  ****     
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 10
+
+
+ 185:I2C_EEPROM.c  ****     CyDelay(2);
+ 330              		.loc 1 185 0
+ 331 001a 0220     		mov	r0, #2
+ 332 001c FFF7FEFF 		bl	CyDelay
+ 333              	.LVL71:
+ 186:I2C_EEPROM.c  ****     //do transfer if ready
+ 187:I2C_EEPROM.c  ****     if(indicator == I2CM_I2C_MSTR_NO_ERROR)
+ 334              		.loc 1 187 0
+ 335 0020 002C     		cmp	r4, #0
+ 336 0022 03D1     		bne	.L17
+ 188:I2C_EEPROM.c  ****     {
+ 189:I2C_EEPROM.c  ****         I2CM_I2CMasterWriteByte(regAdr);
+ 337              		.loc 1 189 0
+ 338 0024 301C     		mov	r0, r6
+ 339 0026 FFF7FEFF 		bl	I2CM_I2CMasterWriteByte
+ 340              	.LVL72:
+ 341 002a 04E0     		b	.L18
+ 342              	.L17:
+ 190:I2C_EEPROM.c  ****         //debugI2CTransfer(indicator);
+ 191:I2C_EEPROM.c  ****     }
+ 192:I2C_EEPROM.c  ****     else
+ 193:I2C_EEPROM.c  ****     {
+ 194:I2C_EEPROM.c  ****         SW_TX_PutString("Could not beginn I2C transmittion (EEPROM), write aborted"); SW_TX_PutCRLF
+ 343              		.loc 1 194 0
+ 344 002c 0548     		ldr	r0, .L19
+ 345 002e FFF7FEFF 		bl	SW_TX_PutString
+ 346              	.LVL73:
+ 347 0032 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 348              	.LVL74:
+ 349              	.L18:
+ 195:I2C_EEPROM.c  ****     }
+ 196:I2C_EEPROM.c  ****     
+ 197:I2C_EEPROM.c  ****     I2CM_I2CMasterWriteByte(value);
+ 350              		.loc 1 197 0
+ 351 0036 281C     		mov	r0, r5
+ 352 0038 FFF7FEFF 		bl	I2CM_I2CMasterWriteByte
+ 353              	.LVL75:
+ 198:I2C_EEPROM.c  ****     I2CM_I2CMasterSendStop();
+ 354              		.loc 1 198 0
+ 355 003c FFF7FEFF 		bl	I2CM_I2CMasterSendStop
+ 356              	.LVL76:
+ 199:I2C_EEPROM.c  ****     
+ 200:I2C_EEPROM.c  **** }
+ 357              		.loc 1 200 0
+ 358              		@ sp needed
+ 359              	.LVL77:
+ 360 0040 70BD     		pop	{r4, r5, r6, pc}
+ 361              	.L20:
+ 362 0042 C046     		.align	2
+ 363              	.L19:
+ 364 0044 40000000 		.word	.LC4
+ 365              		.cfi_endproc
+ 366              	.LFE40:
+ 367              		.size	writeOneByteToEEPROM, .-writeOneByteToEEPROM
+ 368              		.section	.text.writeUint16ToEEPROM,"ax",%progbits
+ 369              		.align	2
+ 370              		.global	writeUint16ToEEPROM
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 11
+
+
+ 371              		.code	16
+ 372              		.thumb_func
+ 373              		.type	writeUint16ToEEPROM, %function
+ 374              	writeUint16ToEEPROM:
+ 375              	.LFB41:
+ 201:I2C_EEPROM.c  **** 
+ 202:I2C_EEPROM.c  **** void writeUint16ToEEPROM(uint8 regAdr, uint16 value)
+ 203:I2C_EEPROM.c  **** {    
+ 376              		.loc 1 203 0
+ 377              		.cfi_startproc
+ 378              	.LVL78:
+ 379 0000 30B5     		push	{r4, r5, lr}
+ 380              		.cfi_def_cfa_offset 12
+ 381              		.cfi_offset 4, -12
+ 382              		.cfi_offset 5, -8
+ 383              		.cfi_offset 14, -4
+ 384 0002 85B0     		sub	sp, sp, #20
+ 385              		.cfi_def_cfa_offset 32
+ 386 0004 041C     		mov	r4, r0
+ 204:I2C_EEPROM.c  ****     //first split uint16 into both bytes
+ 205:I2C_EEPROM.c  ****     uint8 helperTwoBytes[sizeof(uint16) ];
+ 206:I2C_EEPROM.c  ****     memcpy( helperTwoBytes, & value, sizeof(uint16) );
+ 387              		.loc 1 206 0
+ 388 0006 03AD     		add	r5, sp, #12
+ 389 0008 6B46     		mov	r3, sp
+ 390 000a D980     		strh	r1, [r3, #6]
+ 391 000c 2980     		strh	r1, [r5]
+ 207:I2C_EEPROM.c  ****     
+ 208:I2C_EEPROM.c  ****     //now write both bytes to EEPROM. This is done by single byte write operations to prevent page 
+ 209:I2C_EEPROM.c  ****     writeOneByteToEEPROM(regAdr, helperTwoBytes[0]); 
+ 392              		.loc 1 209 0
+ 393 000e C9B2     		uxtb	r1, r1
+ 394              	.LVL79:
+ 395 0010 FFF7FEFF 		bl	writeOneByteToEEPROM
+ 396              	.LVL80:
+ 210:I2C_EEPROM.c  ****     writeOneByteToEEPROM(regAdr + 1, helperTwoBytes[1]);
+ 397              		.loc 1 210 0
+ 398 0014 0134     		add	r4, r4, #1
+ 399 0016 E0B2     		uxtb	r0, r4
+ 400 0018 6978     		ldrb	r1, [r5, #1]
+ 401 001a FFF7FEFF 		bl	writeOneByteToEEPROM
+ 402              	.LVL81:
+ 211:I2C_EEPROM.c  **** }
+ 403              		.loc 1 211 0
+ 404 001e 05B0     		add	sp, sp, #20
+ 405              		@ sp needed
+ 406              	.LVL82:
+ 407 0020 30BD     		pop	{r4, r5, pc}
+ 408              		.cfi_endproc
+ 409              	.LFE41:
+ 410              		.size	writeUint16ToEEPROM, .-writeUint16ToEEPROM
+ 411 0022 C046     		.section	.text.writeFloat32ToEEPROM,"ax",%progbits
+ 412              		.align	2
+ 413              		.global	writeFloat32ToEEPROM
+ 414              		.code	16
+ 415              		.thumb_func
+ 416              		.type	writeFloat32ToEEPROM, %function
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 12
+
+
+ 417              	writeFloat32ToEEPROM:
+ 418              	.LFB42:
+ 212:I2C_EEPROM.c  **** 
+ 213:I2C_EEPROM.c  **** void writeFloat32ToEEPROM(uint8 regAdr, float32 value)
+ 214:I2C_EEPROM.c  **** {
+ 419              		.loc 1 214 0
+ 420              		.cfi_startproc
+ 421              	.LVL83:
+ 422 0000 30B5     		push	{r4, r5, lr}
+ 423              		.cfi_def_cfa_offset 12
+ 424              		.cfi_offset 4, -12
+ 425              		.cfi_offset 5, -8
+ 426              		.cfi_offset 14, -4
+ 427 0002 85B0     		sub	sp, sp, #20
+ 428              		.cfi_def_cfa_offset 32
+ 429 0004 041C     		mov	r4, r0
+ 215:I2C_EEPROM.c  ****     //first split float32 into four bytes
+ 216:I2C_EEPROM.c  ****     uint8 helperTwoBytes[sizeof(float32) ];
+ 217:I2C_EEPROM.c  ****     memcpy( helperTwoBytes, & value, sizeof(float32) );
+ 430              		.loc 1 217 0
+ 431 0006 03AD     		add	r5, sp, #12
+ 432 0008 0191     		str	r1, [sp, #4]
+ 433 000a 019B     		ldr	r3, [sp, #4]
+ 434 000c 0393     		str	r3, [sp, #12]
+ 218:I2C_EEPROM.c  ****     
+ 219:I2C_EEPROM.c  ****     //now write both bytes to EEPROM. This is done by single byte write operations to prevent page 
+ 220:I2C_EEPROM.c  ****     writeOneByteToEEPROM(regAdr, helperTwoBytes[0]); 
+ 435              		.loc 1 220 0
+ 436 000e D9B2     		uxtb	r1, r3
+ 437              	.LVL84:
+ 438 0010 FFF7FEFF 		bl	writeOneByteToEEPROM
+ 439              	.LVL85:
+ 221:I2C_EEPROM.c  ****     writeOneByteToEEPROM(regAdr + 1, helperTwoBytes[1]);
+ 440              		.loc 1 221 0
+ 441 0014 601C     		add	r0, r4, #1
+ 442 0016 C0B2     		uxtb	r0, r0
+ 443 0018 6978     		ldrb	r1, [r5, #1]
+ 444 001a FFF7FEFF 		bl	writeOneByteToEEPROM
+ 445              	.LVL86:
+ 222:I2C_EEPROM.c  ****     writeOneByteToEEPROM(regAdr + 2, helperTwoBytes[2]);
+ 446              		.loc 1 222 0
+ 447 001e A01C     		add	r0, r4, #2
+ 448 0020 C0B2     		uxtb	r0, r0
+ 449 0022 A978     		ldrb	r1, [r5, #2]
+ 450 0024 FFF7FEFF 		bl	writeOneByteToEEPROM
+ 451              	.LVL87:
+ 223:I2C_EEPROM.c  ****     writeOneByteToEEPROM(regAdr + 3, helperTwoBytes[3]);
+ 452              		.loc 1 223 0
+ 453 0028 0334     		add	r4, r4, #3
+ 454 002a E0B2     		uxtb	r0, r4
+ 455 002c E978     		ldrb	r1, [r5, #3]
+ 456 002e FFF7FEFF 		bl	writeOneByteToEEPROM
+ 457              	.LVL88:
+ 224:I2C_EEPROM.c  **** }
+ 458              		.loc 1 224 0
+ 459 0032 05B0     		add	sp, sp, #20
+ 460              		@ sp needed
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 13
+
+
+ 461 0034 30BD     		pop	{r4, r5, pc}
+ 462              		.cfi_endproc
+ 463              	.LFE42:
+ 464              		.size	writeFloat32ToEEPROM, .-writeFloat32ToEEPROM
+ 465 0036 C046     		.section	.text.debugI2CMasterStatus,"ax",%progbits
+ 466              		.align	2
+ 467              		.global	debugI2CMasterStatus
+ 468              		.code	16
+ 469              		.thumb_func
+ 470              		.type	debugI2CMasterStatus, %function
+ 471              	debugI2CMasterStatus:
+ 472              	.LFB43:
+ 225:I2C_EEPROM.c  **** 
+ 226:I2C_EEPROM.c  **** void debugI2CMasterStatus(uint32 status)
+ 227:I2C_EEPROM.c  **** {
+ 473              		.loc 1 227 0
+ 474              		.cfi_startproc
+ 475              	.LVL89:
+ 476 0000 08B5     		push	{r3, lr}
+ 477              		.cfi_def_cfa_offset 8
+ 478              		.cfi_offset 3, -8
+ 479              		.cfi_offset 14, -4
+ 228:I2C_EEPROM.c  ****     switch(status)
+ 480              		.loc 1 228 0
+ 481 0002 1028     		cmp	r0, #16
+ 482 0004 45D0     		beq	.L25
+ 483 0006 0CD8     		bhi	.L26
+ 484 0008 0228     		cmp	r0, #2
+ 485 000a 2BD0     		beq	.L27
+ 486 000c 04D8     		bhi	.L28
+ 487 000e 0028     		cmp	r0, #0
+ 488 0010 18D0     		beq	.L29
+ 489 0012 0128     		cmp	r0, #1
+ 490 0014 1BD0     		beq	.L30
+ 491 0016 65E0     		b	.L24
+ 492              	.L28:
+ 493 0018 0428     		cmp	r0, #4
+ 494 001a 2ED0     		beq	.L31
+ 495 001c 0828     		cmp	r0, #8
+ 496 001e 32D0     		beq	.L32
+ 497 0020 60E0     		b	.L24
+ 498              	.L26:
+ 499 0022 8028     		cmp	r0, #128
+ 500 0024 52D0     		beq	.L33
+ 501 0026 04D8     		bhi	.L34
+ 502 0028 2028     		cmp	r0, #32
+ 503 002a 3DD0     		beq	.L35
+ 504 002c 4028     		cmp	r0, #64
+ 505 002e 41D0     		beq	.L36
+ 506 0030 58E0     		b	.L24
+ 507              	.L34:
+ 508 0032 8023     		mov	r3, #128
+ 509 0034 5B00     		lsl	r3, r3, #1
+ 510 0036 9842     		cmp	r0, r3
+ 511 0038 42D0     		beq	.L37
+ 512 003a 0133     		add	r3, r3, #1
+ 513 003c FF33     		add	r3, r3, #255
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 14
+
+
+ 514 003e 9842     		cmp	r0, r3
+ 515 0040 4AD0     		beq	.L38
+ 516 0042 4FE0     		b	.L24
+ 517              	.L29:
+ 229:I2C_EEPROM.c  ****     {        
+ 230:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_CLEAR:
+ 231:I2C_EEPROM.c  ****             SW_TX_PutString("master status is cleared"); SW_TX_PutCRLF(); 
+ 518              		.loc 1 231 0
+ 519 0044 2A48     		ldr	r0, .L40
+ 520              	.LVL90:
+ 521 0046 FFF7FEFF 		bl	SW_TX_PutString
+ 522              	.LVL91:
+ 523 004a FFF7FEFF 		bl	SW_TX_PutCRLF
+ 524              	.LVL92:
+ 525              	.L30:
+ 232:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_RD_CMPLT:
+ 233:I2C_EEPROM.c  ****             SW_TX_PutString("Read transfer complete."); SW_TX_PutCRLF(); 
+ 526              		.loc 1 233 0
+ 527 004e 2948     		ldr	r0, .L40+4
+ 528 0050 FFF7FEFF 		bl	SW_TX_PutString
+ 529              	.LVL93:
+ 530 0054 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 531              	.LVL94:
+ 234:I2C_EEPROM.c  ****             SW_TX_PutString("The error condition status bits must be checked to ensure that read tr
+ 532              		.loc 1 234 0
+ 533 0058 2748     		ldr	r0, .L40+8
+ 534 005a FFF7FEFF 		bl	SW_TX_PutString
+ 535              	.LVL95:
+ 536 005e FFF7FEFF 		bl	SW_TX_PutCRLF
+ 537              	.LVL96:
+ 538 0062 44E0     		b	.L23
+ 539              	.LVL97:
+ 540              	.L27:
+ 235:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_WR_CMPLT:
+ 236:I2C_EEPROM.c  ****             SW_TX_PutString("Write transfer complete."); SW_TX_PutCRLF();
+ 541              		.loc 1 236 0
+ 542 0064 2548     		ldr	r0, .L40+12
+ 543              	.LVL98:
+ 544 0066 FFF7FEFF 		bl	SW_TX_PutString
+ 545              	.LVL99:
+ 546 006a FFF7FEFF 		bl	SW_TX_PutCRLF
+ 547              	.LVL100:
+ 237:I2C_EEPROM.c  ****             SW_TX_PutString("The error condition status bits must be checked to ensure that write t
+ 548              		.loc 1 237 0
+ 549 006e 2448     		ldr	r0, .L40+16
+ 550 0070 FFF7FEFF 		bl	SW_TX_PutString
+ 551              	.LVL101:
+ 552 0074 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 553              	.LVL102:
+ 554 0078 39E0     		b	.L23
+ 555              	.LVL103:
+ 556              	.L31:
+ 238:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_XFER_INP:
+ 239:I2C_EEPROM.c  ****             SW_TX_PutString("Transfer in progress."); SW_TX_PutCRLF(); break;
+ 557              		.loc 1 239 0
+ 558 007a 2248     		ldr	r0, .L40+20
+ 559              	.LVL104:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 15
+
+
+ 560 007c FFF7FEFF 		bl	SW_TX_PutString
+ 561              	.LVL105:
+ 562 0080 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 563              	.LVL106:
+ 564 0084 33E0     		b	.L23
+ 565              	.LVL107:
+ 566              	.L32:
+ 240:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_XFER_HALT:
+ 241:I2C_EEPROM.c  ****             SW_TX_PutString("Transfer has been halted. The I2C bus is waiting for ReStart or Stop c
+ 567              		.loc 1 241 0
+ 568 0086 2048     		ldr	r0, .L40+24
+ 569              	.LVL108:
+ 570 0088 FFF7FEFF 		bl	SW_TX_PutString
+ 571              	.LVL109:
+ 572 008c FFF7FEFF 		bl	SW_TX_PutCRLF
+ 573              	.LVL110:
+ 574 0090 2DE0     		b	.L23
+ 575              	.LVL111:
+ 576              	.L25:
+ 242:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_ERR_SHORT_XFER:
+ 243:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: Write transfer completed before all bytes were transf
+ 577              		.loc 1 243 0
+ 578 0092 1E48     		ldr	r0, .L40+28
+ 579              	.LVL112:
+ 580 0094 FFF7FEFF 		bl	SW_TX_PutString
+ 581              	.LVL113:
+ 582 0098 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 583              	.LVL114:
+ 244:I2C_EEPROM.c  ****             SW_TX_PutString("The slave NAKed the byte which was expected to be ACKed."); SW_TX_PutC
+ 584              		.loc 1 244 0
+ 585 009c 1C48     		ldr	r0, .L40+32
+ 586 009e FFF7FEFF 		bl	SW_TX_PutString
+ 587              	.LVL115:
+ 588 00a2 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 589              	.LVL116:
+ 590 00a6 22E0     		b	.L23
+ 591              	.LVL117:
+ 592              	.L35:
+ 245:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_ERR_ADDR_NAK:
+ 246:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: Slave did not acknowledge address."); SW_TX_PutCRLF()
+ 593              		.loc 1 246 0
+ 594 00a8 1A48     		ldr	r0, .L40+36
+ 595              	.LVL118:
+ 596 00aa FFF7FEFF 		bl	SW_TX_PutString
+ 597              	.LVL119:
+ 598 00ae FFF7FEFF 		bl	SW_TX_PutCRLF
+ 599              	.LVL120:
+ 600 00b2 1CE0     		b	.L23
+ 601              	.LVL121:
+ 602              	.L36:
+ 247:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_ERR_ARB_LOST:
+ 248:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: Master lost arbitration during communications with sl
+ 603              		.loc 1 248 0
+ 604 00b4 1848     		ldr	r0, .L40+40
+ 605              	.LVL122:
+ 606 00b6 FFF7FEFF 		bl	SW_TX_PutString
+ 607              	.LVL123:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 16
+
+
+ 608 00ba FFF7FEFF 		bl	SW_TX_PutCRLF
+ 609              	.LVL124:
+ 610 00be 16E0     		b	.L23
+ 611              	.LVL125:
+ 612              	.L37:
+ 249:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_ERR_BUS_ERROR:
+ 250:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: bus error occurred during master transfer due to misp
+ 613              		.loc 1 250 0
+ 614 00c0 1648     		ldr	r0, .L40+44
+ 615              	.LVL126:
+ 616 00c2 FFF7FEFF 		bl	SW_TX_PutString
+ 617              	.LVL127:
+ 618 00c6 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 619              	.LVL128:
+ 620 00ca 10E0     		b	.L23
+ 621              	.LVL129:
+ 622              	.L33:
+ 251:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_ERR_ABORT_XFER:
+ 252:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: Slave was addressed by another master while master pe
+ 623              		.loc 1 252 0
+ 624 00cc 1448     		ldr	r0, .L40+48
+ 625              	.LVL130:
+ 626 00ce FFF7FEFF 		bl	SW_TX_PutString
+ 627              	.LVL131:
+ 628 00d2 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 629              	.LVL132:
+ 630 00d6 0AE0     		b	.L23
+ 631              	.LVL133:
+ 632              	.L38:
+ 253:I2C_EEPROM.c  ****         case I2CM_I2C_MSTAT_ERR_XFER:
+ 254:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: This is the ORed value of all error conditions provid
+ 633              		.loc 1 254 0
+ 634 00d8 1248     		ldr	r0, .L40+52
+ 635              	.LVL134:
+ 636 00da FFF7FEFF 		bl	SW_TX_PutString
+ 637              	.LVL135:
+ 638 00de FFF7FEFF 		bl	SW_TX_PutCRLF
+ 639              	.LVL136:
+ 640 00e2 04E0     		b	.L23
+ 641              	.LVL137:
+ 642              	.L24:
+ 255:I2C_EEPROM.c  ****         default: SW_TX_PutString("unhandled 12c master status"); SW_TX_PutCRLF();
+ 643              		.loc 1 255 0
+ 644 00e4 1048     		ldr	r0, .L40+56
+ 645              	.LVL138:
+ 646 00e6 FFF7FEFF 		bl	SW_TX_PutString
+ 647              	.LVL139:
+ 648 00ea FFF7FEFF 		bl	SW_TX_PutCRLF
+ 649              	.LVL140:
+ 650              	.L23:
+ 256:I2C_EEPROM.c  ****     }//end switch status
+ 257:I2C_EEPROM.c  **** }
+ 651              		.loc 1 257 0
+ 652              		@ sp needed
+ 653 00ee 08BD     		pop	{r3, pc}
+ 654              	.L41:
+ 655              		.align	2
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 17
+
+
+ 656              	.L40:
+ 657 00f0 7C000000 		.word	.LC6
+ 658 00f4 98000000 		.word	.LC8
+ 659 00f8 B0000000 		.word	.LC10
+ 660 00fc 1C010000 		.word	.LC12
+ 661 0100 38010000 		.word	.LC14
+ 662 0104 A4010000 		.word	.LC16
+ 663 0108 BC010000 		.word	.LC18
+ 664 010c 18020000 		.word	.LC20
+ 665 0110 68020000 		.word	.LC22
+ 666 0114 A4020000 		.word	.LC24
+ 667 0118 D8020000 		.word	.LC26
+ 668 011c 24030000 		.word	.LC28
+ 669 0120 94030000 		.word	.LC30
+ 670 0124 80040000 		.word	.LC32
+ 671 0128 D0040000 		.word	.LC34
+ 672              		.cfi_endproc
+ 673              	.LFE43:
+ 674              		.size	debugI2CMasterStatus, .-debugI2CMasterStatus
+ 675              		.section	.text.debugI2CTransfer,"ax",%progbits
+ 676              		.align	2
+ 677              		.global	debugI2CTransfer
+ 678              		.code	16
+ 679              		.thumb_func
+ 680              		.type	debugI2CTransfer, %function
+ 681              	debugI2CTransfer:
+ 682              	.LFB44:
+ 258:I2C_EEPROM.c  **** 
+ 259:I2C_EEPROM.c  **** 
+ 260:I2C_EEPROM.c  **** void debugI2CTransfer(uint32 inidicator)
+ 261:I2C_EEPROM.c  **** {
+ 683              		.loc 1 261 0
+ 684              		.cfi_startproc
+ 685              	.LVL141:
+ 686 0000 08B5     		push	{r3, lr}
+ 687              		.cfi_def_cfa_offset 8
+ 688              		.cfi_offset 3, -8
+ 689              		.cfi_offset 14, -4
+ 262:I2C_EEPROM.c  ****     switch(inidicator)
+ 690              		.loc 1 262 0
+ 691 0002 0428     		cmp	r0, #4
+ 692 0004 1CD0     		beq	.L44
+ 693 0006 06D8     		bhi	.L45
+ 694 0008 0128     		cmp	r0, #1
+ 695 000a 25D0     		beq	.L46
+ 696 000c 0028     		cmp	r0, #0
+ 697 000e 0BD0     		beq	.L47
+ 698 0010 0228     		cmp	r0, #2
+ 699 0012 1BD0     		beq	.L48
+ 700 0014 32E0     		b	.L43
+ 701              	.L45:
+ 702 0016 1028     		cmp	r0, #16
+ 703 0018 2AD0     		beq	.L49
+ 704 001a 8023     		mov	r3, #128
+ 705 001c 5B00     		lsl	r3, r3, #1
+ 706 001e 9842     		cmp	r0, r3
+ 707 0020 20D0     		beq	.L50
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 18
+
+
+ 708 0022 0828     		cmp	r0, #8
+ 709 0024 2AD1     		bne	.L43
+ 710 0026 05E0     		b	.L51
+ 711              	.L47:
+ 263:I2C_EEPROM.c  ****     {
+ 264:I2C_EEPROM.c  ****         case I2CM_I2C_MSTR_NO_ERROR:
+ 265:I2C_EEPROM.c  ****             SW_TX_PutString("Function complete without error."); SW_TX_PutCRLF(); break;
+ 712              		.loc 1 265 0
+ 713 0028 1748     		ldr	r0, .L53
+ 714              	.LVL142:
+ 715 002a FFF7FEFF 		bl	SW_TX_PutString
+ 716              	.LVL143:
+ 717 002e FFF7FEFF 		bl	SW_TX_PutCRLF
+ 718              	.LVL144:
+ 719 0032 28E0     		b	.L42
+ 720              	.LVL145:
+ 721              	.L51:
+ 266:I2C_EEPROM.c  ****         case I2CM_I2C_MSTR_BUS_BUSY:
+ 267:I2C_EEPROM.c  ****             SW_TX_PutString("Bus is busy. Nothing was sent"); SW_TX_PutCRLF();break;
+ 722              		.loc 1 267 0
+ 723 0034 1548     		ldr	r0, .L53+4
+ 724              	.LVL146:
+ 725 0036 FFF7FEFF 		bl	SW_TX_PutString
+ 726              	.LVL147:
+ 727 003a FFF7FEFF 		bl	SW_TX_PutCRLF
+ 728              	.LVL148:
+ 729 003e 22E0     		b	.L42
+ 730              	.LVL149:
+ 731              	.L44:
+ 268:I2C_EEPROM.c  ****         case I2CM_I2C_MSTR_NOT_READY:
+ 269:I2C_EEPROM.c  ****             SW_TX_PutString("Master is not ready for to start transfer."); SW_TX_PutCRLF();break;
+ 732              		.loc 1 269 0
+ 733 0040 1348     		ldr	r0, .L53+8
+ 734              	.LVL150:
+ 735 0042 FFF7FEFF 		bl	SW_TX_PutString
+ 736              	.LVL151:
+ 737 0046 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 738              	.LVL152:
+ 739 004a 1CE0     		b	.L42
+ 740              	.LVL153:
+ 741              	.L48:
+ 270:I2C_EEPROM.c  ****         case I2CM_I2C_MSTR_ERR_LB_NAK:
+ 271:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: Last byte was NAKed."); SW_TX_PutCRLF();break;
+ 742              		.loc 1 271 0
+ 743 004c 1148     		ldr	r0, .L53+12
+ 744              	.LVL154:
+ 745 004e FFF7FEFF 		bl	SW_TX_PutString
+ 746              	.LVL155:
+ 747 0052 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 748              	.LVL156:
+ 749 0056 16E0     		b	.L42
+ 750              	.LVL157:
+ 751              	.L46:
+ 272:I2C_EEPROM.c  ****         case I2CM_I2C_MSTR_ERR_ARB_LOST:
+ 273:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: Master lost arbitration."); SW_TX_PutCRLF();break;
+ 752              		.loc 1 273 0
+ 753 0058 0F48     		ldr	r0, .L53+16
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 19
+
+
+ 754              	.LVL158:
+ 755 005a FFF7FEFF 		bl	SW_TX_PutString
+ 756              	.LVL159:
+ 757 005e FFF7FEFF 		bl	SW_TX_PutCRLF
+ 758              	.LVL160:
+ 759 0062 10E0     		b	.L42
+ 760              	.LVL161:
+ 761              	.L50:
+ 274:I2C_EEPROM.c  ****         case I2CM_I2C_MSTR_ERR_BUS_ERR:
+ 275:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: Master encountered a bus error. Bus error is misplace
+ 762              		.loc 1 275 0
+ 763 0064 0D48     		ldr	r0, .L53+20
+ 764              	.LVL162:
+ 765 0066 FFF7FEFF 		bl	SW_TX_PutString
+ 766              	.LVL163:
+ 767 006a FFF7FEFF 		bl	SW_TX_PutCRLF
+ 768              	.LVL164:
+ 769 006e 0AE0     		b	.L42
+ 770              	.LVL165:
+ 771              	.L49:
+ 276:I2C_EEPROM.c  ****         case I2CM_I2C_MSTR_ERR_ABORT_START:
+ 277:I2C_EEPROM.c  ****             SW_TX_PutString("Error condition: The start condition generation was aborted due to beg
+ 772              		.loc 1 277 0
+ 773 0070 0B48     		ldr	r0, .L53+24
+ 774              	.LVL166:
+ 775 0072 FFF7FEFF 		bl	SW_TX_PutString
+ 776              	.LVL167:
+ 777 0076 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 778              	.LVL168:
+ 779 007a 04E0     		b	.L42
+ 780              	.LVL169:
+ 781              	.L43:
+ 278:I2C_EEPROM.c  ****         default: SW_TX_PutString("unhandles I2C error condition"); SW_TX_PutCRLF();
+ 782              		.loc 1 278 0
+ 783 007c 0948     		ldr	r0, .L53+28
+ 784              	.LVL170:
+ 785 007e FFF7FEFF 		bl	SW_TX_PutString
+ 786              	.LVL171:
+ 787 0082 FFF7FEFF 		bl	SW_TX_PutCRLF
+ 788              	.LVL172:
+ 789              	.L42:
+ 279:I2C_EEPROM.c  ****     }
+ 280:I2C_EEPROM.c  **** }
+ 790              		.loc 1 280 0
+ 791              		@ sp needed
+ 792 0086 08BD     		pop	{r3, pc}
+ 793              	.L54:
+ 794              		.align	2
+ 795              	.L53:
+ 796 0088 EC040000 		.word	.LC36
+ 797 008c 10050000 		.word	.LC38
+ 798 0090 30050000 		.word	.LC40
+ 799 0094 5C050000 		.word	.LC42
+ 800 0098 84050000 		.word	.LC44
+ 801 009c B0050000 		.word	.LC46
+ 802 00a0 14060000 		.word	.LC48
+ 803 00a4 BC060000 		.word	.LC50
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 20
+
+
+ 804              		.cfi_endproc
+ 805              	.LFE44:
+ 806              		.size	debugI2CTransfer, .-debugI2CTransfer
+ 807              		.comm	debugStr,50,4
+ 808              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 809              		.align	2
+ 810              	.LC0:
+ 811 0000 436F756C 		.ascii	"Could not beginn I2C transmittion (EEPROM, read), r"
+ 811      64206E6F 
+ 811      74206265 
+ 811      67696E6E 
+ 811      20493243 
+ 812 0033 65616420 		.ascii	"ead aborted\000"
+ 812      61626F72 
+ 812      74656400 
+ 813 003f 00       		.space	1
+ 814              	.LC4:
+ 815 0040 436F756C 		.ascii	"Could not beginn I2C transmittion (EEPROM), write a"
+ 815      64206E6F 
+ 815      74206265 
+ 815      67696E6E 
+ 815      20493243 
+ 816 0073 626F7274 		.ascii	"borted\000"
+ 816      656400
+ 817 007a 0000     		.space	2
+ 818              	.LC6:
+ 819 007c 6D617374 		.ascii	"master status is cleared\000"
+ 819      65722073 
+ 819      74617475 
+ 819      73206973 
+ 819      20636C65 
+ 820 0095 000000   		.space	3
+ 821              	.LC8:
+ 822 0098 52656164 		.ascii	"Read transfer complete.\000"
+ 822      20747261 
+ 822      6E736665 
+ 822      7220636F 
+ 822      6D706C65 
+ 823              	.LC10:
+ 824 00b0 54686520 		.ascii	"The error condition status bits must be checked to "
+ 824      6572726F 
+ 824      7220636F 
+ 824      6E646974 
+ 824      696F6E20 
+ 825 00e3 656E7375 		.ascii	"ensure that read transfer was completed successfull"
+ 825      72652074 
+ 825      68617420 
+ 825      72656164 
+ 825      20747261 
+ 826 0116 792E00   		.ascii	"y.\000"
+ 827 0119 000000   		.space	3
+ 828              	.LC12:
+ 829 011c 57726974 		.ascii	"Write transfer complete.\000"
+ 829      65207472 
+ 829      616E7366 
+ 829      65722063 
+ 829      6F6D706C 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 21
+
+
+ 830 0135 000000   		.space	3
+ 831              	.LC14:
+ 832 0138 54686520 		.ascii	"The error condition status bits must be checked to "
+ 832      6572726F 
+ 832      7220636F 
+ 832      6E646974 
+ 832      696F6E20 
+ 833 016b 656E7375 		.ascii	"ensure that write transfer was completed successful"
+ 833      72652074 
+ 833      68617420 
+ 833      77726974 
+ 833      65207472 
+ 834 019e 6C792E00 		.ascii	"ly.\000"
+ 835 01a2 0000     		.space	2
+ 836              	.LC16:
+ 837 01a4 5472616E 		.ascii	"Transfer in progress.\000"
+ 837      73666572 
+ 837      20696E20 
+ 837      70726F67 
+ 837      72657373 
+ 838 01ba 0000     		.space	2
+ 839              	.LC18:
+ 840 01bc 5472616E 		.ascii	"Transfer has been halted. The I2C bus is waiting fo"
+ 840      73666572 
+ 840      20686173 
+ 840      20626565 
+ 840      6E206861 
+ 841 01ef 72205265 		.ascii	"r ReStart or Stop condition generation.\000"
+ 841      53746172 
+ 841      74206F72 
+ 841      2053746F 
+ 841      7020636F 
+ 842 0217 00       		.space	1
+ 843              	.LC20:
+ 844 0218 4572726F 		.ascii	"Error condition: Write transfer completed before al"
+ 844      7220636F 
+ 844      6E646974 
+ 844      696F6E3A 
+ 844      20577269 
+ 845 024b 6C206279 		.ascii	"l bytes were transferred.\000"
+ 845      74657320 
+ 845      77657265 
+ 845      20747261 
+ 845      6E736665 
+ 846 0265 000000   		.space	3
+ 847              	.LC22:
+ 848 0268 54686520 		.ascii	"The slave NAKed the byte which was expected to be A"
+ 848      736C6176 
+ 848      65204E41 
+ 848      4B656420 
+ 848      74686520 
+ 849 029b 434B6564 		.ascii	"CKed.\000"
+ 849      2E00
+ 850 02a1 000000   		.space	3
+ 851              	.LC24:
+ 852 02a4 4572726F 		.ascii	"Error condition: Slave did not acknowledge address."
+ 852      7220636F 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 22
+
+
+ 852      6E646974 
+ 852      696F6E3A 
+ 852      20536C61 
+ 853 02d7 00       		.ascii	"\000"
+ 854              	.LC26:
+ 855 02d8 4572726F 		.ascii	"Error condition: Master lost arbitration during com"
+ 855      7220636F 
+ 855      6E646974 
+ 855      696F6E3A 
+ 855      204D6173 
+ 856 030b 6D756E69 		.ascii	"munications with slave.\000"
+ 856      63617469 
+ 856      6F6E7320 
+ 856      77697468 
+ 856      20736C61 
+ 857 0323 00       		.space	1
+ 858              	.LC28:
+ 859 0324 4572726F 		.ascii	"Error condition: bus error occurred during master t"
+ 859      7220636F 
+ 859      6E646974 
+ 859      696F6E3A 
+ 859      20627573 
+ 860 0357 72616E73 		.ascii	"ransfer due to misplaced Start or Stop condition on"
+ 860      66657220 
+ 860      64756520 
+ 860      746F206D 
+ 860      6973706C 
+ 861 038a 20746865 		.ascii	" the bus.\000"
+ 861      20627573 
+ 861      2E00
+ 862              	.LC30:
+ 863 0394 4572726F 		.ascii	"Error condition: Slave was addressed by another mas"
+ 863      7220636F 
+ 863      6E646974 
+ 863      696F6E3A 
+ 863      20536C61 
+ 864 03c7 74657220 		.ascii	"ter while master performed the start condition gene"
+ 864      7768696C 
+ 864      65206D61 
+ 864      73746572 
+ 864      20706572 
+ 865 03fa 72617469 		.ascii	"ration. As a result, master has automatically switc"
+ 865      6F6E2E20 
+ 865      41732061 
+ 865      20726573 
+ 865      756C742C 
+ 866 042d 68656420 		.ascii	"hed to slave mode and is responding. The master tra"
+ 866      746F2073 
+ 866      6C617665 
+ 866      206D6F64 
+ 866      6520616E 
+ 867 0460 6E736163 		.ascii	"nsaction has not taken place\000"
+ 867      74696F6E 
+ 867      20686173 
+ 867      206E6F74 
+ 867      2074616B 
+ 868 047d 000000   		.space	3
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 23
+
+
+ 869              	.LC32:
+ 870 0480 4572726F 		.ascii	"Error condition: This is the ORed value of all erro"
+ 870      7220636F 
+ 870      6E646974 
+ 870      696F6E3A 
+ 870      20546869 
+ 871 04b3 7220636F 		.ascii	"r conditions provided above.\000"
+ 871      6E646974 
+ 871      696F6E73 
+ 871      2070726F 
+ 871      76696465 
+ 872              	.LC34:
+ 873 04d0 756E6861 		.ascii	"unhandled 12c master status\000"
+ 873      6E646C65 
+ 873      64203132 
+ 873      63206D61 
+ 873      73746572 
+ 874              	.LC36:
+ 875 04ec 46756E63 		.ascii	"Function complete without error.\000"
+ 875      74696F6E 
+ 875      20636F6D 
+ 875      706C6574 
+ 875      65207769 
+ 876 050d 000000   		.space	3
+ 877              	.LC38:
+ 878 0510 42757320 		.ascii	"Bus is busy. Nothing was sent\000"
+ 878      69732062 
+ 878      7573792E 
+ 878      204E6F74 
+ 878      68696E67 
+ 879 052e 0000     		.space	2
+ 880              	.LC40:
+ 881 0530 4D617374 		.ascii	"Master is not ready for to start transfer.\000"
+ 881      65722069 
+ 881      73206E6F 
+ 881      74207265 
+ 881      61647920 
+ 882 055b 00       		.space	1
+ 883              	.LC42:
+ 884 055c 4572726F 		.ascii	"Error condition: Last byte was NAKed.\000"
+ 884      7220636F 
+ 884      6E646974 
+ 884      696F6E3A 
+ 884      204C6173 
+ 885 0582 0000     		.space	2
+ 886              	.LC44:
+ 887 0584 4572726F 		.ascii	"Error condition: Master lost arbitration.\000"
+ 887      7220636F 
+ 887      6E646974 
+ 887      696F6E3A 
+ 887      204D6173 
+ 888 05ae 0000     		.space	2
+ 889              	.LC46:
+ 890 05b0 4572726F 		.ascii	"Error condition: Master encountered a bus error. Bu"
+ 890      7220636F 
+ 890      6E646974 
+ 890      696F6E3A 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 24
+
+
+ 890      204D6173 
+ 891 05e3 73206572 		.ascii	"s error is misplaced start or stop detection.\000"
+ 891      726F7220 
+ 891      6973206D 
+ 891      6973706C 
+ 891      61636564 
+ 892 0611 000000   		.space	3
+ 893              	.LC48:
+ 894 0614 4572726F 		.ascii	"Error condition: The start condition generation was"
+ 894      7220636F 
+ 894      6E646974 
+ 894      696F6E3A 
+ 894      20546865 
+ 895 0647 2061626F 		.ascii	" aborted due to beginning of Slave operation. This "
+ 895      72746564 
+ 895      20647565 
+ 895      20746F20 
+ 895      62656769 
+ 896 067a 6572726F 		.ascii	"error condition is only applicable for Multi-Master"
+ 896      7220636F 
+ 896      6E646974 
+ 896      696F6E20 
+ 896      6973206F 
+ 897 06ad 2D536C61 		.ascii	"-Slave mode.\000"
+ 897      7665206D 
+ 897      6F64652E 
+ 897      00
+ 898 06ba 0000     		.space	2
+ 899              	.LC50:
+ 900 06bc 756E6861 		.ascii	"unhandles I2C error condition\000"
+ 900      6E646C65 
+ 900      73204932 
+ 900      43206572 
+ 900      726F7220 
+ 901 06da 0000     		.text
+ 902              	.Letext0:
+ 903              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.
+ 904              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.
+ 905              		.file 4 "Generated_Source\\PSoC4/cytypes.h"
+ 906              		.file 5 "Generated_Source\\PSoC4/I2CM_I2C.h"
+ 907              		.file 6 "Generated_Source\\PSoC4/CyLib.h"
+ 908              		.file 7 "Generated_Source\\PSoC4/SW_TX.h"
+ 909              		.file 8 "Generated_Source\\PSoC4/BLE_Stack.h"
+ 910              		.file 9 "common.h"
+ 911              		.section	.debug_info,"",%progbits
+ 912              	.Ldebug_info0:
+ 913 0000 040C0000 		.4byte	0xc04
+ 914 0004 0400     		.2byte	0x4
+ 915 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 916 000a 04       		.byte	0x4
+ 917 000b 01       		.uleb128 0x1
+ 918 000c 8D040000 		.4byte	.LASF114
+ 919 0010 01       		.byte	0x1
+ 920 0011 37060000 		.4byte	.LASF115
+ 921 0015 B8020000 		.4byte	.LASF116
+ 922 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 923 001d 00000000 		.4byte	0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 25
+
+
+ 924 0021 00000000 		.4byte	.Ldebug_line0
+ 925 0025 02       		.uleb128 0x2
+ 926 0026 04       		.byte	0x4
+ 927 0027 04       		.byte	0x4
+ 928 0028 2F000000 		.4byte	.LASF0
+ 929 002c 02       		.uleb128 0x2
+ 930 002d 01       		.byte	0x1
+ 931 002e 06       		.byte	0x6
+ 932 002f 2B060000 		.4byte	.LASF1
+ 933 0033 02       		.uleb128 0x2
+ 934 0034 01       		.byte	0x1
+ 935 0035 08       		.byte	0x8
+ 936 0036 AE050000 		.4byte	.LASF2
+ 937 003a 02       		.uleb128 0x2
+ 938 003b 02       		.byte	0x2
+ 939 003c 05       		.byte	0x5
+ 940 003d 79020000 		.4byte	.LASF3
+ 941 0041 02       		.uleb128 0x2
+ 942 0042 02       		.byte	0x2
+ 943 0043 07       		.byte	0x7
+ 944 0044 6D070000 		.4byte	.LASF4
+ 945 0048 02       		.uleb128 0x2
+ 946 0049 04       		.byte	0x4
+ 947 004a 05       		.byte	0x5
+ 948 004b 85030000 		.4byte	.LASF5
+ 949 004f 03       		.uleb128 0x3
+ 950 0050 0D010000 		.4byte	.LASF10
+ 951 0054 02       		.byte	0x2
+ 952 0055 41       		.byte	0x41
+ 953 0056 5A000000 		.4byte	0x5a
+ 954 005a 02       		.uleb128 0x2
+ 955 005b 04       		.byte	0x4
+ 956 005c 07       		.byte	0x7
+ 957 005d E3060000 		.4byte	.LASF6
+ 958 0061 02       		.uleb128 0x2
+ 959 0062 08       		.byte	0x8
+ 960 0063 05       		.byte	0x5
+ 961 0064 FF000000 		.4byte	.LASF7
+ 962 0068 02       		.uleb128 0x2
+ 963 0069 08       		.byte	0x8
+ 964 006a 07       		.byte	0x7
+ 965 006b 6E030000 		.4byte	.LASF8
+ 966 006f 04       		.uleb128 0x4
+ 967 0070 04       		.byte	0x4
+ 968 0071 05       		.byte	0x5
+ 969 0072 696E7400 		.ascii	"int\000"
+ 970 0076 02       		.uleb128 0x2
+ 971 0077 04       		.byte	0x4
+ 972 0078 07       		.byte	0x7
+ 973 0079 A1060000 		.4byte	.LASF9
+ 974 007d 03       		.uleb128 0x3
+ 975 007e 31020000 		.4byte	.LASF11
+ 976 0082 03       		.byte	0x3
+ 977 0083 2D       		.byte	0x2d
+ 978 0084 4F000000 		.4byte	0x4f
+ 979 0088 05       		.uleb128 0x5
+ 980 0089 6D050000 		.4byte	.LASF12
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 26
+
+
+ 981 008d 04       		.byte	0x4
+ 982 008e 9801     		.2byte	0x198
+ 983 0090 33000000 		.4byte	0x33
+ 984 0094 05       		.uleb128 0x5
+ 985 0095 AE010000 		.4byte	.LASF13
+ 986 0099 04       		.byte	0x4
+ 987 009a 9901     		.2byte	0x199
+ 988 009c 41000000 		.4byte	0x41
+ 989 00a0 05       		.uleb128 0x5
+ 990 00a1 70080000 		.4byte	.LASF14
+ 991 00a5 04       		.byte	0x4
+ 992 00a6 9A01     		.2byte	0x19a
+ 993 00a8 5A000000 		.4byte	0x5a
+ 994 00ac 05       		.uleb128 0x5
+ 995 00ad 97000000 		.4byte	.LASF15
+ 996 00b1 04       		.byte	0x4
+ 997 00b2 9E01     		.2byte	0x19e
+ 998 00b4 25000000 		.4byte	0x25
+ 999 00b8 02       		.uleb128 0x2
+ 1000 00b9 08       		.byte	0x8
+ 1001 00ba 04       		.byte	0x4
+ 1002 00bb 6F0A0000 		.4byte	.LASF16
+ 1003 00bf 05       		.uleb128 0x5
+ 1004 00c0 F9000000 		.4byte	.LASF17
+ 1005 00c4 04       		.byte	0x4
+ 1006 00c5 A901     		.2byte	0x1a9
+ 1007 00c7 CB000000 		.4byte	0xcb
+ 1008 00cb 02       		.uleb128 0x2
+ 1009 00cc 01       		.byte	0x1
+ 1010 00cd 08       		.byte	0x8
+ 1011 00ce EE070000 		.4byte	.LASF18
+ 1012 00d2 02       		.uleb128 0x2
+ 1013 00d3 04       		.byte	0x4
+ 1014 00d4 07       		.byte	0x7
+ 1015 00d5 CF000000 		.4byte	.LASF19
+ 1016 00d9 06       		.uleb128 0x6
+ 1017 00da 01       		.byte	0x1
+ 1018 00db 08       		.byte	0x8
+ 1019 00dc 4201     		.2byte	0x142
+ 1020 00de 96020000 		.4byte	0x296
+ 1021 00e2 07       		.uleb128 0x7
+ 1022 00e3 1A020000 		.4byte	.LASF20
+ 1023 00e7 00       		.sleb128 0
+ 1024 00e8 07       		.uleb128 0x7
+ 1025 00e9 7D010000 		.4byte	.LASF21
+ 1026 00ed 01       		.sleb128 1
+ 1027 00ee 07       		.uleb128 0x7
+ 1028 00ef 1A0A0000 		.4byte	.LASF22
+ 1029 00f3 02       		.sleb128 2
+ 1030 00f4 07       		.uleb128 0x7
+ 1031 00f5 18090000 		.4byte	.LASF23
+ 1032 00f9 03       		.sleb128 3
+ 1033 00fa 07       		.uleb128 0x7
+ 1034 00fb 30010000 		.4byte	.LASF24
+ 1035 00ff 04       		.sleb128 4
+ 1036 0100 07       		.uleb128 0x7
+ 1037 0101 2C040000 		.4byte	.LASF25
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 27
+
+
+ 1038 0105 05       		.sleb128 5
+ 1039 0106 07       		.uleb128 0x7
+ 1040 0107 4F000000 		.4byte	.LASF26
+ 1041 010b 06       		.sleb128 6
+ 1042 010c 07       		.uleb128 0x7
+ 1043 010d 76090000 		.4byte	.LASF27
+ 1044 0111 20       		.sleb128 32
+ 1045 0112 07       		.uleb128 0x7
+ 1046 0113 F5060000 		.4byte	.LASF28
+ 1047 0117 21       		.sleb128 33
+ 1048 0118 07       		.uleb128 0x7
+ 1049 0119 0B000000 		.4byte	.LASF29
+ 1050 011d 22       		.sleb128 34
+ 1051 011e 07       		.uleb128 0x7
+ 1052 011f 48040000 		.4byte	.LASF30
+ 1053 0123 23       		.sleb128 35
+ 1054 0124 07       		.uleb128 0x7
+ 1055 0125 85060000 		.4byte	.LASF31
+ 1056 0129 24       		.sleb128 36
+ 1057 012a 07       		.uleb128 0x7
+ 1058 012b B5000000 		.4byte	.LASF32
+ 1059 012f 25       		.sleb128 37
+ 1060 0130 07       		.uleb128 0x7
+ 1061 0131 E3030000 		.4byte	.LASF33
+ 1062 0135 26       		.sleb128 38
+ 1063 0136 07       		.uleb128 0x7
+ 1064 0137 C4030000 		.4byte	.LASF34
+ 1065 013b 27       		.sleb128 39
+ 1066 013c 07       		.uleb128 0x7
+ 1067 013d F60A0000 		.4byte	.LASF35
+ 1068 0141 28       		.sleb128 40
+ 1069 0142 07       		.uleb128 0x7
+ 1070 0143 2D070000 		.4byte	.LASF36
+ 1071 0147 29       		.sleb128 41
+ 1072 0148 07       		.uleb128 0x7
+ 1073 0149 87070000 		.4byte	.LASF37
+ 1074 014d 2A       		.sleb128 42
+ 1075 014e 07       		.uleb128 0x7
+ 1076 014f 500A0000 		.4byte	.LASF38
+ 1077 0153 2B       		.sleb128 43
+ 1078 0154 07       		.uleb128 0x7
+ 1079 0155 180B0000 		.4byte	.LASF39
+ 1080 0159 2C       		.sleb128 44
+ 1081 015a 07       		.uleb128 0x7
+ 1082 015b 24030000 		.4byte	.LASF40
+ 1083 015f 2D       		.sleb128 45
+ 1084 0160 07       		.uleb128 0x7
+ 1085 0161 94020000 		.4byte	.LASF41
+ 1086 0165 2E       		.sleb128 46
+ 1087 0166 07       		.uleb128 0x7
+ 1088 0167 7E0B0000 		.4byte	.LASF42
+ 1089 016b 2F       		.sleb128 47
+ 1090 016c 07       		.uleb128 0x7
+ 1091 016d D8000000 		.4byte	.LASF43
+ 1092 0171 30       		.sleb128 48
+ 1093 0172 07       		.uleb128 0x7
+ 1094 0173 49050000 		.4byte	.LASF44
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 28
+
+
+ 1095 0177 31       		.sleb128 49
+ 1096 0178 07       		.uleb128 0x7
+ 1097 0179 4D030000 		.4byte	.LASF45
+ 1098 017d 32       		.sleb128 50
+ 1099 017e 07       		.uleb128 0x7
+ 1100 017f B0070000 		.4byte	.LASF46
+ 1101 0183 33       		.sleb128 51
+ 1102 0184 07       		.uleb128 0x7
+ 1103 0185 7D000000 		.4byte	.LASF47
+ 1104 0189 C000     		.sleb128 64
+ 1105 018b 07       		.uleb128 0x7
+ 1106 018c C8060000 		.4byte	.LASF48
+ 1107 0190 C100     		.sleb128 65
+ 1108 0192 07       		.uleb128 0x7
+ 1109 0193 600B0000 		.4byte	.LASF49
+ 1110 0197 C200     		.sleb128 66
+ 1111 0199 07       		.uleb128 0x7
+ 1112 019a 15080000 		.4byte	.LASF50
+ 1113 019e C300     		.sleb128 67
+ 1114 01a0 07       		.uleb128 0x7
+ 1115 01a1 F5090000 		.4byte	.LASF51
+ 1116 01a5 C400     		.sleb128 68
+ 1117 01a7 07       		.uleb128 0x7
+ 1118 01a8 A2090000 		.4byte	.LASF52
+ 1119 01ac C500     		.sleb128 69
+ 1120 01ae 07       		.uleb128 0x7
+ 1121 01af 45010000 		.4byte	.LASF53
+ 1122 01b3 C600     		.sleb128 70
+ 1123 01b5 07       		.uleb128 0x7
+ 1124 01b6 0D060000 		.4byte	.LASF54
+ 1125 01ba C700     		.sleb128 71
+ 1126 01bc 07       		.uleb128 0x7
+ 1127 01bd 44060000 		.4byte	.LASF55
+ 1128 01c1 C800     		.sleb128 72
+ 1129 01c3 07       		.uleb128 0x7
+ 1130 01c4 0B030000 		.4byte	.LASF56
+ 1131 01c8 C900     		.sleb128 73
+ 1132 01ca 07       		.uleb128 0x7
+ 1133 01cb 33080000 		.4byte	.LASF57
+ 1134 01cf CA00     		.sleb128 74
+ 1135 01d1 07       		.uleb128 0x7
+ 1136 01d2 DA010000 		.4byte	.LASF58
+ 1137 01d6 CB00     		.sleb128 75
+ 1138 01d8 07       		.uleb128 0x7
+ 1139 01d9 BC050000 		.4byte	.LASF59
+ 1140 01dd CC00     		.sleb128 76
+ 1141 01df 07       		.uleb128 0x7
+ 1142 01e0 35000000 		.4byte	.LASF60
+ 1143 01e4 CD00     		.sleb128 77
+ 1144 01e6 07       		.uleb128 0x7
+ 1145 01e7 C9090000 		.4byte	.LASF61
+ 1146 01eb CE00     		.sleb128 78
+ 1147 01ed 07       		.uleb128 0x7
+ 1148 01ee D6050000 		.4byte	.LASF62
+ 1149 01f2 CF00     		.sleb128 79
+ 1150 01f4 07       		.uleb128 0x7
+ 1151 01f5 D70A0000 		.4byte	.LASF63
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 29
+
+
+ 1152 01f9 D000     		.sleb128 80
+ 1153 01fb 07       		.uleb128 0x7
+ 1154 01fc 51080000 		.4byte	.LASF64
+ 1155 0200 D100     		.sleb128 81
+ 1156 0202 07       		.uleb128 0x7
+ 1157 0203 0B040000 		.4byte	.LASF65
+ 1158 0207 D200     		.sleb128 82
+ 1159 0209 07       		.uleb128 0x7
+ 1160 020a A3030000 		.4byte	.LASF66
+ 1161 020e D300     		.sleb128 83
+ 1162 0210 07       		.uleb128 0x7
+ 1163 0211 F9010000 		.4byte	.LASF67
+ 1164 0215 D400     		.sleb128 84
+ 1165 0217 07       		.uleb128 0x7
+ 1166 0218 3C0B0000 		.4byte	.LASF68
+ 1167 021c D500     		.sleb128 85
+ 1168 021e 07       		.uleb128 0x7
+ 1169 021f AD0A0000 		.4byte	.LASF69
+ 1170 0223 D600     		.sleb128 86
+ 1171 0225 07       		.uleb128 0x7
+ 1172 0226 840A0000 		.4byte	.LASF70
+ 1173 022a D700     		.sleb128 87
+ 1174 022c 07       		.uleb128 0x7
+ 1175 022d 4A070000 		.4byte	.LASF71
+ 1176 0231 D800     		.sleb128 88
+ 1177 0233 07       		.uleb128 0x7
+ 1178 0234 88050000 		.4byte	.LASF72
+ 1179 0238 F000     		.sleb128 112
+ 1180 023a 07       		.uleb128 0x7
+ 1181 023b 50090000 		.4byte	.LASF73
+ 1182 023f F100     		.sleb128 113
+ 1183 0241 07       		.uleb128 0x7
+ 1184 0242 F3070000 		.4byte	.LASF74
+ 1185 0246 F200     		.sleb128 114
+ 1186 0248 07       		.uleb128 0x7
+ 1187 0249 3A020000 		.4byte	.LASF75
+ 1188 024d F300     		.sleb128 115
+ 1189 024f 07       		.uleb128 0x7
+ 1190 0250 2B050000 		.4byte	.LASF76
+ 1191 0254 F400     		.sleb128 116
+ 1192 0256 07       		.uleb128 0x7
+ 1193 0257 0C070000 		.4byte	.LASF77
+ 1194 025b F500     		.sleb128 117
+ 1195 025d 07       		.uleb128 0x7
+ 1196 025e 58020000 		.4byte	.LASF78
+ 1197 0262 F600     		.sleb128 118
+ 1198 0264 07       		.uleb128 0x7
+ 1199 0265 31090000 		.4byte	.LASF79
+ 1200 0269 F700     		.sleb128 119
+ 1201 026b 07       		.uleb128 0x7
+ 1202 026c DD080000 		.4byte	.LASF80
+ 1203 0270 F800     		.sleb128 120
+ 1204 0272 07       		.uleb128 0x7
+ 1205 0273 BA080000 		.4byte	.LASF81
+ 1206 0277 F900     		.sleb128 121
+ 1207 0279 07       		.uleb128 0x7
+ 1208 027a 2C0A0000 		.4byte	.LASF82
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 30
+
+
+ 1209 027e FA00     		.sleb128 122
+ 1210 0280 07       		.uleb128 0x7
+ 1211 0281 77080000 		.4byte	.LASF83
+ 1212 0285 FA01     		.sleb128 250
+ 1213 0287 07       		.uleb128 0x7
+ 1214 0288 6E040000 		.4byte	.LASF84
+ 1215 028c FB01     		.sleb128 251
+ 1216 028e 07       		.uleb128 0x7
+ 1217 028f 760A0000 		.4byte	.LASF85
+ 1218 0293 FF01     		.sleb128 255
+ 1219 0295 00       		.byte	0
+ 1220 0296 08       		.uleb128 0x8
+ 1221 0297 B5010000 		.4byte	.LASF88
+ 1222 029b 01       		.byte	0x1
+ 1223 029c 10       		.byte	0x10
+ 1224 029d 88000000 		.4byte	0x88
+ 1225 02a1 00000000 		.4byte	.LFB37
+ 1226 02a5 48000000 		.4byte	.LFE37-.LFB37
+ 1227 02a9 01       		.uleb128 0x1
+ 1228 02aa 9C       		.byte	0x9c
+ 1229 02ab 72030000 		.4byte	0x372
+ 1230 02af 09       		.uleb128 0x9
+ 1231 02b0 B3080000 		.4byte	.LASF90
+ 1232 02b4 01       		.byte	0x1
+ 1233 02b5 10       		.byte	0x10
+ 1234 02b6 88000000 		.4byte	0x88
+ 1235 02ba 00000000 		.4byte	.LLST0
+ 1236 02be 0A       		.uleb128 0xa
+ 1237 02bf 0F080000 		.4byte	.LASF86
+ 1238 02c3 01       		.byte	0x1
+ 1239 02c4 16       		.byte	0x16
+ 1240 02c5 88000000 		.4byte	0x88
+ 1241 02c9 21000000 		.4byte	.LLST1
+ 1242 02cd 0A       		.uleb128 0xa
+ 1243 02ce 95080000 		.4byte	.LASF87
+ 1244 02d2 01       		.byte	0x1
+ 1245 02d3 1B       		.byte	0x1b
+ 1246 02d4 88000000 		.4byte	0x88
+ 1247 02d8 3F000000 		.4byte	.LLST2
+ 1248 02dc 0B       		.uleb128 0xb
+ 1249 02dd 0A000000 		.4byte	.LVL2
+ 1250 02e1 590B0000 		.4byte	0xb59
+ 1251 02e5 EF020000 		.4byte	0x2ef
+ 1252 02e9 0C       		.uleb128 0xc
+ 1253 02ea 01       		.uleb128 0x1
+ 1254 02eb 50       		.byte	0x50
+ 1255 02ec 01       		.uleb128 0x1
+ 1256 02ed 32       		.byte	0x32
+ 1257 02ee 00       		.byte	0
+ 1258 02ef 0B       		.uleb128 0xb
+ 1259 02f0 12000000 		.4byte	.LVL3
+ 1260 02f4 6A0B0000 		.4byte	0xb6a
+ 1261 02f8 08030000 		.4byte	0x308
+ 1262 02fc 0C       		.uleb128 0xc
+ 1263 02fd 01       		.uleb128 0x1
+ 1264 02fe 51       		.byte	0x51
+ 1265 02ff 01       		.uleb128 0x1
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 31
+
+
+ 1266 0300 30       		.byte	0x30
+ 1267 0301 0C       		.uleb128 0xc
+ 1268 0302 01       		.uleb128 0x1
+ 1269 0303 50       		.byte	0x50
+ 1270 0304 02       		.uleb128 0x2
+ 1271 0305 08       		.byte	0x8
+ 1272 0306 50       		.byte	0x50
+ 1273 0307 00       		.byte	0
+ 1274 0308 0B       		.uleb128 0xb
+ 1275 0309 1E000000 		.4byte	.LVL6
+ 1276 030d 850B0000 		.4byte	0xb85
+ 1277 0311 1C030000 		.4byte	0x31c
+ 1278 0315 0C       		.uleb128 0xc
+ 1279 0316 01       		.uleb128 0x1
+ 1280 0317 50       		.byte	0x50
+ 1281 0318 02       		.uleb128 0x2
+ 1282 0319 74       		.byte	0x74
+ 1283 031a 00       		.sleb128 0
+ 1284 031b 00       		.byte	0
+ 1285 031c 0B       		.uleb128 0xb
+ 1286 031d 26000000 		.4byte	.LVL9
+ 1287 0321 9B0B0000 		.4byte	0xb9b
+ 1288 0325 33030000 		.4byte	0x333
+ 1289 0329 0C       		.uleb128 0xc
+ 1290 032a 01       		.uleb128 0x1
+ 1291 032b 50       		.byte	0x50
+ 1292 032c 05       		.uleb128 0x5
+ 1293 032d 03       		.byte	0x3
+ 1294 032e 00000000 		.4byte	.LC0
+ 1295 0332 00       		.byte	0
+ 1296 0333 0D       		.uleb128 0xd
+ 1297 0334 2A000000 		.4byte	.LVL10
+ 1298 0338 B70B0000 		.4byte	0xbb7
+ 1299 033c 0B       		.uleb128 0xb
+ 1300 033d 32000000 		.4byte	.LVL11
+ 1301 0341 BE0B0000 		.4byte	0xbbe
+ 1302 0345 55030000 		.4byte	0x355
+ 1303 0349 0C       		.uleb128 0xc
+ 1304 034a 01       		.uleb128 0x1
+ 1305 034b 51       		.byte	0x51
+ 1306 034c 01       		.uleb128 0x1
+ 1307 034d 31       		.byte	0x31
+ 1308 034e 0C       		.uleb128 0xc
+ 1309 034f 01       		.uleb128 0x1
+ 1310 0350 50       		.byte	0x50
+ 1311 0351 02       		.uleb128 0x2
+ 1312 0352 08       		.byte	0x8
+ 1313 0353 50       		.byte	0x50
+ 1314 0354 00       		.byte	0
+ 1315 0355 0B       		.uleb128 0xb
+ 1316 0356 38000000 		.4byte	.LVL12
+ 1317 035a D90B0000 		.4byte	0xbd9
+ 1318 035e 68030000 		.4byte	0x368
+ 1319 0362 0C       		.uleb128 0xc
+ 1320 0363 01       		.uleb128 0x1
+ 1321 0364 50       		.byte	0x50
+ 1322 0365 01       		.uleb128 0x1
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 32
+
+
+ 1323 0366 31       		.byte	0x31
+ 1324 0367 00       		.byte	0
+ 1325 0368 0D       		.uleb128 0xd
+ 1326 0369 3E000000 		.4byte	.LVL14
+ 1327 036d EF0B0000 		.4byte	0xbef
+ 1328 0371 00       		.byte	0
+ 1329 0372 08       		.uleb128 0x8
+ 1330 0373 9F000000 		.4byte	.LASF89
+ 1331 0377 01       		.byte	0x1
+ 1332 0378 33       		.byte	0x33
+ 1333 0379 AC000000 		.4byte	0xac
+ 1334 037d 00000000 		.4byte	.LFB38
+ 1335 0381 78000000 		.4byte	.LFE38-.LFB38
+ 1336 0385 01       		.uleb128 0x1
+ 1337 0386 9C       		.byte	0x9c
+ 1338 0387 E2040000 		.4byte	0x4e2
+ 1339 038b 09       		.uleb128 0x9
+ 1340 038c B3080000 		.4byte	.LASF90
+ 1341 0390 01       		.byte	0x1
+ 1342 0391 33       		.byte	0x33
+ 1343 0392 88000000 		.4byte	0x88
+ 1344 0396 5D000000 		.4byte	.LLST3
+ 1345 039a 0A       		.uleb128 0xa
+ 1346 039b F5050000 		.4byte	.LASF91
+ 1347 039f 01       		.byte	0x1
+ 1348 03a0 38       		.byte	0x38
+ 1349 03a1 88000000 		.4byte	0x88
+ 1350 03a5 7E000000 		.4byte	.LLST4
+ 1351 03a9 0A       		.uleb128 0xa
+ 1352 03aa FB050000 		.4byte	.LASF92
+ 1353 03ae 01       		.byte	0x1
+ 1354 03af 38       		.byte	0x38
+ 1355 03b0 88000000 		.4byte	0x88
+ 1356 03b4 91000000 		.4byte	.LLST5
+ 1357 03b8 0A       		.uleb128 0xa
+ 1358 03b9 01060000 		.4byte	.LASF93
+ 1359 03bd 01       		.byte	0x1
+ 1360 03be 38       		.byte	0x38
+ 1361 03bf 88000000 		.4byte	0x88
+ 1362 03c3 A4000000 		.4byte	.LLST6
+ 1363 03c7 0A       		.uleb128 0xa
+ 1364 03c8 07060000 		.4byte	.LASF94
+ 1365 03cc 01       		.byte	0x1
+ 1366 03cd 38       		.byte	0x38
+ 1367 03ce 88000000 		.4byte	0x88
+ 1368 03d2 B7000000 		.4byte	.LLST7
+ 1369 03d6 0E       		.uleb128 0xe
+ 1370 03d7 80070000 		.4byte	.LASF97
+ 1371 03db 01       		.byte	0x1
+ 1372 03dc 3B       		.byte	0x3b
+ 1373 03dd 88000000 		.4byte	0x88
+ 1374 03e1 0A       		.uleb128 0xa
+ 1375 03e2 95080000 		.4byte	.LASF87
+ 1376 03e6 01       		.byte	0x1
+ 1377 03e7 3D       		.byte	0x3d
+ 1378 03e8 88000000 		.4byte	0x88
+ 1379 03ec CA000000 		.4byte	.LLST8
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 33
+
+
+ 1380 03f0 0A       		.uleb128 0xa
+ 1381 03f1 9A090000 		.4byte	.LASF95
+ 1382 03f5 01       		.byte	0x1
+ 1383 03f6 58       		.byte	0x58
+ 1384 03f7 7D000000 		.4byte	0x7d
+ 1385 03fb E8000000 		.4byte	.LLST9
+ 1386 03ff 0F       		.uleb128 0xf
+ 1387 0400 6600     		.ascii	"f\000"
+ 1388 0402 01       		.byte	0x1
+ 1389 0403 59       		.byte	0x59
+ 1390 0404 AC000000 		.4byte	0xac
+ 1391 0408 01       		.uleb128 0x1
+ 1392 0409 50       		.byte	0x50
+ 1393 040a 0B       		.uleb128 0xb
+ 1394 040b 0A000000 		.4byte	.LVL18
+ 1395 040f 590B0000 		.4byte	0xb59
+ 1396 0413 1D040000 		.4byte	0x41d
+ 1397 0417 0C       		.uleb128 0xc
+ 1398 0418 01       		.uleb128 0x1
+ 1399 0419 50       		.byte	0x50
+ 1400 041a 01       		.uleb128 0x1
+ 1401 041b 35       		.byte	0x35
+ 1402 041c 00       		.byte	0
+ 1403 041d 0D       		.uleb128 0xd
+ 1404 041e 0E000000 		.4byte	.LVL19
+ 1405 0422 FB0B0000 		.4byte	0xbfb
+ 1406 0426 0B       		.uleb128 0xb
+ 1407 0427 16000000 		.4byte	.LVL20
+ 1408 042b 6A0B0000 		.4byte	0xb6a
+ 1409 042f 3F040000 		.4byte	0x43f
+ 1410 0433 0C       		.uleb128 0xc
+ 1411 0434 01       		.uleb128 0x1
+ 1412 0435 51       		.byte	0x51
+ 1413 0436 01       		.uleb128 0x1
+ 1414 0437 30       		.byte	0x30
+ 1415 0438 0C       		.uleb128 0xc
+ 1416 0439 01       		.uleb128 0x1
+ 1417 043a 50       		.byte	0x50
+ 1418 043b 02       		.uleb128 0x2
+ 1419 043c 08       		.byte	0x8
+ 1420 043d 50       		.byte	0x50
+ 1421 043e 00       		.byte	0
+ 1422 043f 0B       		.uleb128 0xb
+ 1423 0440 22000000 		.4byte	.LVL23
+ 1424 0444 850B0000 		.4byte	0xb85
+ 1425 0448 53040000 		.4byte	0x453
+ 1426 044c 0C       		.uleb128 0xc
+ 1427 044d 01       		.uleb128 0x1
+ 1428 044e 50       		.byte	0x50
+ 1429 044f 02       		.uleb128 0x2
+ 1430 0450 74       		.byte	0x74
+ 1431 0451 00       		.sleb128 0
+ 1432 0452 00       		.byte	0
+ 1433 0453 0B       		.uleb128 0xb
+ 1434 0454 2A000000 		.4byte	.LVL26
+ 1435 0458 9B0B0000 		.4byte	0xb9b
+ 1436 045c 6A040000 		.4byte	0x46a
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 34
+
+
+ 1437 0460 0C       		.uleb128 0xc
+ 1438 0461 01       		.uleb128 0x1
+ 1439 0462 50       		.byte	0x50
+ 1440 0463 05       		.uleb128 0x5
+ 1441 0464 03       		.byte	0x3
+ 1442 0465 00000000 		.4byte	.LC0
+ 1443 0469 00       		.byte	0
+ 1444 046a 0D       		.uleb128 0xd
+ 1445 046b 2E000000 		.4byte	.LVL27
+ 1446 046f B70B0000 		.4byte	0xbb7
+ 1447 0473 0B       		.uleb128 0xb
+ 1448 0474 36000000 		.4byte	.LVL28
+ 1449 0478 BE0B0000 		.4byte	0xbbe
+ 1450 047c 8C040000 		.4byte	0x48c
+ 1451 0480 0C       		.uleb128 0xc
+ 1452 0481 01       		.uleb128 0x1
+ 1453 0482 51       		.byte	0x51
+ 1454 0483 01       		.uleb128 0x1
+ 1455 0484 31       		.byte	0x31
+ 1456 0485 0C       		.uleb128 0xc
+ 1457 0486 01       		.uleb128 0x1
+ 1458 0487 50       		.byte	0x50
+ 1459 0488 02       		.uleb128 0x2
+ 1460 0489 08       		.byte	0x8
+ 1461 048a 50       		.byte	0x50
+ 1462 048b 00       		.byte	0
+ 1463 048c 0B       		.uleb128 0xb
+ 1464 048d 3C000000 		.4byte	.LVL29
+ 1465 0491 D90B0000 		.4byte	0xbd9
+ 1466 0495 9F040000 		.4byte	0x49f
+ 1467 0499 0C       		.uleb128 0xc
+ 1468 049a 01       		.uleb128 0x1
+ 1469 049b 50       		.byte	0x50
+ 1470 049c 01       		.uleb128 0x1
+ 1471 049d 30       		.byte	0x30
+ 1472 049e 00       		.byte	0
+ 1473 049f 0B       		.uleb128 0xb
+ 1474 04a0 44000000 		.4byte	.LVL31
+ 1475 04a4 D90B0000 		.4byte	0xbd9
+ 1476 04a8 B2040000 		.4byte	0x4b2
+ 1477 04ac 0C       		.uleb128 0xc
+ 1478 04ad 01       		.uleb128 0x1
+ 1479 04ae 50       		.byte	0x50
+ 1480 04af 01       		.uleb128 0x1
+ 1481 04b0 30       		.byte	0x30
+ 1482 04b1 00       		.byte	0
+ 1483 04b2 0B       		.uleb128 0xb
+ 1484 04b3 4C000000 		.4byte	.LVL33
+ 1485 04b7 D90B0000 		.4byte	0xbd9
+ 1486 04bb C5040000 		.4byte	0x4c5
+ 1487 04bf 0C       		.uleb128 0xc
+ 1488 04c0 01       		.uleb128 0x1
+ 1489 04c1 50       		.byte	0x50
+ 1490 04c2 01       		.uleb128 0x1
+ 1491 04c3 30       		.byte	0x30
+ 1492 04c4 00       		.byte	0
+ 1493 04c5 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 35
+
+
+ 1494 04c6 54000000 		.4byte	.LVL35
+ 1495 04ca D90B0000 		.4byte	0xbd9
+ 1496 04ce D8040000 		.4byte	0x4d8
+ 1497 04d2 0C       		.uleb128 0xc
+ 1498 04d3 01       		.uleb128 0x1
+ 1499 04d4 50       		.byte	0x50
+ 1500 04d5 01       		.uleb128 0x1
+ 1501 04d6 31       		.byte	0x31
+ 1502 04d7 00       		.byte	0
+ 1503 04d8 0D       		.uleb128 0xd
+ 1504 04d9 5A000000 		.4byte	.LVL37
+ 1505 04dd EF0B0000 		.4byte	0xbef
+ 1506 04e1 00       		.byte	0
+ 1507 04e2 08       		.uleb128 0x8
+ 1508 04e3 68000000 		.4byte	.LASF96
+ 1509 04e7 01       		.byte	0x1
+ 1510 04e8 60       		.byte	0x60
+ 1511 04e9 94000000 		.4byte	0x94
+ 1512 04ed 00000000 		.4byte	.LFB39
+ 1513 04f1 58000000 		.4byte	.LFE39-.LFB39
+ 1514 04f5 01       		.uleb128 0x1
+ 1515 04f6 9C       		.byte	0x9c
+ 1516 04f7 01060000 		.4byte	0x601
+ 1517 04fb 09       		.uleb128 0x9
+ 1518 04fc B3080000 		.4byte	.LASF90
+ 1519 0500 01       		.byte	0x1
+ 1520 0501 60       		.byte	0x60
+ 1521 0502 88000000 		.4byte	0x88
+ 1522 0506 0B010000 		.4byte	.LLST10
+ 1523 050a 0A       		.uleb128 0xa
+ 1524 050b F5050000 		.4byte	.LASF91
+ 1525 050f 01       		.byte	0x1
+ 1526 0510 65       		.byte	0x65
+ 1527 0511 88000000 		.4byte	0x88
+ 1528 0515 2C010000 		.4byte	.LLST11
+ 1529 0519 0A       		.uleb128 0xa
+ 1530 051a FB050000 		.4byte	.LASF92
+ 1531 051e 01       		.byte	0x1
+ 1532 051f 65       		.byte	0x65
+ 1533 0520 88000000 		.4byte	0x88
+ 1534 0524 3F010000 		.4byte	.LLST12
+ 1535 0528 0E       		.uleb128 0xe
+ 1536 0529 80070000 		.4byte	.LASF97
+ 1537 052d 01       		.byte	0x1
+ 1538 052e 68       		.byte	0x68
+ 1539 052f 88000000 		.4byte	0x88
+ 1540 0533 0A       		.uleb128 0xa
+ 1541 0534 95080000 		.4byte	.LASF87
+ 1542 0538 01       		.byte	0x1
+ 1543 0539 6A       		.byte	0x6a
+ 1544 053a 88000000 		.4byte	0x88
+ 1545 053e 52010000 		.4byte	.LLST13
+ 1546 0542 10       		.uleb128 0x10
+ 1547 0543 130A0000 		.4byte	.LASF98
+ 1548 0547 01       		.byte	0x1
+ 1549 0548 81       		.byte	0x81
+ 1550 0549 94000000 		.4byte	0x94
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 36
+
+
+ 1551 054d 01       		.uleb128 0x1
+ 1552 054e 50       		.byte	0x50
+ 1553 054f 0B       		.uleb128 0xb
+ 1554 0550 0A000000 		.4byte	.LVL46
+ 1555 0554 590B0000 		.4byte	0xb59
+ 1556 0558 62050000 		.4byte	0x562
+ 1557 055c 0C       		.uleb128 0xc
+ 1558 055d 01       		.uleb128 0x1
+ 1559 055e 50       		.byte	0x50
+ 1560 055f 01       		.uleb128 0x1
+ 1561 0560 35       		.byte	0x35
+ 1562 0561 00       		.byte	0
+ 1563 0562 0D       		.uleb128 0xd
+ 1564 0563 0E000000 		.4byte	.LVL47
+ 1565 0567 FB0B0000 		.4byte	0xbfb
+ 1566 056b 0B       		.uleb128 0xb
+ 1567 056c 16000000 		.4byte	.LVL48
+ 1568 0570 6A0B0000 		.4byte	0xb6a
+ 1569 0574 84050000 		.4byte	0x584
+ 1570 0578 0C       		.uleb128 0xc
+ 1571 0579 01       		.uleb128 0x1
+ 1572 057a 51       		.byte	0x51
+ 1573 057b 01       		.uleb128 0x1
+ 1574 057c 30       		.byte	0x30
+ 1575 057d 0C       		.uleb128 0xc
+ 1576 057e 01       		.uleb128 0x1
+ 1577 057f 50       		.byte	0x50
+ 1578 0580 02       		.uleb128 0x2
+ 1579 0581 08       		.byte	0x8
+ 1580 0582 50       		.byte	0x50
+ 1581 0583 00       		.byte	0
+ 1582 0584 0B       		.uleb128 0xb
+ 1583 0585 22000000 		.4byte	.LVL51
+ 1584 0589 850B0000 		.4byte	0xb85
+ 1585 058d 98050000 		.4byte	0x598
+ 1586 0591 0C       		.uleb128 0xc
+ 1587 0592 01       		.uleb128 0x1
+ 1588 0593 50       		.byte	0x50
+ 1589 0594 02       		.uleb128 0x2
+ 1590 0595 74       		.byte	0x74
+ 1591 0596 00       		.sleb128 0
+ 1592 0597 00       		.byte	0
+ 1593 0598 0B       		.uleb128 0xb
+ 1594 0599 2A000000 		.4byte	.LVL54
+ 1595 059d 9B0B0000 		.4byte	0xb9b
+ 1596 05a1 AF050000 		.4byte	0x5af
+ 1597 05a5 0C       		.uleb128 0xc
+ 1598 05a6 01       		.uleb128 0x1
+ 1599 05a7 50       		.byte	0x50
+ 1600 05a8 05       		.uleb128 0x5
+ 1601 05a9 03       		.byte	0x3
+ 1602 05aa 00000000 		.4byte	.LC0
+ 1603 05ae 00       		.byte	0
+ 1604 05af 0D       		.uleb128 0xd
+ 1605 05b0 2E000000 		.4byte	.LVL55
+ 1606 05b4 B70B0000 		.4byte	0xbb7
+ 1607 05b8 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 37
+
+
+ 1608 05b9 36000000 		.4byte	.LVL56
+ 1609 05bd BE0B0000 		.4byte	0xbbe
+ 1610 05c1 D1050000 		.4byte	0x5d1
+ 1611 05c5 0C       		.uleb128 0xc
+ 1612 05c6 01       		.uleb128 0x1
+ 1613 05c7 51       		.byte	0x51
+ 1614 05c8 01       		.uleb128 0x1
+ 1615 05c9 31       		.byte	0x31
+ 1616 05ca 0C       		.uleb128 0xc
+ 1617 05cb 01       		.uleb128 0x1
+ 1618 05cc 50       		.byte	0x50
+ 1619 05cd 02       		.uleb128 0x2
+ 1620 05ce 08       		.byte	0x8
+ 1621 05cf 50       		.byte	0x50
+ 1622 05d0 00       		.byte	0
+ 1623 05d1 0B       		.uleb128 0xb
+ 1624 05d2 3C000000 		.4byte	.LVL57
+ 1625 05d6 D90B0000 		.4byte	0xbd9
+ 1626 05da E4050000 		.4byte	0x5e4
+ 1627 05de 0C       		.uleb128 0xc
+ 1628 05df 01       		.uleb128 0x1
+ 1629 05e0 50       		.byte	0x50
+ 1630 05e1 01       		.uleb128 0x1
+ 1631 05e2 30       		.byte	0x30
+ 1632 05e3 00       		.byte	0
+ 1633 05e4 0B       		.uleb128 0xb
+ 1634 05e5 44000000 		.4byte	.LVL59
+ 1635 05e9 D90B0000 		.4byte	0xbd9
+ 1636 05ed F7050000 		.4byte	0x5f7
+ 1637 05f1 0C       		.uleb128 0xc
+ 1638 05f2 01       		.uleb128 0x1
+ 1639 05f3 50       		.byte	0x50
+ 1640 05f4 01       		.uleb128 0x1
+ 1641 05f5 31       		.byte	0x31
+ 1642 05f6 00       		.byte	0
+ 1643 05f7 0D       		.uleb128 0xd
+ 1644 05f8 4A000000 		.4byte	.LVL61
+ 1645 05fc EF0B0000 		.4byte	0xbef
+ 1646 0600 00       		.byte	0
+ 1647 0601 11       		.uleb128 0x11
+ 1648 0602 99010000 		.4byte	.LASF99
+ 1649 0606 01       		.byte	0x1
+ 1650 0607 AE       		.byte	0xae
+ 1651 0608 00000000 		.4byte	.LFB40
+ 1652 060c 48000000 		.4byte	.LFE40-.LFB40
+ 1653 0610 01       		.uleb128 0x1
+ 1654 0611 9C       		.byte	0x9c
+ 1655 0612 E8060000 		.4byte	0x6e8
+ 1656 0616 09       		.uleb128 0x9
+ 1657 0617 B3080000 		.4byte	.LASF90
+ 1658 061b 01       		.byte	0x1
+ 1659 061c AE       		.byte	0xae
+ 1660 061d 88000000 		.4byte	0x88
+ 1661 0621 70010000 		.4byte	.LLST14
+ 1662 0625 09       		.uleb128 0x9
+ 1663 0626 0F080000 		.4byte	.LASF86
+ 1664 062a 01       		.byte	0x1
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 38
+
+
+ 1665 062b AE       		.byte	0xae
+ 1666 062c 88000000 		.4byte	0x88
+ 1667 0630 91010000 		.4byte	.LLST15
+ 1668 0634 0E       		.uleb128 0xe
+ 1669 0635 80070000 		.4byte	.LASF97
+ 1670 0639 01       		.byte	0x1
+ 1671 063a B3       		.byte	0xb3
+ 1672 063b 88000000 		.4byte	0x88
+ 1673 063f 0A       		.uleb128 0xa
+ 1674 0640 95080000 		.4byte	.LASF87
+ 1675 0644 01       		.byte	0x1
+ 1676 0645 B6       		.byte	0xb6
+ 1677 0646 88000000 		.4byte	0x88
+ 1678 064a B2010000 		.4byte	.LLST16
+ 1679 064e 0B       		.uleb128 0xb
+ 1680 064f 0C000000 		.4byte	.LVL67
+ 1681 0653 590B0000 		.4byte	0xb59
+ 1682 0657 61060000 		.4byte	0x661
+ 1683 065b 0C       		.uleb128 0xc
+ 1684 065c 01       		.uleb128 0x1
+ 1685 065d 50       		.byte	0x50
+ 1686 065e 01       		.uleb128 0x1
+ 1687 065f 35       		.byte	0x35
+ 1688 0660 00       		.byte	0
+ 1689 0661 0D       		.uleb128 0xd
+ 1690 0662 10000000 		.4byte	.LVL68
+ 1691 0666 FB0B0000 		.4byte	0xbfb
+ 1692 066a 0B       		.uleb128 0xb
+ 1693 066b 18000000 		.4byte	.LVL69
+ 1694 066f 6A0B0000 		.4byte	0xb6a
+ 1695 0673 83060000 		.4byte	0x683
+ 1696 0677 0C       		.uleb128 0xc
+ 1697 0678 01       		.uleb128 0x1
+ 1698 0679 51       		.byte	0x51
+ 1699 067a 01       		.uleb128 0x1
+ 1700 067b 30       		.byte	0x30
+ 1701 067c 0C       		.uleb128 0xc
+ 1702 067d 01       		.uleb128 0x1
+ 1703 067e 50       		.byte	0x50
+ 1704 067f 02       		.uleb128 0x2
+ 1705 0680 08       		.byte	0x8
+ 1706 0681 50       		.byte	0x50
+ 1707 0682 00       		.byte	0
+ 1708 0683 0B       		.uleb128 0xb
+ 1709 0684 20000000 		.4byte	.LVL71
+ 1710 0688 590B0000 		.4byte	0xb59
+ 1711 068c 96060000 		.4byte	0x696
+ 1712 0690 0C       		.uleb128 0xc
+ 1713 0691 01       		.uleb128 0x1
+ 1714 0692 50       		.byte	0x50
+ 1715 0693 01       		.uleb128 0x1
+ 1716 0694 32       		.byte	0x32
+ 1717 0695 00       		.byte	0
+ 1718 0696 0B       		.uleb128 0xb
+ 1719 0697 2A000000 		.4byte	.LVL72
+ 1720 069b 850B0000 		.4byte	0xb85
+ 1721 069f AA060000 		.4byte	0x6aa
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 39
+
+
+ 1722 06a3 0C       		.uleb128 0xc
+ 1723 06a4 01       		.uleb128 0x1
+ 1724 06a5 50       		.byte	0x50
+ 1725 06a6 02       		.uleb128 0x2
+ 1726 06a7 76       		.byte	0x76
+ 1727 06a8 00       		.sleb128 0
+ 1728 06a9 00       		.byte	0
+ 1729 06aa 0B       		.uleb128 0xb
+ 1730 06ab 32000000 		.4byte	.LVL73
+ 1731 06af 9B0B0000 		.4byte	0xb9b
+ 1732 06b3 C1060000 		.4byte	0x6c1
+ 1733 06b7 0C       		.uleb128 0xc
+ 1734 06b8 01       		.uleb128 0x1
+ 1735 06b9 50       		.byte	0x50
+ 1736 06ba 05       		.uleb128 0x5
+ 1737 06bb 03       		.byte	0x3
+ 1738 06bc 40000000 		.4byte	.LC4
+ 1739 06c0 00       		.byte	0
+ 1740 06c1 0D       		.uleb128 0xd
+ 1741 06c2 36000000 		.4byte	.LVL74
+ 1742 06c6 B70B0000 		.4byte	0xbb7
+ 1743 06ca 0B       		.uleb128 0xb
+ 1744 06cb 3C000000 		.4byte	.LVL75
+ 1745 06cf 850B0000 		.4byte	0xb85
+ 1746 06d3 DE060000 		.4byte	0x6de
+ 1747 06d7 0C       		.uleb128 0xc
+ 1748 06d8 01       		.uleb128 0x1
+ 1749 06d9 50       		.byte	0x50
+ 1750 06da 02       		.uleb128 0x2
+ 1751 06db 75       		.byte	0x75
+ 1752 06dc 00       		.sleb128 0
+ 1753 06dd 00       		.byte	0
+ 1754 06de 0D       		.uleb128 0xd
+ 1755 06df 40000000 		.4byte	.LVL76
+ 1756 06e3 EF0B0000 		.4byte	0xbef
+ 1757 06e7 00       		.byte	0
+ 1758 06e8 11       		.uleb128 0x11
+ 1759 06e9 9F080000 		.4byte	.LASF100
+ 1760 06ed 01       		.byte	0x1
+ 1761 06ee CA       		.byte	0xca
+ 1762 06ef 00000000 		.4byte	.LFB41
+ 1763 06f3 22000000 		.4byte	.LFE41-.LFB41
+ 1764 06f7 01       		.uleb128 0x1
+ 1765 06f8 9C       		.byte	0x9c
+ 1766 06f9 56070000 		.4byte	0x756
+ 1767 06fd 09       		.uleb128 0x9
+ 1768 06fe B3080000 		.4byte	.LASF90
+ 1769 0702 01       		.byte	0x1
+ 1770 0703 CA       		.byte	0xca
+ 1771 0704 88000000 		.4byte	0x88
+ 1772 0708 C5010000 		.4byte	.LLST17
+ 1773 070c 09       		.uleb128 0x9
+ 1774 070d 0F080000 		.4byte	.LASF86
+ 1775 0711 01       		.byte	0x1
+ 1776 0712 CA       		.byte	0xca
+ 1777 0713 94000000 		.4byte	0x94
+ 1778 0717 E6010000 		.4byte	.LLST18
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 40
+
+
+ 1779 071b 10       		.uleb128 0x10
+ 1780 071c CB010000 		.4byte	.LASF101
+ 1781 0720 01       		.byte	0x1
+ 1782 0721 CD       		.byte	0xcd
+ 1783 0722 56070000 		.4byte	0x756
+ 1784 0726 02       		.uleb128 0x2
+ 1785 0727 91       		.byte	0x91
+ 1786 0728 6C       		.sleb128 -20
+ 1787 0729 0B       		.uleb128 0xb
+ 1788 072a 14000000 		.4byte	.LVL80
+ 1789 072e 01060000 		.4byte	0x601
+ 1790 0732 45070000 		.4byte	0x745
+ 1791 0736 0C       		.uleb128 0xc
+ 1792 0737 01       		.uleb128 0x1
+ 1793 0738 51       		.byte	0x51
+ 1794 0739 04       		.uleb128 0x4
+ 1795 073a 75       		.byte	0x75
+ 1796 073b 00       		.sleb128 0
+ 1797 073c 94       		.byte	0x94
+ 1798 073d 01       		.byte	0x1
+ 1799 073e 0C       		.uleb128 0xc
+ 1800 073f 01       		.uleb128 0x1
+ 1801 0740 50       		.byte	0x50
+ 1802 0741 02       		.uleb128 0x2
+ 1803 0742 74       		.byte	0x74
+ 1804 0743 00       		.sleb128 0
+ 1805 0744 00       		.byte	0
+ 1806 0745 12       		.uleb128 0x12
+ 1807 0746 1E000000 		.4byte	.LVL81
+ 1808 074a 01060000 		.4byte	0x601
+ 1809 074e 0C       		.uleb128 0xc
+ 1810 074f 01       		.uleb128 0x1
+ 1811 0750 50       		.byte	0x50
+ 1812 0751 02       		.uleb128 0x2
+ 1813 0752 74       		.byte	0x74
+ 1814 0753 00       		.sleb128 0
+ 1815 0754 00       		.byte	0
+ 1816 0755 00       		.byte	0
+ 1817 0756 13       		.uleb128 0x13
+ 1818 0757 88000000 		.4byte	0x88
+ 1819 075b 66070000 		.4byte	0x766
+ 1820 075f 14       		.uleb128 0x14
+ 1821 0760 D2000000 		.4byte	0xd2
+ 1822 0764 01       		.byte	0x1
+ 1823 0765 00       		.byte	0
+ 1824 0766 11       		.uleb128 0x11
+ 1825 0767 73050000 		.4byte	.LASF102
+ 1826 076b 01       		.byte	0x1
+ 1827 076c D5       		.byte	0xd5
+ 1828 076d 00000000 		.4byte	.LFB42
+ 1829 0771 36000000 		.4byte	.LFE42-.LFB42
+ 1830 0775 01       		.uleb128 0x1
+ 1831 0776 9C       		.byte	0x9c
+ 1832 0777 FC070000 		.4byte	0x7fc
+ 1833 077b 09       		.uleb128 0x9
+ 1834 077c B3080000 		.4byte	.LASF90
+ 1835 0780 01       		.byte	0x1
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 41
+
+
+ 1836 0781 D5       		.byte	0xd5
+ 1837 0782 88000000 		.4byte	0x88
+ 1838 0786 11020000 		.4byte	.LLST19
+ 1839 078a 09       		.uleb128 0x9
+ 1840 078b 0F080000 		.4byte	.LASF86
+ 1841 078f 01       		.byte	0x1
+ 1842 0790 D5       		.byte	0xd5
+ 1843 0791 AC000000 		.4byte	0xac
+ 1844 0795 32020000 		.4byte	.LLST20
+ 1845 0799 10       		.uleb128 0x10
+ 1846 079a CB010000 		.4byte	.LASF101
+ 1847 079e 01       		.byte	0x1
+ 1848 079f D8       		.byte	0xd8
+ 1849 07a0 FC070000 		.4byte	0x7fc
+ 1850 07a4 02       		.uleb128 0x2
+ 1851 07a5 91       		.byte	0x91
+ 1852 07a6 6C       		.sleb128 -20
+ 1853 07a7 0B       		.uleb128 0xb
+ 1854 07a8 14000000 		.4byte	.LVL85
+ 1855 07ac 01060000 		.4byte	0x601
+ 1856 07b0 C3070000 		.4byte	0x7c3
+ 1857 07b4 0C       		.uleb128 0xc
+ 1858 07b5 01       		.uleb128 0x1
+ 1859 07b6 51       		.byte	0x51
+ 1860 07b7 04       		.uleb128 0x4
+ 1861 07b8 75       		.byte	0x75
+ 1862 07b9 00       		.sleb128 0
+ 1863 07ba 94       		.byte	0x94
+ 1864 07bb 01       		.byte	0x1
+ 1865 07bc 0C       		.uleb128 0xc
+ 1866 07bd 01       		.uleb128 0x1
+ 1867 07be 50       		.byte	0x50
+ 1868 07bf 02       		.uleb128 0x2
+ 1869 07c0 74       		.byte	0x74
+ 1870 07c1 00       		.sleb128 0
+ 1871 07c2 00       		.byte	0
+ 1872 07c3 0B       		.uleb128 0xb
+ 1873 07c4 1E000000 		.4byte	.LVL86
+ 1874 07c8 01060000 		.4byte	0x601
+ 1875 07cc D7070000 		.4byte	0x7d7
+ 1876 07d0 0C       		.uleb128 0xc
+ 1877 07d1 01       		.uleb128 0x1
+ 1878 07d2 50       		.byte	0x50
+ 1879 07d3 02       		.uleb128 0x2
+ 1880 07d4 74       		.byte	0x74
+ 1881 07d5 01       		.sleb128 1
+ 1882 07d6 00       		.byte	0
+ 1883 07d7 0B       		.uleb128 0xb
+ 1884 07d8 28000000 		.4byte	.LVL87
+ 1885 07dc 01060000 		.4byte	0x601
+ 1886 07e0 EB070000 		.4byte	0x7eb
+ 1887 07e4 0C       		.uleb128 0xc
+ 1888 07e5 01       		.uleb128 0x1
+ 1889 07e6 50       		.byte	0x50
+ 1890 07e7 02       		.uleb128 0x2
+ 1891 07e8 74       		.byte	0x74
+ 1892 07e9 02       		.sleb128 2
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 42
+
+
+ 1893 07ea 00       		.byte	0
+ 1894 07eb 12       		.uleb128 0x12
+ 1895 07ec 32000000 		.4byte	.LVL88
+ 1896 07f0 01060000 		.4byte	0x601
+ 1897 07f4 0C       		.uleb128 0xc
+ 1898 07f5 01       		.uleb128 0x1
+ 1899 07f6 50       		.byte	0x50
+ 1900 07f7 02       		.uleb128 0x2
+ 1901 07f8 74       		.byte	0x74
+ 1902 07f9 00       		.sleb128 0
+ 1903 07fa 00       		.byte	0
+ 1904 07fb 00       		.byte	0
+ 1905 07fc 13       		.uleb128 0x13
+ 1906 07fd 88000000 		.4byte	0x88
+ 1907 0801 0C080000 		.4byte	0x80c
+ 1908 0805 14       		.uleb128 0x14
+ 1909 0806 D2000000 		.4byte	0xd2
+ 1910 080a 03       		.byte	0x3
+ 1911 080b 00       		.byte	0
+ 1912 080c 11       		.uleb128 0x11
+ 1913 080d 8E030000 		.4byte	.LASF103
+ 1914 0811 01       		.byte	0x1
+ 1915 0812 E2       		.byte	0xe2
+ 1916 0813 00000000 		.4byte	.LFB43
+ 1917 0817 2C010000 		.4byte	.LFE43-.LFB43
+ 1918 081b 01       		.uleb128 0x1
+ 1919 081c 9C       		.byte	0x9c
+ 1920 081d 110A0000 		.4byte	0xa11
+ 1921 0821 09       		.uleb128 0x9
+ 1922 0822 80070000 		.4byte	.LASF97
+ 1923 0826 01       		.byte	0x1
+ 1924 0827 E2       		.byte	0xe2
+ 1925 0828 A0000000 		.4byte	0xa0
+ 1926 082c 61020000 		.4byte	.LLST21
+ 1927 0830 0B       		.uleb128 0xb
+ 1928 0831 4A000000 		.4byte	.LVL91
+ 1929 0835 9B0B0000 		.4byte	0xb9b
+ 1930 0839 47080000 		.4byte	0x847
+ 1931 083d 0C       		.uleb128 0xc
+ 1932 083e 01       		.uleb128 0x1
+ 1933 083f 50       		.byte	0x50
+ 1934 0840 05       		.uleb128 0x5
+ 1935 0841 03       		.byte	0x3
+ 1936 0842 7C000000 		.4byte	.LC6
+ 1937 0846 00       		.byte	0
+ 1938 0847 0D       		.uleb128 0xd
+ 1939 0848 4E000000 		.4byte	.LVL92
+ 1940 084c B70B0000 		.4byte	0xbb7
+ 1941 0850 0B       		.uleb128 0xb
+ 1942 0851 54000000 		.4byte	.LVL93
+ 1943 0855 9B0B0000 		.4byte	0xb9b
+ 1944 0859 67080000 		.4byte	0x867
+ 1945 085d 0C       		.uleb128 0xc
+ 1946 085e 01       		.uleb128 0x1
+ 1947 085f 50       		.byte	0x50
+ 1948 0860 05       		.uleb128 0x5
+ 1949 0861 03       		.byte	0x3
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 43
+
+
+ 1950 0862 98000000 		.4byte	.LC8
+ 1951 0866 00       		.byte	0
+ 1952 0867 0D       		.uleb128 0xd
+ 1953 0868 58000000 		.4byte	.LVL94
+ 1954 086c B70B0000 		.4byte	0xbb7
+ 1955 0870 0B       		.uleb128 0xb
+ 1956 0871 5E000000 		.4byte	.LVL95
+ 1957 0875 9B0B0000 		.4byte	0xb9b
+ 1958 0879 87080000 		.4byte	0x887
+ 1959 087d 0C       		.uleb128 0xc
+ 1960 087e 01       		.uleb128 0x1
+ 1961 087f 50       		.byte	0x50
+ 1962 0880 05       		.uleb128 0x5
+ 1963 0881 03       		.byte	0x3
+ 1964 0882 B0000000 		.4byte	.LC10
+ 1965 0886 00       		.byte	0
+ 1966 0887 0D       		.uleb128 0xd
+ 1967 0888 62000000 		.4byte	.LVL96
+ 1968 088c B70B0000 		.4byte	0xbb7
+ 1969 0890 0B       		.uleb128 0xb
+ 1970 0891 6A000000 		.4byte	.LVL99
+ 1971 0895 9B0B0000 		.4byte	0xb9b
+ 1972 0899 A7080000 		.4byte	0x8a7
+ 1973 089d 0C       		.uleb128 0xc
+ 1974 089e 01       		.uleb128 0x1
+ 1975 089f 50       		.byte	0x50
+ 1976 08a0 05       		.uleb128 0x5
+ 1977 08a1 03       		.byte	0x3
+ 1978 08a2 1C010000 		.4byte	.LC12
+ 1979 08a6 00       		.byte	0
+ 1980 08a7 0D       		.uleb128 0xd
+ 1981 08a8 6E000000 		.4byte	.LVL100
+ 1982 08ac B70B0000 		.4byte	0xbb7
+ 1983 08b0 0B       		.uleb128 0xb
+ 1984 08b1 74000000 		.4byte	.LVL101
+ 1985 08b5 9B0B0000 		.4byte	0xb9b
+ 1986 08b9 C7080000 		.4byte	0x8c7
+ 1987 08bd 0C       		.uleb128 0xc
+ 1988 08be 01       		.uleb128 0x1
+ 1989 08bf 50       		.byte	0x50
+ 1990 08c0 05       		.uleb128 0x5
+ 1991 08c1 03       		.byte	0x3
+ 1992 08c2 38010000 		.4byte	.LC14
+ 1993 08c6 00       		.byte	0
+ 1994 08c7 0D       		.uleb128 0xd
+ 1995 08c8 78000000 		.4byte	.LVL102
+ 1996 08cc B70B0000 		.4byte	0xbb7
+ 1997 08d0 0B       		.uleb128 0xb
+ 1998 08d1 80000000 		.4byte	.LVL105
+ 1999 08d5 9B0B0000 		.4byte	0xb9b
+ 2000 08d9 E7080000 		.4byte	0x8e7
+ 2001 08dd 0C       		.uleb128 0xc
+ 2002 08de 01       		.uleb128 0x1
+ 2003 08df 50       		.byte	0x50
+ 2004 08e0 05       		.uleb128 0x5
+ 2005 08e1 03       		.byte	0x3
+ 2006 08e2 A4010000 		.4byte	.LC16
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 44
+
+
+ 2007 08e6 00       		.byte	0
+ 2008 08e7 0D       		.uleb128 0xd
+ 2009 08e8 84000000 		.4byte	.LVL106
+ 2010 08ec B70B0000 		.4byte	0xbb7
+ 2011 08f0 0B       		.uleb128 0xb
+ 2012 08f1 8C000000 		.4byte	.LVL109
+ 2013 08f5 9B0B0000 		.4byte	0xb9b
+ 2014 08f9 07090000 		.4byte	0x907
+ 2015 08fd 0C       		.uleb128 0xc
+ 2016 08fe 01       		.uleb128 0x1
+ 2017 08ff 50       		.byte	0x50
+ 2018 0900 05       		.uleb128 0x5
+ 2019 0901 03       		.byte	0x3
+ 2020 0902 BC010000 		.4byte	.LC18
+ 2021 0906 00       		.byte	0
+ 2022 0907 0D       		.uleb128 0xd
+ 2023 0908 90000000 		.4byte	.LVL110
+ 2024 090c B70B0000 		.4byte	0xbb7
+ 2025 0910 0B       		.uleb128 0xb
+ 2026 0911 98000000 		.4byte	.LVL113
+ 2027 0915 9B0B0000 		.4byte	0xb9b
+ 2028 0919 27090000 		.4byte	0x927
+ 2029 091d 0C       		.uleb128 0xc
+ 2030 091e 01       		.uleb128 0x1
+ 2031 091f 50       		.byte	0x50
+ 2032 0920 05       		.uleb128 0x5
+ 2033 0921 03       		.byte	0x3
+ 2034 0922 18020000 		.4byte	.LC20
+ 2035 0926 00       		.byte	0
+ 2036 0927 0D       		.uleb128 0xd
+ 2037 0928 9C000000 		.4byte	.LVL114
+ 2038 092c B70B0000 		.4byte	0xbb7
+ 2039 0930 0B       		.uleb128 0xb
+ 2040 0931 A2000000 		.4byte	.LVL115
+ 2041 0935 9B0B0000 		.4byte	0xb9b
+ 2042 0939 47090000 		.4byte	0x947
+ 2043 093d 0C       		.uleb128 0xc
+ 2044 093e 01       		.uleb128 0x1
+ 2045 093f 50       		.byte	0x50
+ 2046 0940 05       		.uleb128 0x5
+ 2047 0941 03       		.byte	0x3
+ 2048 0942 68020000 		.4byte	.LC22
+ 2049 0946 00       		.byte	0
+ 2050 0947 0D       		.uleb128 0xd
+ 2051 0948 A6000000 		.4byte	.LVL116
+ 2052 094c B70B0000 		.4byte	0xbb7
+ 2053 0950 0B       		.uleb128 0xb
+ 2054 0951 AE000000 		.4byte	.LVL119
+ 2055 0955 9B0B0000 		.4byte	0xb9b
+ 2056 0959 67090000 		.4byte	0x967
+ 2057 095d 0C       		.uleb128 0xc
+ 2058 095e 01       		.uleb128 0x1
+ 2059 095f 50       		.byte	0x50
+ 2060 0960 05       		.uleb128 0x5
+ 2061 0961 03       		.byte	0x3
+ 2062 0962 A4020000 		.4byte	.LC24
+ 2063 0966 00       		.byte	0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 45
+
+
+ 2064 0967 0D       		.uleb128 0xd
+ 2065 0968 B2000000 		.4byte	.LVL120
+ 2066 096c B70B0000 		.4byte	0xbb7
+ 2067 0970 0B       		.uleb128 0xb
+ 2068 0971 BA000000 		.4byte	.LVL123
+ 2069 0975 9B0B0000 		.4byte	0xb9b
+ 2070 0979 87090000 		.4byte	0x987
+ 2071 097d 0C       		.uleb128 0xc
+ 2072 097e 01       		.uleb128 0x1
+ 2073 097f 50       		.byte	0x50
+ 2074 0980 05       		.uleb128 0x5
+ 2075 0981 03       		.byte	0x3
+ 2076 0982 D8020000 		.4byte	.LC26
+ 2077 0986 00       		.byte	0
+ 2078 0987 0D       		.uleb128 0xd
+ 2079 0988 BE000000 		.4byte	.LVL124
+ 2080 098c B70B0000 		.4byte	0xbb7
+ 2081 0990 0B       		.uleb128 0xb
+ 2082 0991 C6000000 		.4byte	.LVL127
+ 2083 0995 9B0B0000 		.4byte	0xb9b
+ 2084 0999 A7090000 		.4byte	0x9a7
+ 2085 099d 0C       		.uleb128 0xc
+ 2086 099e 01       		.uleb128 0x1
+ 2087 099f 50       		.byte	0x50
+ 2088 09a0 05       		.uleb128 0x5
+ 2089 09a1 03       		.byte	0x3
+ 2090 09a2 24030000 		.4byte	.LC28
+ 2091 09a6 00       		.byte	0
+ 2092 09a7 0D       		.uleb128 0xd
+ 2093 09a8 CA000000 		.4byte	.LVL128
+ 2094 09ac B70B0000 		.4byte	0xbb7
+ 2095 09b0 0B       		.uleb128 0xb
+ 2096 09b1 D2000000 		.4byte	.LVL131
+ 2097 09b5 9B0B0000 		.4byte	0xb9b
+ 2098 09b9 C7090000 		.4byte	0x9c7
+ 2099 09bd 0C       		.uleb128 0xc
+ 2100 09be 01       		.uleb128 0x1
+ 2101 09bf 50       		.byte	0x50
+ 2102 09c0 05       		.uleb128 0x5
+ 2103 09c1 03       		.byte	0x3
+ 2104 09c2 94030000 		.4byte	.LC30
+ 2105 09c6 00       		.byte	0
+ 2106 09c7 0D       		.uleb128 0xd
+ 2107 09c8 D6000000 		.4byte	.LVL132
+ 2108 09cc B70B0000 		.4byte	0xbb7
+ 2109 09d0 0B       		.uleb128 0xb
+ 2110 09d1 DE000000 		.4byte	.LVL135
+ 2111 09d5 9B0B0000 		.4byte	0xb9b
+ 2112 09d9 E7090000 		.4byte	0x9e7
+ 2113 09dd 0C       		.uleb128 0xc
+ 2114 09de 01       		.uleb128 0x1
+ 2115 09df 50       		.byte	0x50
+ 2116 09e0 05       		.uleb128 0x5
+ 2117 09e1 03       		.byte	0x3
+ 2118 09e2 80040000 		.4byte	.LC32
+ 2119 09e6 00       		.byte	0
+ 2120 09e7 0D       		.uleb128 0xd
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 46
+
+
+ 2121 09e8 E2000000 		.4byte	.LVL136
+ 2122 09ec B70B0000 		.4byte	0xbb7
+ 2123 09f0 0B       		.uleb128 0xb
+ 2124 09f1 EA000000 		.4byte	.LVL139
+ 2125 09f5 9B0B0000 		.4byte	0xb9b
+ 2126 09f9 070A0000 		.4byte	0xa07
+ 2127 09fd 0C       		.uleb128 0xc
+ 2128 09fe 01       		.uleb128 0x1
+ 2129 09ff 50       		.byte	0x50
+ 2130 0a00 05       		.uleb128 0x5
+ 2131 0a01 03       		.byte	0x3
+ 2132 0a02 D0040000 		.4byte	.LC34
+ 2133 0a06 00       		.byte	0
+ 2134 0a07 0D       		.uleb128 0xd
+ 2135 0a08 EE000000 		.4byte	.LVL140
+ 2136 0a0c B70B0000 		.4byte	0xbb7
+ 2137 0a10 00       		.byte	0
+ 2138 0a11 15       		.uleb128 0x15
+ 2139 0a12 83020000 		.4byte	.LASF104
+ 2140 0a16 01       		.byte	0x1
+ 2141 0a17 0401     		.2byte	0x104
+ 2142 0a19 00000000 		.4byte	.LFB44
+ 2143 0a1d A8000000 		.4byte	.LFE44-.LFB44
+ 2144 0a21 01       		.uleb128 0x1
+ 2145 0a22 9C       		.byte	0x9c
+ 2146 0a23 380B0000 		.4byte	0xb38
+ 2147 0a27 16       		.uleb128 0x16
+ 2148 0a28 00000000 		.4byte	.LASF105
+ 2149 0a2c 01       		.byte	0x1
+ 2150 0a2d 0401     		.2byte	0x104
+ 2151 0a2f A0000000 		.4byte	0xa0
+ 2152 0a33 7C030000 		.4byte	.LLST22
+ 2153 0a37 0B       		.uleb128 0xb
+ 2154 0a38 2E000000 		.4byte	.LVL143
+ 2155 0a3c 9B0B0000 		.4byte	0xb9b
+ 2156 0a40 4E0A0000 		.4byte	0xa4e
+ 2157 0a44 0C       		.uleb128 0xc
+ 2158 0a45 01       		.uleb128 0x1
+ 2159 0a46 50       		.byte	0x50
+ 2160 0a47 05       		.uleb128 0x5
+ 2161 0a48 03       		.byte	0x3
+ 2162 0a49 EC040000 		.4byte	.LC36
+ 2163 0a4d 00       		.byte	0
+ 2164 0a4e 0D       		.uleb128 0xd
+ 2165 0a4f 32000000 		.4byte	.LVL144
+ 2166 0a53 B70B0000 		.4byte	0xbb7
+ 2167 0a57 0B       		.uleb128 0xb
+ 2168 0a58 3A000000 		.4byte	.LVL147
+ 2169 0a5c 9B0B0000 		.4byte	0xb9b
+ 2170 0a60 6E0A0000 		.4byte	0xa6e
+ 2171 0a64 0C       		.uleb128 0xc
+ 2172 0a65 01       		.uleb128 0x1
+ 2173 0a66 50       		.byte	0x50
+ 2174 0a67 05       		.uleb128 0x5
+ 2175 0a68 03       		.byte	0x3
+ 2176 0a69 10050000 		.4byte	.LC38
+ 2177 0a6d 00       		.byte	0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 47
+
+
+ 2178 0a6e 0D       		.uleb128 0xd
+ 2179 0a6f 3E000000 		.4byte	.LVL148
+ 2180 0a73 B70B0000 		.4byte	0xbb7
+ 2181 0a77 0B       		.uleb128 0xb
+ 2182 0a78 46000000 		.4byte	.LVL151
+ 2183 0a7c 9B0B0000 		.4byte	0xb9b
+ 2184 0a80 8E0A0000 		.4byte	0xa8e
+ 2185 0a84 0C       		.uleb128 0xc
+ 2186 0a85 01       		.uleb128 0x1
+ 2187 0a86 50       		.byte	0x50
+ 2188 0a87 05       		.uleb128 0x5
+ 2189 0a88 03       		.byte	0x3
+ 2190 0a89 30050000 		.4byte	.LC40
+ 2191 0a8d 00       		.byte	0
+ 2192 0a8e 0D       		.uleb128 0xd
+ 2193 0a8f 4A000000 		.4byte	.LVL152
+ 2194 0a93 B70B0000 		.4byte	0xbb7
+ 2195 0a97 0B       		.uleb128 0xb
+ 2196 0a98 52000000 		.4byte	.LVL155
+ 2197 0a9c 9B0B0000 		.4byte	0xb9b
+ 2198 0aa0 AE0A0000 		.4byte	0xaae
+ 2199 0aa4 0C       		.uleb128 0xc
+ 2200 0aa5 01       		.uleb128 0x1
+ 2201 0aa6 50       		.byte	0x50
+ 2202 0aa7 05       		.uleb128 0x5
+ 2203 0aa8 03       		.byte	0x3
+ 2204 0aa9 5C050000 		.4byte	.LC42
+ 2205 0aad 00       		.byte	0
+ 2206 0aae 0D       		.uleb128 0xd
+ 2207 0aaf 56000000 		.4byte	.LVL156
+ 2208 0ab3 B70B0000 		.4byte	0xbb7
+ 2209 0ab7 0B       		.uleb128 0xb
+ 2210 0ab8 5E000000 		.4byte	.LVL159
+ 2211 0abc 9B0B0000 		.4byte	0xb9b
+ 2212 0ac0 CE0A0000 		.4byte	0xace
+ 2213 0ac4 0C       		.uleb128 0xc
+ 2214 0ac5 01       		.uleb128 0x1
+ 2215 0ac6 50       		.byte	0x50
+ 2216 0ac7 05       		.uleb128 0x5
+ 2217 0ac8 03       		.byte	0x3
+ 2218 0ac9 84050000 		.4byte	.LC44
+ 2219 0acd 00       		.byte	0
+ 2220 0ace 0D       		.uleb128 0xd
+ 2221 0acf 62000000 		.4byte	.LVL160
+ 2222 0ad3 B70B0000 		.4byte	0xbb7
+ 2223 0ad7 0B       		.uleb128 0xb
+ 2224 0ad8 6A000000 		.4byte	.LVL163
+ 2225 0adc 9B0B0000 		.4byte	0xb9b
+ 2226 0ae0 EE0A0000 		.4byte	0xaee
+ 2227 0ae4 0C       		.uleb128 0xc
+ 2228 0ae5 01       		.uleb128 0x1
+ 2229 0ae6 50       		.byte	0x50
+ 2230 0ae7 05       		.uleb128 0x5
+ 2231 0ae8 03       		.byte	0x3
+ 2232 0ae9 B0050000 		.4byte	.LC46
+ 2233 0aed 00       		.byte	0
+ 2234 0aee 0D       		.uleb128 0xd
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 48
+
+
+ 2235 0aef 6E000000 		.4byte	.LVL164
+ 2236 0af3 B70B0000 		.4byte	0xbb7
+ 2237 0af7 0B       		.uleb128 0xb
+ 2238 0af8 76000000 		.4byte	.LVL167
+ 2239 0afc 9B0B0000 		.4byte	0xb9b
+ 2240 0b00 0E0B0000 		.4byte	0xb0e
+ 2241 0b04 0C       		.uleb128 0xc
+ 2242 0b05 01       		.uleb128 0x1
+ 2243 0b06 50       		.byte	0x50
+ 2244 0b07 05       		.uleb128 0x5
+ 2245 0b08 03       		.byte	0x3
+ 2246 0b09 14060000 		.4byte	.LC48
+ 2247 0b0d 00       		.byte	0
+ 2248 0b0e 0D       		.uleb128 0xd
+ 2249 0b0f 7A000000 		.4byte	.LVL168
+ 2250 0b13 B70B0000 		.4byte	0xbb7
+ 2251 0b17 0B       		.uleb128 0xb
+ 2252 0b18 82000000 		.4byte	.LVL171
+ 2253 0b1c 9B0B0000 		.4byte	0xb9b
+ 2254 0b20 2E0B0000 		.4byte	0xb2e
+ 2255 0b24 0C       		.uleb128 0xc
+ 2256 0b25 01       		.uleb128 0x1
+ 2257 0b26 50       		.byte	0x50
+ 2258 0b27 05       		.uleb128 0x5
+ 2259 0b28 03       		.byte	0x3
+ 2260 0b29 BC060000 		.4byte	.LC50
+ 2261 0b2d 00       		.byte	0
+ 2262 0b2e 0D       		.uleb128 0xd
+ 2263 0b2f 86000000 		.4byte	.LVL172
+ 2264 0b33 B70B0000 		.4byte	0xbb7
+ 2265 0b37 00       		.byte	0
+ 2266 0b38 13       		.uleb128 0x13
+ 2267 0b39 CB000000 		.4byte	0xcb
+ 2268 0b3d 480B0000 		.4byte	0xb48
+ 2269 0b41 14       		.uleb128 0x14
+ 2270 0b42 D2000000 		.4byte	0xd2
+ 2271 0b46 31       		.byte	0x31
+ 2272 0b47 00       		.byte	0
+ 2273 0b48 17       		.uleb128 0x17
+ 2274 0b49 90010000 		.4byte	.LASF117
+ 2275 0b4d 09       		.byte	0x9
+ 2276 0b4e 12       		.byte	0x12
+ 2277 0b4f 380B0000 		.4byte	0xb38
+ 2278 0b53 05       		.uleb128 0x5
+ 2279 0b54 03       		.byte	0x3
+ 2280 0b55 00000000 		.4byte	debugStr
+ 2281 0b59 18       		.uleb128 0x18
+ 2282 0b5a CF0A0000 		.4byte	.LASF108
+ 2283 0b5e 06       		.byte	0x6
+ 2284 0b5f D7       		.byte	0xd7
+ 2285 0b60 6A0B0000 		.4byte	0xb6a
+ 2286 0b64 19       		.uleb128 0x19
+ 2287 0b65 A0000000 		.4byte	0xa0
+ 2288 0b69 00       		.byte	0
+ 2289 0b6a 1A       		.uleb128 0x1a
+ 2290 0b6b 00090000 		.4byte	.LASF106
+ 2291 0b6f 05       		.byte	0x5
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 49
+
+
+ 2292 0b70 1B01     		.2byte	0x11b
+ 2293 0b72 A0000000 		.4byte	0xa0
+ 2294 0b76 850B0000 		.4byte	0xb85
+ 2295 0b7a 19       		.uleb128 0x19
+ 2296 0b7b A0000000 		.4byte	0xa0
+ 2297 0b7f 19       		.uleb128 0x19
+ 2298 0b80 A0000000 		.4byte	0xa0
+ 2299 0b84 00       		.byte	0
+ 2300 0b85 1A       		.uleb128 0x1a
+ 2301 0b86 18010000 		.4byte	.LASF107
+ 2302 0b8a 05       		.byte	0x5
+ 2303 0b8b 1E01     		.2byte	0x11e
+ 2304 0b8d A0000000 		.4byte	0xa0
+ 2305 0b91 9B0B0000 		.4byte	0xb9b
+ 2306 0b95 19       		.uleb128 0x19
+ 2307 0b96 A0000000 		.4byte	0xa0
+ 2308 0b9a 00       		.byte	0
+ 2309 0b9b 18       		.uleb128 0x18
+ 2310 0b9c 1B050000 		.4byte	.LASF109
+ 2311 0ba0 07       		.byte	0x7
+ 2312 0ba1 26       		.byte	0x26
+ 2313 0ba2 AC0B0000 		.4byte	0xbac
+ 2314 0ba6 19       		.uleb128 0x19
+ 2315 0ba7 AC0B0000 		.4byte	0xbac
+ 2316 0bab 00       		.byte	0
+ 2317 0bac 1B       		.uleb128 0x1b
+ 2318 0bad 04       		.byte	0x4
+ 2319 0bae B20B0000 		.4byte	0xbb2
+ 2320 0bb2 1C       		.uleb128 0x1c
+ 2321 0bb3 BF000000 		.4byte	0xbf
+ 2322 0bb7 1D       		.uleb128 0x1d
+ 2323 0bb8 E7090000 		.4byte	.LASF118
+ 2324 0bbc 07       		.byte	0x7
+ 2325 0bbd 2A       		.byte	0x2a
+ 2326 0bbe 1A       		.uleb128 0x1a
+ 2327 0bbf 6B060000 		.4byte	.LASF110
+ 2328 0bc3 05       		.byte	0x5
+ 2329 0bc4 1C01     		.2byte	0x11c
+ 2330 0bc6 A0000000 		.4byte	0xa0
+ 2331 0bca D90B0000 		.4byte	0xbd9
+ 2332 0bce 19       		.uleb128 0x19
+ 2333 0bcf A0000000 		.4byte	0xa0
+ 2334 0bd3 19       		.uleb128 0x19
+ 2335 0bd4 A0000000 		.4byte	0xa0
+ 2336 0bd8 00       		.byte	0
+ 2337 0bd9 1A       		.uleb128 0x1a
+ 2338 0bda 66010000 		.4byte	.LASF111
+ 2339 0bde 05       		.byte	0x5
+ 2340 0bdf 1F01     		.2byte	0x11f
+ 2341 0be1 A0000000 		.4byte	0xa0
+ 2342 0be5 EF0B0000 		.4byte	0xbef
+ 2343 0be9 19       		.uleb128 0x19
+ 2344 0bea A0000000 		.4byte	0xa0
+ 2345 0bee 00       		.byte	0
+ 2346 0bef 1E       		.uleb128 0x1e
+ 2347 0bf0 D7070000 		.4byte	.LASF112
+ 2348 0bf4 05       		.byte	0x5
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 50
+
+
+ 2349 0bf5 1D01     		.2byte	0x11d
+ 2350 0bf7 A0000000 		.4byte	0xa0
+ 2351 0bfb 1E       		.uleb128 0x1e
+ 2352 0bfc AE060000 		.4byte	.LASF113
+ 2353 0c00 05       		.byte	0x5
+ 2354 0c01 1001     		.2byte	0x110
+ 2355 0c03 A0000000 		.4byte	0xa0
+ 2356 0c07 00       		.byte	0
+ 2357              		.section	.debug_abbrev,"",%progbits
+ 2358              	.Ldebug_abbrev0:
+ 2359 0000 01       		.uleb128 0x1
+ 2360 0001 11       		.uleb128 0x11
+ 2361 0002 01       		.byte	0x1
+ 2362 0003 25       		.uleb128 0x25
+ 2363 0004 0E       		.uleb128 0xe
+ 2364 0005 13       		.uleb128 0x13
+ 2365 0006 0B       		.uleb128 0xb
+ 2366 0007 03       		.uleb128 0x3
+ 2367 0008 0E       		.uleb128 0xe
+ 2368 0009 1B       		.uleb128 0x1b
+ 2369 000a 0E       		.uleb128 0xe
+ 2370 000b 55       		.uleb128 0x55
+ 2371 000c 17       		.uleb128 0x17
+ 2372 000d 11       		.uleb128 0x11
+ 2373 000e 01       		.uleb128 0x1
+ 2374 000f 10       		.uleb128 0x10
+ 2375 0010 17       		.uleb128 0x17
+ 2376 0011 00       		.byte	0
+ 2377 0012 00       		.byte	0
+ 2378 0013 02       		.uleb128 0x2
+ 2379 0014 24       		.uleb128 0x24
+ 2380 0015 00       		.byte	0
+ 2381 0016 0B       		.uleb128 0xb
+ 2382 0017 0B       		.uleb128 0xb
+ 2383 0018 3E       		.uleb128 0x3e
+ 2384 0019 0B       		.uleb128 0xb
+ 2385 001a 03       		.uleb128 0x3
+ 2386 001b 0E       		.uleb128 0xe
+ 2387 001c 00       		.byte	0
+ 2388 001d 00       		.byte	0
+ 2389 001e 03       		.uleb128 0x3
+ 2390 001f 16       		.uleb128 0x16
+ 2391 0020 00       		.byte	0
+ 2392 0021 03       		.uleb128 0x3
+ 2393 0022 0E       		.uleb128 0xe
+ 2394 0023 3A       		.uleb128 0x3a
+ 2395 0024 0B       		.uleb128 0xb
+ 2396 0025 3B       		.uleb128 0x3b
+ 2397 0026 0B       		.uleb128 0xb
+ 2398 0027 49       		.uleb128 0x49
+ 2399 0028 13       		.uleb128 0x13
+ 2400 0029 00       		.byte	0
+ 2401 002a 00       		.byte	0
+ 2402 002b 04       		.uleb128 0x4
+ 2403 002c 24       		.uleb128 0x24
+ 2404 002d 00       		.byte	0
+ 2405 002e 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 51
+
+
+ 2406 002f 0B       		.uleb128 0xb
+ 2407 0030 3E       		.uleb128 0x3e
+ 2408 0031 0B       		.uleb128 0xb
+ 2409 0032 03       		.uleb128 0x3
+ 2410 0033 08       		.uleb128 0x8
+ 2411 0034 00       		.byte	0
+ 2412 0035 00       		.byte	0
+ 2413 0036 05       		.uleb128 0x5
+ 2414 0037 16       		.uleb128 0x16
+ 2415 0038 00       		.byte	0
+ 2416 0039 03       		.uleb128 0x3
+ 2417 003a 0E       		.uleb128 0xe
+ 2418 003b 3A       		.uleb128 0x3a
+ 2419 003c 0B       		.uleb128 0xb
+ 2420 003d 3B       		.uleb128 0x3b
+ 2421 003e 05       		.uleb128 0x5
+ 2422 003f 49       		.uleb128 0x49
+ 2423 0040 13       		.uleb128 0x13
+ 2424 0041 00       		.byte	0
+ 2425 0042 00       		.byte	0
+ 2426 0043 06       		.uleb128 0x6
+ 2427 0044 04       		.uleb128 0x4
+ 2428 0045 01       		.byte	0x1
+ 2429 0046 0B       		.uleb128 0xb
+ 2430 0047 0B       		.uleb128 0xb
+ 2431 0048 3A       		.uleb128 0x3a
+ 2432 0049 0B       		.uleb128 0xb
+ 2433 004a 3B       		.uleb128 0x3b
+ 2434 004b 05       		.uleb128 0x5
+ 2435 004c 01       		.uleb128 0x1
+ 2436 004d 13       		.uleb128 0x13
+ 2437 004e 00       		.byte	0
+ 2438 004f 00       		.byte	0
+ 2439 0050 07       		.uleb128 0x7
+ 2440 0051 28       		.uleb128 0x28
+ 2441 0052 00       		.byte	0
+ 2442 0053 03       		.uleb128 0x3
+ 2443 0054 0E       		.uleb128 0xe
+ 2444 0055 1C       		.uleb128 0x1c
+ 2445 0056 0D       		.uleb128 0xd
+ 2446 0057 00       		.byte	0
+ 2447 0058 00       		.byte	0
+ 2448 0059 08       		.uleb128 0x8
+ 2449 005a 2E       		.uleb128 0x2e
+ 2450 005b 01       		.byte	0x1
+ 2451 005c 3F       		.uleb128 0x3f
+ 2452 005d 19       		.uleb128 0x19
+ 2453 005e 03       		.uleb128 0x3
+ 2454 005f 0E       		.uleb128 0xe
+ 2455 0060 3A       		.uleb128 0x3a
+ 2456 0061 0B       		.uleb128 0xb
+ 2457 0062 3B       		.uleb128 0x3b
+ 2458 0063 0B       		.uleb128 0xb
+ 2459 0064 27       		.uleb128 0x27
+ 2460 0065 19       		.uleb128 0x19
+ 2461 0066 49       		.uleb128 0x49
+ 2462 0067 13       		.uleb128 0x13
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 52
+
+
+ 2463 0068 11       		.uleb128 0x11
+ 2464 0069 01       		.uleb128 0x1
+ 2465 006a 12       		.uleb128 0x12
+ 2466 006b 06       		.uleb128 0x6
+ 2467 006c 40       		.uleb128 0x40
+ 2468 006d 18       		.uleb128 0x18
+ 2469 006e 9742     		.uleb128 0x2117
+ 2470 0070 19       		.uleb128 0x19
+ 2471 0071 01       		.uleb128 0x1
+ 2472 0072 13       		.uleb128 0x13
+ 2473 0073 00       		.byte	0
+ 2474 0074 00       		.byte	0
+ 2475 0075 09       		.uleb128 0x9
+ 2476 0076 05       		.uleb128 0x5
+ 2477 0077 00       		.byte	0
+ 2478 0078 03       		.uleb128 0x3
+ 2479 0079 0E       		.uleb128 0xe
+ 2480 007a 3A       		.uleb128 0x3a
+ 2481 007b 0B       		.uleb128 0xb
+ 2482 007c 3B       		.uleb128 0x3b
+ 2483 007d 0B       		.uleb128 0xb
+ 2484 007e 49       		.uleb128 0x49
+ 2485 007f 13       		.uleb128 0x13
+ 2486 0080 02       		.uleb128 0x2
+ 2487 0081 17       		.uleb128 0x17
+ 2488 0082 00       		.byte	0
+ 2489 0083 00       		.byte	0
+ 2490 0084 0A       		.uleb128 0xa
+ 2491 0085 34       		.uleb128 0x34
+ 2492 0086 00       		.byte	0
+ 2493 0087 03       		.uleb128 0x3
+ 2494 0088 0E       		.uleb128 0xe
+ 2495 0089 3A       		.uleb128 0x3a
+ 2496 008a 0B       		.uleb128 0xb
+ 2497 008b 3B       		.uleb128 0x3b
+ 2498 008c 0B       		.uleb128 0xb
+ 2499 008d 49       		.uleb128 0x49
+ 2500 008e 13       		.uleb128 0x13
+ 2501 008f 02       		.uleb128 0x2
+ 2502 0090 17       		.uleb128 0x17
+ 2503 0091 00       		.byte	0
+ 2504 0092 00       		.byte	0
+ 2505 0093 0B       		.uleb128 0xb
+ 2506 0094 898201   		.uleb128 0x4109
+ 2507 0097 01       		.byte	0x1
+ 2508 0098 11       		.uleb128 0x11
+ 2509 0099 01       		.uleb128 0x1
+ 2510 009a 31       		.uleb128 0x31
+ 2511 009b 13       		.uleb128 0x13
+ 2512 009c 01       		.uleb128 0x1
+ 2513 009d 13       		.uleb128 0x13
+ 2514 009e 00       		.byte	0
+ 2515 009f 00       		.byte	0
+ 2516 00a0 0C       		.uleb128 0xc
+ 2517 00a1 8A8201   		.uleb128 0x410a
+ 2518 00a4 00       		.byte	0
+ 2519 00a5 02       		.uleb128 0x2
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 53
+
+
+ 2520 00a6 18       		.uleb128 0x18
+ 2521 00a7 9142     		.uleb128 0x2111
+ 2522 00a9 18       		.uleb128 0x18
+ 2523 00aa 00       		.byte	0
+ 2524 00ab 00       		.byte	0
+ 2525 00ac 0D       		.uleb128 0xd
+ 2526 00ad 898201   		.uleb128 0x4109
+ 2527 00b0 00       		.byte	0
+ 2528 00b1 11       		.uleb128 0x11
+ 2529 00b2 01       		.uleb128 0x1
+ 2530 00b3 31       		.uleb128 0x31
+ 2531 00b4 13       		.uleb128 0x13
+ 2532 00b5 00       		.byte	0
+ 2533 00b6 00       		.byte	0
+ 2534 00b7 0E       		.uleb128 0xe
+ 2535 00b8 34       		.uleb128 0x34
+ 2536 00b9 00       		.byte	0
+ 2537 00ba 03       		.uleb128 0x3
+ 2538 00bb 0E       		.uleb128 0xe
+ 2539 00bc 3A       		.uleb128 0x3a
+ 2540 00bd 0B       		.uleb128 0xb
+ 2541 00be 3B       		.uleb128 0x3b
+ 2542 00bf 0B       		.uleb128 0xb
+ 2543 00c0 49       		.uleb128 0x49
+ 2544 00c1 13       		.uleb128 0x13
+ 2545 00c2 00       		.byte	0
+ 2546 00c3 00       		.byte	0
+ 2547 00c4 0F       		.uleb128 0xf
+ 2548 00c5 34       		.uleb128 0x34
+ 2549 00c6 00       		.byte	0
+ 2550 00c7 03       		.uleb128 0x3
+ 2551 00c8 08       		.uleb128 0x8
+ 2552 00c9 3A       		.uleb128 0x3a
+ 2553 00ca 0B       		.uleb128 0xb
+ 2554 00cb 3B       		.uleb128 0x3b
+ 2555 00cc 0B       		.uleb128 0xb
+ 2556 00cd 49       		.uleb128 0x49
+ 2557 00ce 13       		.uleb128 0x13
+ 2558 00cf 02       		.uleb128 0x2
+ 2559 00d0 18       		.uleb128 0x18
+ 2560 00d1 00       		.byte	0
+ 2561 00d2 00       		.byte	0
+ 2562 00d3 10       		.uleb128 0x10
+ 2563 00d4 34       		.uleb128 0x34
+ 2564 00d5 00       		.byte	0
+ 2565 00d6 03       		.uleb128 0x3
+ 2566 00d7 0E       		.uleb128 0xe
+ 2567 00d8 3A       		.uleb128 0x3a
+ 2568 00d9 0B       		.uleb128 0xb
+ 2569 00da 3B       		.uleb128 0x3b
+ 2570 00db 0B       		.uleb128 0xb
+ 2571 00dc 49       		.uleb128 0x49
+ 2572 00dd 13       		.uleb128 0x13
+ 2573 00de 02       		.uleb128 0x2
+ 2574 00df 18       		.uleb128 0x18
+ 2575 00e0 00       		.byte	0
+ 2576 00e1 00       		.byte	0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 54
+
+
+ 2577 00e2 11       		.uleb128 0x11
+ 2578 00e3 2E       		.uleb128 0x2e
+ 2579 00e4 01       		.byte	0x1
+ 2580 00e5 3F       		.uleb128 0x3f
+ 2581 00e6 19       		.uleb128 0x19
+ 2582 00e7 03       		.uleb128 0x3
+ 2583 00e8 0E       		.uleb128 0xe
+ 2584 00e9 3A       		.uleb128 0x3a
+ 2585 00ea 0B       		.uleb128 0xb
+ 2586 00eb 3B       		.uleb128 0x3b
+ 2587 00ec 0B       		.uleb128 0xb
+ 2588 00ed 27       		.uleb128 0x27
+ 2589 00ee 19       		.uleb128 0x19
+ 2590 00ef 11       		.uleb128 0x11
+ 2591 00f0 01       		.uleb128 0x1
+ 2592 00f1 12       		.uleb128 0x12
+ 2593 00f2 06       		.uleb128 0x6
+ 2594 00f3 40       		.uleb128 0x40
+ 2595 00f4 18       		.uleb128 0x18
+ 2596 00f5 9742     		.uleb128 0x2117
+ 2597 00f7 19       		.uleb128 0x19
+ 2598 00f8 01       		.uleb128 0x1
+ 2599 00f9 13       		.uleb128 0x13
+ 2600 00fa 00       		.byte	0
+ 2601 00fb 00       		.byte	0
+ 2602 00fc 12       		.uleb128 0x12
+ 2603 00fd 898201   		.uleb128 0x4109
+ 2604 0100 01       		.byte	0x1
+ 2605 0101 11       		.uleb128 0x11
+ 2606 0102 01       		.uleb128 0x1
+ 2607 0103 31       		.uleb128 0x31
+ 2608 0104 13       		.uleb128 0x13
+ 2609 0105 00       		.byte	0
+ 2610 0106 00       		.byte	0
+ 2611 0107 13       		.uleb128 0x13
+ 2612 0108 01       		.uleb128 0x1
+ 2613 0109 01       		.byte	0x1
+ 2614 010a 49       		.uleb128 0x49
+ 2615 010b 13       		.uleb128 0x13
+ 2616 010c 01       		.uleb128 0x1
+ 2617 010d 13       		.uleb128 0x13
+ 2618 010e 00       		.byte	0
+ 2619 010f 00       		.byte	0
+ 2620 0110 14       		.uleb128 0x14
+ 2621 0111 21       		.uleb128 0x21
+ 2622 0112 00       		.byte	0
+ 2623 0113 49       		.uleb128 0x49
+ 2624 0114 13       		.uleb128 0x13
+ 2625 0115 2F       		.uleb128 0x2f
+ 2626 0116 0B       		.uleb128 0xb
+ 2627 0117 00       		.byte	0
+ 2628 0118 00       		.byte	0
+ 2629 0119 15       		.uleb128 0x15
+ 2630 011a 2E       		.uleb128 0x2e
+ 2631 011b 01       		.byte	0x1
+ 2632 011c 3F       		.uleb128 0x3f
+ 2633 011d 19       		.uleb128 0x19
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 55
+
+
+ 2634 011e 03       		.uleb128 0x3
+ 2635 011f 0E       		.uleb128 0xe
+ 2636 0120 3A       		.uleb128 0x3a
+ 2637 0121 0B       		.uleb128 0xb
+ 2638 0122 3B       		.uleb128 0x3b
+ 2639 0123 05       		.uleb128 0x5
+ 2640 0124 27       		.uleb128 0x27
+ 2641 0125 19       		.uleb128 0x19
+ 2642 0126 11       		.uleb128 0x11
+ 2643 0127 01       		.uleb128 0x1
+ 2644 0128 12       		.uleb128 0x12
+ 2645 0129 06       		.uleb128 0x6
+ 2646 012a 40       		.uleb128 0x40
+ 2647 012b 18       		.uleb128 0x18
+ 2648 012c 9742     		.uleb128 0x2117
+ 2649 012e 19       		.uleb128 0x19
+ 2650 012f 01       		.uleb128 0x1
+ 2651 0130 13       		.uleb128 0x13
+ 2652 0131 00       		.byte	0
+ 2653 0132 00       		.byte	0
+ 2654 0133 16       		.uleb128 0x16
+ 2655 0134 05       		.uleb128 0x5
+ 2656 0135 00       		.byte	0
+ 2657 0136 03       		.uleb128 0x3
+ 2658 0137 0E       		.uleb128 0xe
+ 2659 0138 3A       		.uleb128 0x3a
+ 2660 0139 0B       		.uleb128 0xb
+ 2661 013a 3B       		.uleb128 0x3b
+ 2662 013b 05       		.uleb128 0x5
+ 2663 013c 49       		.uleb128 0x49
+ 2664 013d 13       		.uleb128 0x13
+ 2665 013e 02       		.uleb128 0x2
+ 2666 013f 17       		.uleb128 0x17
+ 2667 0140 00       		.byte	0
+ 2668 0141 00       		.byte	0
+ 2669 0142 17       		.uleb128 0x17
+ 2670 0143 34       		.uleb128 0x34
+ 2671 0144 00       		.byte	0
+ 2672 0145 03       		.uleb128 0x3
+ 2673 0146 0E       		.uleb128 0xe
+ 2674 0147 3A       		.uleb128 0x3a
+ 2675 0148 0B       		.uleb128 0xb
+ 2676 0149 3B       		.uleb128 0x3b
+ 2677 014a 0B       		.uleb128 0xb
+ 2678 014b 49       		.uleb128 0x49
+ 2679 014c 13       		.uleb128 0x13
+ 2680 014d 3F       		.uleb128 0x3f
+ 2681 014e 19       		.uleb128 0x19
+ 2682 014f 02       		.uleb128 0x2
+ 2683 0150 18       		.uleb128 0x18
+ 2684 0151 00       		.byte	0
+ 2685 0152 00       		.byte	0
+ 2686 0153 18       		.uleb128 0x18
+ 2687 0154 2E       		.uleb128 0x2e
+ 2688 0155 01       		.byte	0x1
+ 2689 0156 3F       		.uleb128 0x3f
+ 2690 0157 19       		.uleb128 0x19
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 56
+
+
+ 2691 0158 03       		.uleb128 0x3
+ 2692 0159 0E       		.uleb128 0xe
+ 2693 015a 3A       		.uleb128 0x3a
+ 2694 015b 0B       		.uleb128 0xb
+ 2695 015c 3B       		.uleb128 0x3b
+ 2696 015d 0B       		.uleb128 0xb
+ 2697 015e 27       		.uleb128 0x27
+ 2698 015f 19       		.uleb128 0x19
+ 2699 0160 3C       		.uleb128 0x3c
+ 2700 0161 19       		.uleb128 0x19
+ 2701 0162 01       		.uleb128 0x1
+ 2702 0163 13       		.uleb128 0x13
+ 2703 0164 00       		.byte	0
+ 2704 0165 00       		.byte	0
+ 2705 0166 19       		.uleb128 0x19
+ 2706 0167 05       		.uleb128 0x5
+ 2707 0168 00       		.byte	0
+ 2708 0169 49       		.uleb128 0x49
+ 2709 016a 13       		.uleb128 0x13
+ 2710 016b 00       		.byte	0
+ 2711 016c 00       		.byte	0
+ 2712 016d 1A       		.uleb128 0x1a
+ 2713 016e 2E       		.uleb128 0x2e
+ 2714 016f 01       		.byte	0x1
+ 2715 0170 3F       		.uleb128 0x3f
+ 2716 0171 19       		.uleb128 0x19
+ 2717 0172 03       		.uleb128 0x3
+ 2718 0173 0E       		.uleb128 0xe
+ 2719 0174 3A       		.uleb128 0x3a
+ 2720 0175 0B       		.uleb128 0xb
+ 2721 0176 3B       		.uleb128 0x3b
+ 2722 0177 05       		.uleb128 0x5
+ 2723 0178 27       		.uleb128 0x27
+ 2724 0179 19       		.uleb128 0x19
+ 2725 017a 49       		.uleb128 0x49
+ 2726 017b 13       		.uleb128 0x13
+ 2727 017c 3C       		.uleb128 0x3c
+ 2728 017d 19       		.uleb128 0x19
+ 2729 017e 01       		.uleb128 0x1
+ 2730 017f 13       		.uleb128 0x13
+ 2731 0180 00       		.byte	0
+ 2732 0181 00       		.byte	0
+ 2733 0182 1B       		.uleb128 0x1b
+ 2734 0183 0F       		.uleb128 0xf
+ 2735 0184 00       		.byte	0
+ 2736 0185 0B       		.uleb128 0xb
+ 2737 0186 0B       		.uleb128 0xb
+ 2738 0187 49       		.uleb128 0x49
+ 2739 0188 13       		.uleb128 0x13
+ 2740 0189 00       		.byte	0
+ 2741 018a 00       		.byte	0
+ 2742 018b 1C       		.uleb128 0x1c
+ 2743 018c 26       		.uleb128 0x26
+ 2744 018d 00       		.byte	0
+ 2745 018e 49       		.uleb128 0x49
+ 2746 018f 13       		.uleb128 0x13
+ 2747 0190 00       		.byte	0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 57
+
+
+ 2748 0191 00       		.byte	0
+ 2749 0192 1D       		.uleb128 0x1d
+ 2750 0193 2E       		.uleb128 0x2e
+ 2751 0194 00       		.byte	0
+ 2752 0195 3F       		.uleb128 0x3f
+ 2753 0196 19       		.uleb128 0x19
+ 2754 0197 03       		.uleb128 0x3
+ 2755 0198 0E       		.uleb128 0xe
+ 2756 0199 3A       		.uleb128 0x3a
+ 2757 019a 0B       		.uleb128 0xb
+ 2758 019b 3B       		.uleb128 0x3b
+ 2759 019c 0B       		.uleb128 0xb
+ 2760 019d 27       		.uleb128 0x27
+ 2761 019e 19       		.uleb128 0x19
+ 2762 019f 3C       		.uleb128 0x3c
+ 2763 01a0 19       		.uleb128 0x19
+ 2764 01a1 00       		.byte	0
+ 2765 01a2 00       		.byte	0
+ 2766 01a3 1E       		.uleb128 0x1e
+ 2767 01a4 2E       		.uleb128 0x2e
+ 2768 01a5 00       		.byte	0
+ 2769 01a6 3F       		.uleb128 0x3f
+ 2770 01a7 19       		.uleb128 0x19
+ 2771 01a8 03       		.uleb128 0x3
+ 2772 01a9 0E       		.uleb128 0xe
+ 2773 01aa 3A       		.uleb128 0x3a
+ 2774 01ab 0B       		.uleb128 0xb
+ 2775 01ac 3B       		.uleb128 0x3b
+ 2776 01ad 05       		.uleb128 0x5
+ 2777 01ae 27       		.uleb128 0x27
+ 2778 01af 19       		.uleb128 0x19
+ 2779 01b0 49       		.uleb128 0x49
+ 2780 01b1 13       		.uleb128 0x13
+ 2781 01b2 3C       		.uleb128 0x3c
+ 2782 01b3 19       		.uleb128 0x19
+ 2783 01b4 00       		.byte	0
+ 2784 01b5 00       		.byte	0
+ 2785 01b6 00       		.byte	0
+ 2786              		.section	.debug_loc,"",%progbits
+ 2787              	.Ldebug_loc0:
+ 2788              	.LLST0:
+ 2789 0000 00000000 		.4byte	.LVL0
+ 2790 0004 06000000 		.4byte	.LVL1
+ 2791 0008 0100     		.2byte	0x1
+ 2792 000a 50       		.byte	0x50
+ 2793 000b 06000000 		.4byte	.LVL1
+ 2794 000f 48000000 		.4byte	.LFE37
+ 2795 0013 0400     		.2byte	0x4
+ 2796 0015 F3       		.byte	0xf3
+ 2797 0016 01       		.uleb128 0x1
+ 2798 0017 50       		.byte	0x50
+ 2799 0018 9F       		.byte	0x9f
+ 2800 0019 00000000 		.4byte	0
+ 2801 001d 00000000 		.4byte	0
+ 2802              	.LLST1:
+ 2803 0021 3A000000 		.4byte	.LVL13
+ 2804 0025 40000000 		.4byte	.LVL15
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 58
+
+
+ 2805 0029 0100     		.2byte	0x1
+ 2806 002b 54       		.byte	0x54
+ 2807 002c 40000000 		.4byte	.LVL15
+ 2808 0030 48000000 		.4byte	.LFE37
+ 2809 0034 0100     		.2byte	0x1
+ 2810 0036 50       		.byte	0x50
+ 2811 0037 00000000 		.4byte	0
+ 2812 003b 00000000 		.4byte	0
+ 2813              	.LLST2:
+ 2814 003f 14000000 		.4byte	.LVL4
+ 2815 0043 1A000000 		.4byte	.LVL5
+ 2816 0047 0100     		.2byte	0x1
+ 2817 0049 50       		.byte	0x50
+ 2818 004a 20000000 		.4byte	.LVL7
+ 2819 004e 22000000 		.4byte	.LVL8
+ 2820 0052 0100     		.2byte	0x1
+ 2821 0054 50       		.byte	0x50
+ 2822 0055 00000000 		.4byte	0
+ 2823 0059 00000000 		.4byte	0
+ 2824              	.LLST3:
+ 2825 005d 00000000 		.4byte	.LVL16
+ 2826 0061 06000000 		.4byte	.LVL17
+ 2827 0065 0100     		.2byte	0x1
+ 2828 0067 50       		.byte	0x50
+ 2829 0068 06000000 		.4byte	.LVL17
+ 2830 006c 78000000 		.4byte	.LFE38
+ 2831 0070 0400     		.2byte	0x4
+ 2832 0072 F3       		.byte	0xf3
+ 2833 0073 01       		.uleb128 0x1
+ 2834 0074 50       		.byte	0x50
+ 2835 0075 9F       		.byte	0x9f
+ 2836 0076 00000000 		.4byte	0
+ 2837 007a 00000000 		.4byte	0
+ 2838              	.LLST4:
+ 2839 007e 3E000000 		.4byte	.LVL30
+ 2840 0082 70000000 		.4byte	.LVL42
+ 2841 0086 0100     		.2byte	0x1
+ 2842 0088 56       		.byte	0x56
+ 2843 0089 00000000 		.4byte	0
+ 2844 008d 00000000 		.4byte	0
+ 2845              	.LLST5:
+ 2846 0091 46000000 		.4byte	.LVL32
+ 2847 0095 66000000 		.4byte	.LVL39
+ 2848 0099 0100     		.2byte	0x1
+ 2849 009b 54       		.byte	0x54
+ 2850 009c 00000000 		.4byte	0
+ 2851 00a0 00000000 		.4byte	0
+ 2852              	.LLST6:
+ 2853 00a4 4E000000 		.4byte	.LVL34
+ 2854 00a8 60000000 		.4byte	.LVL38
+ 2855 00ac 0100     		.2byte	0x1
+ 2856 00ae 55       		.byte	0x55
+ 2857 00af 00000000 		.4byte	0
+ 2858 00b3 00000000 		.4byte	0
+ 2859              	.LLST7:
+ 2860 00b7 56000000 		.4byte	.LVL36
+ 2861 00bb 70000000 		.4byte	.LVL43
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 59
+
+
+ 2862 00bf 0100     		.2byte	0x1
+ 2863 00c1 57       		.byte	0x57
+ 2864 00c2 00000000 		.4byte	0
+ 2865 00c6 00000000 		.4byte	0
+ 2866              	.LLST8:
+ 2867 00ca 18000000 		.4byte	.LVL21
+ 2868 00ce 1E000000 		.4byte	.LVL22
+ 2869 00d2 0100     		.2byte	0x1
+ 2870 00d4 50       		.byte	0x50
+ 2871 00d5 24000000 		.4byte	.LVL24
+ 2872 00d9 26000000 		.4byte	.LVL25
+ 2873 00dd 0100     		.2byte	0x1
+ 2874 00df 50       		.byte	0x50
+ 2875 00e0 00000000 		.4byte	0
+ 2876 00e4 00000000 		.4byte	0
+ 2877              	.LLST9:
+ 2878 00e8 6E000000 		.4byte	.LVL40
+ 2879 00ec 70000000 		.4byte	.LVL41
+ 2880 00f0 0600     		.2byte	0x6
+ 2881 00f2 74       		.byte	0x74
+ 2882 00f3 00       		.sleb128 0
+ 2883 00f4 70       		.byte	0x70
+ 2884 00f5 00       		.sleb128 0
+ 2885 00f6 21       		.byte	0x21
+ 2886 00f7 9F       		.byte	0x9f
+ 2887 00f8 70000000 		.4byte	.LVL41
+ 2888 00fc 78000000 		.4byte	.LFE38
+ 2889 0100 0100     		.2byte	0x1
+ 2890 0102 50       		.byte	0x50
+ 2891 0103 00000000 		.4byte	0
+ 2892 0107 00000000 		.4byte	0
+ 2893              	.LLST10:
+ 2894 010b 00000000 		.4byte	.LVL44
+ 2895 010f 06000000 		.4byte	.LVL45
+ 2896 0113 0100     		.2byte	0x1
+ 2897 0115 50       		.byte	0x50
+ 2898 0116 06000000 		.4byte	.LVL45
+ 2899 011a 58000000 		.4byte	.LFE39
+ 2900 011e 0400     		.2byte	0x4
+ 2901 0120 F3       		.byte	0xf3
+ 2902 0121 01       		.uleb128 0x1
+ 2903 0122 50       		.byte	0x50
+ 2904 0123 9F       		.byte	0x9f
+ 2905 0124 00000000 		.4byte	0
+ 2906 0128 00000000 		.4byte	0
+ 2907              	.LLST11:
+ 2908 012c 3E000000 		.4byte	.LVL58
+ 2909 0130 52000000 		.4byte	.LVL63
+ 2910 0134 0100     		.2byte	0x1
+ 2911 0136 54       		.byte	0x54
+ 2912 0137 00000000 		.4byte	0
+ 2913 013b 00000000 		.4byte	0
+ 2914              	.LLST12:
+ 2915 013f 46000000 		.4byte	.LVL60
+ 2916 0143 52000000 		.4byte	.LVL64
+ 2917 0147 0100     		.2byte	0x1
+ 2918 0149 55       		.byte	0x55
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 60
+
+
+ 2919 014a 00000000 		.4byte	0
+ 2920 014e 00000000 		.4byte	0
+ 2921              	.LLST13:
+ 2922 0152 18000000 		.4byte	.LVL49
+ 2923 0156 1E000000 		.4byte	.LVL50
+ 2924 015a 0100     		.2byte	0x1
+ 2925 015c 50       		.byte	0x50
+ 2926 015d 24000000 		.4byte	.LVL52
+ 2927 0161 26000000 		.4byte	.LVL53
+ 2928 0165 0100     		.2byte	0x1
+ 2929 0167 50       		.byte	0x50
+ 2930 0168 00000000 		.4byte	0
+ 2931 016c 00000000 		.4byte	0
+ 2932              	.LLST14:
+ 2933 0170 00000000 		.4byte	.LVL65
+ 2934 0174 08000000 		.4byte	.LVL66
+ 2935 0178 0100     		.2byte	0x1
+ 2936 017a 50       		.byte	0x50
+ 2937 017b 08000000 		.4byte	.LVL66
+ 2938 017f 48000000 		.4byte	.LFE40
+ 2939 0183 0400     		.2byte	0x4
+ 2940 0185 F3       		.byte	0xf3
+ 2941 0186 01       		.uleb128 0x1
+ 2942 0187 50       		.byte	0x50
+ 2943 0188 9F       		.byte	0x9f
+ 2944 0189 00000000 		.4byte	0
+ 2945 018d 00000000 		.4byte	0
+ 2946              	.LLST15:
+ 2947 0191 00000000 		.4byte	.LVL65
+ 2948 0195 0B000000 		.4byte	.LVL67-1
+ 2949 0199 0100     		.2byte	0x1
+ 2950 019b 51       		.byte	0x51
+ 2951 019c 0B000000 		.4byte	.LVL67-1
+ 2952 01a0 48000000 		.4byte	.LFE40
+ 2953 01a4 0400     		.2byte	0x4
+ 2954 01a6 F3       		.byte	0xf3
+ 2955 01a7 01       		.uleb128 0x1
+ 2956 01a8 51       		.byte	0x51
+ 2957 01a9 9F       		.byte	0x9f
+ 2958 01aa 00000000 		.4byte	0
+ 2959 01ae 00000000 		.4byte	0
+ 2960              	.LLST16:
+ 2961 01b2 1A000000 		.4byte	.LVL70
+ 2962 01b6 40000000 		.4byte	.LVL77
+ 2963 01ba 0100     		.2byte	0x1
+ 2964 01bc 54       		.byte	0x54
+ 2965 01bd 00000000 		.4byte	0
+ 2966 01c1 00000000 		.4byte	0
+ 2967              	.LLST17:
+ 2968 01c5 00000000 		.4byte	.LVL78
+ 2969 01c9 13000000 		.4byte	.LVL80-1
+ 2970 01cd 0100     		.2byte	0x1
+ 2971 01cf 50       		.byte	0x50
+ 2972 01d0 13000000 		.4byte	.LVL80-1
+ 2973 01d4 22000000 		.4byte	.LFE41
+ 2974 01d8 0400     		.2byte	0x4
+ 2975 01da F3       		.byte	0xf3
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 61
+
+
+ 2976 01db 01       		.uleb128 0x1
+ 2977 01dc 50       		.byte	0x50
+ 2978 01dd 9F       		.byte	0x9f
+ 2979 01de 00000000 		.4byte	0
+ 2980 01e2 00000000 		.4byte	0
+ 2981              	.LLST18:
+ 2982 01e6 00000000 		.4byte	.LVL78
+ 2983 01ea 10000000 		.4byte	.LVL79
+ 2984 01ee 0100     		.2byte	0x1
+ 2985 01f0 51       		.byte	0x51
+ 2986 01f1 10000000 		.4byte	.LVL79
+ 2987 01f5 20000000 		.4byte	.LVL82
+ 2988 01f9 0200     		.2byte	0x2
+ 2989 01fb 75       		.byte	0x75
+ 2990 01fc 00       		.sleb128 0
+ 2991 01fd 20000000 		.4byte	.LVL82
+ 2992 0201 22000000 		.4byte	.LFE41
+ 2993 0205 0200     		.2byte	0x2
+ 2994 0207 91       		.byte	0x91
+ 2995 0208 6C       		.sleb128 -20
+ 2996 0209 00000000 		.4byte	0
+ 2997 020d 00000000 		.4byte	0
+ 2998              	.LLST19:
+ 2999 0211 00000000 		.4byte	.LVL83
+ 3000 0215 13000000 		.4byte	.LVL85-1
+ 3001 0219 0100     		.2byte	0x1
+ 3002 021b 50       		.byte	0x50
+ 3003 021c 13000000 		.4byte	.LVL85-1
+ 3004 0220 36000000 		.4byte	.LFE42
+ 3005 0224 0400     		.2byte	0x4
+ 3006 0226 F3       		.byte	0xf3
+ 3007 0227 01       		.uleb128 0x1
+ 3008 0228 50       		.byte	0x50
+ 3009 0229 9F       		.byte	0x9f
+ 3010 022a 00000000 		.4byte	0
+ 3011 022e 00000000 		.4byte	0
+ 3012              	.LLST20:
+ 3013 0232 00000000 		.4byte	.LVL83
+ 3014 0236 10000000 		.4byte	.LVL84
+ 3015 023a 0100     		.2byte	0x1
+ 3016 023c 51       		.byte	0x51
+ 3017 023d 10000000 		.4byte	.LVL84
+ 3018 0241 13000000 		.4byte	.LVL85-1
+ 3019 0245 0200     		.2byte	0x2
+ 3020 0247 91       		.byte	0x91
+ 3021 0248 64       		.sleb128 -28
+ 3022 0249 13000000 		.4byte	.LVL85-1
+ 3023 024d 36000000 		.4byte	.LFE42
+ 3024 0251 0600     		.2byte	0x6
+ 3025 0253 F3       		.byte	0xf3
+ 3026 0254 03       		.uleb128 0x3
+ 3027 0255 F5       		.byte	0xf5
+ 3028 0256 01       		.uleb128 0x1
+ 3029 0257 25       		.uleb128 0x25
+ 3030 0258 9F       		.byte	0x9f
+ 3031 0259 00000000 		.4byte	0
+ 3032 025d 00000000 		.4byte	0
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 62
+
+
+ 3033              	.LLST21:
+ 3034 0261 00000000 		.4byte	.LVL89
+ 3035 0265 46000000 		.4byte	.LVL90
+ 3036 0269 0100     		.2byte	0x1
+ 3037 026b 50       		.byte	0x50
+ 3038 026c 46000000 		.4byte	.LVL90
+ 3039 0270 64000000 		.4byte	.LVL97
+ 3040 0274 0400     		.2byte	0x4
+ 3041 0276 F3       		.byte	0xf3
+ 3042 0277 01       		.uleb128 0x1
+ 3043 0278 50       		.byte	0x50
+ 3044 0279 9F       		.byte	0x9f
+ 3045 027a 64000000 		.4byte	.LVL97
+ 3046 027e 66000000 		.4byte	.LVL98
+ 3047 0282 0100     		.2byte	0x1
+ 3048 0284 50       		.byte	0x50
+ 3049 0285 66000000 		.4byte	.LVL98
+ 3050 0289 7A000000 		.4byte	.LVL103
+ 3051 028d 0400     		.2byte	0x4
+ 3052 028f F3       		.byte	0xf3
+ 3053 0290 01       		.uleb128 0x1
+ 3054 0291 50       		.byte	0x50
+ 3055 0292 9F       		.byte	0x9f
+ 3056 0293 7A000000 		.4byte	.LVL103
+ 3057 0297 7C000000 		.4byte	.LVL104
+ 3058 029b 0100     		.2byte	0x1
+ 3059 029d 50       		.byte	0x50
+ 3060 029e 7C000000 		.4byte	.LVL104
+ 3061 02a2 86000000 		.4byte	.LVL107
+ 3062 02a6 0400     		.2byte	0x4
+ 3063 02a8 F3       		.byte	0xf3
+ 3064 02a9 01       		.uleb128 0x1
+ 3065 02aa 50       		.byte	0x50
+ 3066 02ab 9F       		.byte	0x9f
+ 3067 02ac 86000000 		.4byte	.LVL107
+ 3068 02b0 88000000 		.4byte	.LVL108
+ 3069 02b4 0100     		.2byte	0x1
+ 3070 02b6 50       		.byte	0x50
+ 3071 02b7 88000000 		.4byte	.LVL108
+ 3072 02bb 92000000 		.4byte	.LVL111
+ 3073 02bf 0400     		.2byte	0x4
+ 3074 02c1 F3       		.byte	0xf3
+ 3075 02c2 01       		.uleb128 0x1
+ 3076 02c3 50       		.byte	0x50
+ 3077 02c4 9F       		.byte	0x9f
+ 3078 02c5 92000000 		.4byte	.LVL111
+ 3079 02c9 94000000 		.4byte	.LVL112
+ 3080 02cd 0100     		.2byte	0x1
+ 3081 02cf 50       		.byte	0x50
+ 3082 02d0 94000000 		.4byte	.LVL112
+ 3083 02d4 A8000000 		.4byte	.LVL117
+ 3084 02d8 0400     		.2byte	0x4
+ 3085 02da F3       		.byte	0xf3
+ 3086 02db 01       		.uleb128 0x1
+ 3087 02dc 50       		.byte	0x50
+ 3088 02dd 9F       		.byte	0x9f
+ 3089 02de A8000000 		.4byte	.LVL117
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 63
+
+
+ 3090 02e2 AA000000 		.4byte	.LVL118
+ 3091 02e6 0100     		.2byte	0x1
+ 3092 02e8 50       		.byte	0x50
+ 3093 02e9 AA000000 		.4byte	.LVL118
+ 3094 02ed B4000000 		.4byte	.LVL121
+ 3095 02f1 0400     		.2byte	0x4
+ 3096 02f3 F3       		.byte	0xf3
+ 3097 02f4 01       		.uleb128 0x1
+ 3098 02f5 50       		.byte	0x50
+ 3099 02f6 9F       		.byte	0x9f
+ 3100 02f7 B4000000 		.4byte	.LVL121
+ 3101 02fb B6000000 		.4byte	.LVL122
+ 3102 02ff 0100     		.2byte	0x1
+ 3103 0301 50       		.byte	0x50
+ 3104 0302 B6000000 		.4byte	.LVL122
+ 3105 0306 C0000000 		.4byte	.LVL125
+ 3106 030a 0400     		.2byte	0x4
+ 3107 030c F3       		.byte	0xf3
+ 3108 030d 01       		.uleb128 0x1
+ 3109 030e 50       		.byte	0x50
+ 3110 030f 9F       		.byte	0x9f
+ 3111 0310 C0000000 		.4byte	.LVL125
+ 3112 0314 C2000000 		.4byte	.LVL126
+ 3113 0318 0100     		.2byte	0x1
+ 3114 031a 50       		.byte	0x50
+ 3115 031b C2000000 		.4byte	.LVL126
+ 3116 031f CC000000 		.4byte	.LVL129
+ 3117 0323 0400     		.2byte	0x4
+ 3118 0325 F3       		.byte	0xf3
+ 3119 0326 01       		.uleb128 0x1
+ 3120 0327 50       		.byte	0x50
+ 3121 0328 9F       		.byte	0x9f
+ 3122 0329 CC000000 		.4byte	.LVL129
+ 3123 032d CE000000 		.4byte	.LVL130
+ 3124 0331 0100     		.2byte	0x1
+ 3125 0333 50       		.byte	0x50
+ 3126 0334 CE000000 		.4byte	.LVL130
+ 3127 0338 D8000000 		.4byte	.LVL133
+ 3128 033c 0400     		.2byte	0x4
+ 3129 033e F3       		.byte	0xf3
+ 3130 033f 01       		.uleb128 0x1
+ 3131 0340 50       		.byte	0x50
+ 3132 0341 9F       		.byte	0x9f
+ 3133 0342 D8000000 		.4byte	.LVL133
+ 3134 0346 DA000000 		.4byte	.LVL134
+ 3135 034a 0100     		.2byte	0x1
+ 3136 034c 50       		.byte	0x50
+ 3137 034d DA000000 		.4byte	.LVL134
+ 3138 0351 E4000000 		.4byte	.LVL137
+ 3139 0355 0400     		.2byte	0x4
+ 3140 0357 F3       		.byte	0xf3
+ 3141 0358 01       		.uleb128 0x1
+ 3142 0359 50       		.byte	0x50
+ 3143 035a 9F       		.byte	0x9f
+ 3144 035b E4000000 		.4byte	.LVL137
+ 3145 035f E6000000 		.4byte	.LVL138
+ 3146 0363 0100     		.2byte	0x1
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 64
+
+
+ 3147 0365 50       		.byte	0x50
+ 3148 0366 E6000000 		.4byte	.LVL138
+ 3149 036a 2C010000 		.4byte	.LFE43
+ 3150 036e 0400     		.2byte	0x4
+ 3151 0370 F3       		.byte	0xf3
+ 3152 0371 01       		.uleb128 0x1
+ 3153 0372 50       		.byte	0x50
+ 3154 0373 9F       		.byte	0x9f
+ 3155 0374 00000000 		.4byte	0
+ 3156 0378 00000000 		.4byte	0
+ 3157              	.LLST22:
+ 3158 037c 00000000 		.4byte	.LVL141
+ 3159 0380 2A000000 		.4byte	.LVL142
+ 3160 0384 0100     		.2byte	0x1
+ 3161 0386 50       		.byte	0x50
+ 3162 0387 2A000000 		.4byte	.LVL142
+ 3163 038b 34000000 		.4byte	.LVL145
+ 3164 038f 0400     		.2byte	0x4
+ 3165 0391 F3       		.byte	0xf3
+ 3166 0392 01       		.uleb128 0x1
+ 3167 0393 50       		.byte	0x50
+ 3168 0394 9F       		.byte	0x9f
+ 3169 0395 34000000 		.4byte	.LVL145
+ 3170 0399 36000000 		.4byte	.LVL146
+ 3171 039d 0100     		.2byte	0x1
+ 3172 039f 50       		.byte	0x50
+ 3173 03a0 36000000 		.4byte	.LVL146
+ 3174 03a4 40000000 		.4byte	.LVL149
+ 3175 03a8 0400     		.2byte	0x4
+ 3176 03aa F3       		.byte	0xf3
+ 3177 03ab 01       		.uleb128 0x1
+ 3178 03ac 50       		.byte	0x50
+ 3179 03ad 9F       		.byte	0x9f
+ 3180 03ae 40000000 		.4byte	.LVL149
+ 3181 03b2 42000000 		.4byte	.LVL150
+ 3182 03b6 0100     		.2byte	0x1
+ 3183 03b8 50       		.byte	0x50
+ 3184 03b9 42000000 		.4byte	.LVL150
+ 3185 03bd 4C000000 		.4byte	.LVL153
+ 3186 03c1 0400     		.2byte	0x4
+ 3187 03c3 F3       		.byte	0xf3
+ 3188 03c4 01       		.uleb128 0x1
+ 3189 03c5 50       		.byte	0x50
+ 3190 03c6 9F       		.byte	0x9f
+ 3191 03c7 4C000000 		.4byte	.LVL153
+ 3192 03cb 4E000000 		.4byte	.LVL154
+ 3193 03cf 0100     		.2byte	0x1
+ 3194 03d1 50       		.byte	0x50
+ 3195 03d2 4E000000 		.4byte	.LVL154
+ 3196 03d6 58000000 		.4byte	.LVL157
+ 3197 03da 0400     		.2byte	0x4
+ 3198 03dc F3       		.byte	0xf3
+ 3199 03dd 01       		.uleb128 0x1
+ 3200 03de 50       		.byte	0x50
+ 3201 03df 9F       		.byte	0x9f
+ 3202 03e0 58000000 		.4byte	.LVL157
+ 3203 03e4 5A000000 		.4byte	.LVL158
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 65
+
+
+ 3204 03e8 0100     		.2byte	0x1
+ 3205 03ea 50       		.byte	0x50
+ 3206 03eb 5A000000 		.4byte	.LVL158
+ 3207 03ef 64000000 		.4byte	.LVL161
+ 3208 03f3 0400     		.2byte	0x4
+ 3209 03f5 F3       		.byte	0xf3
+ 3210 03f6 01       		.uleb128 0x1
+ 3211 03f7 50       		.byte	0x50
+ 3212 03f8 9F       		.byte	0x9f
+ 3213 03f9 64000000 		.4byte	.LVL161
+ 3214 03fd 66000000 		.4byte	.LVL162
+ 3215 0401 0100     		.2byte	0x1
+ 3216 0403 50       		.byte	0x50
+ 3217 0404 66000000 		.4byte	.LVL162
+ 3218 0408 70000000 		.4byte	.LVL165
+ 3219 040c 0400     		.2byte	0x4
+ 3220 040e F3       		.byte	0xf3
+ 3221 040f 01       		.uleb128 0x1
+ 3222 0410 50       		.byte	0x50
+ 3223 0411 9F       		.byte	0x9f
+ 3224 0412 70000000 		.4byte	.LVL165
+ 3225 0416 72000000 		.4byte	.LVL166
+ 3226 041a 0100     		.2byte	0x1
+ 3227 041c 50       		.byte	0x50
+ 3228 041d 72000000 		.4byte	.LVL166
+ 3229 0421 7C000000 		.4byte	.LVL169
+ 3230 0425 0400     		.2byte	0x4
+ 3231 0427 F3       		.byte	0xf3
+ 3232 0428 01       		.uleb128 0x1
+ 3233 0429 50       		.byte	0x50
+ 3234 042a 9F       		.byte	0x9f
+ 3235 042b 7C000000 		.4byte	.LVL169
+ 3236 042f 7E000000 		.4byte	.LVL170
+ 3237 0433 0100     		.2byte	0x1
+ 3238 0435 50       		.byte	0x50
+ 3239 0436 7E000000 		.4byte	.LVL170
+ 3240 043a A8000000 		.4byte	.LFE44
+ 3241 043e 0400     		.2byte	0x4
+ 3242 0440 F3       		.byte	0xf3
+ 3243 0441 01       		.uleb128 0x1
+ 3244 0442 50       		.byte	0x50
+ 3245 0443 9F       		.byte	0x9f
+ 3246 0444 00000000 		.4byte	0
+ 3247 0448 00000000 		.4byte	0
+ 3248              		.section	.debug_aranges,"",%progbits
+ 3249 0000 54000000 		.4byte	0x54
+ 3250 0004 0200     		.2byte	0x2
+ 3251 0006 00000000 		.4byte	.Ldebug_info0
+ 3252 000a 04       		.byte	0x4
+ 3253 000b 00       		.byte	0
+ 3254 000c 0000     		.2byte	0
+ 3255 000e 0000     		.2byte	0
+ 3256 0010 00000000 		.4byte	.LFB37
+ 3257 0014 48000000 		.4byte	.LFE37-.LFB37
+ 3258 0018 00000000 		.4byte	.LFB38
+ 3259 001c 78000000 		.4byte	.LFE38-.LFB38
+ 3260 0020 00000000 		.4byte	.LFB39
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 66
+
+
+ 3261 0024 58000000 		.4byte	.LFE39-.LFB39
+ 3262 0028 00000000 		.4byte	.LFB40
+ 3263 002c 48000000 		.4byte	.LFE40-.LFB40
+ 3264 0030 00000000 		.4byte	.LFB41
+ 3265 0034 22000000 		.4byte	.LFE41-.LFB41
+ 3266 0038 00000000 		.4byte	.LFB42
+ 3267 003c 36000000 		.4byte	.LFE42-.LFB42
+ 3268 0040 00000000 		.4byte	.LFB43
+ 3269 0044 2C010000 		.4byte	.LFE43-.LFB43
+ 3270 0048 00000000 		.4byte	.LFB44
+ 3271 004c A8000000 		.4byte	.LFE44-.LFB44
+ 3272 0050 00000000 		.4byte	0
+ 3273 0054 00000000 		.4byte	0
+ 3274              		.section	.debug_ranges,"",%progbits
+ 3275              	.Ldebug_ranges0:
+ 3276 0000 00000000 		.4byte	.LFB37
+ 3277 0004 48000000 		.4byte	.LFE37
+ 3278 0008 00000000 		.4byte	.LFB38
+ 3279 000c 78000000 		.4byte	.LFE38
+ 3280 0010 00000000 		.4byte	.LFB39
+ 3281 0014 58000000 		.4byte	.LFE39
+ 3282 0018 00000000 		.4byte	.LFB40
+ 3283 001c 48000000 		.4byte	.LFE40
+ 3284 0020 00000000 		.4byte	.LFB41
+ 3285 0024 22000000 		.4byte	.LFE41
+ 3286 0028 00000000 		.4byte	.LFB42
+ 3287 002c 36000000 		.4byte	.LFE42
+ 3288 0030 00000000 		.4byte	.LFB43
+ 3289 0034 2C010000 		.4byte	.LFE43
+ 3290 0038 00000000 		.4byte	.LFB44
+ 3291 003c A8000000 		.4byte	.LFE44
+ 3292 0040 00000000 		.4byte	0
+ 3293 0044 00000000 		.4byte	0
+ 3294              		.section	.debug_line,"",%progbits
+ 3295              	.Ldebug_line0:
+ 3296 0000 56020000 		.section	.debug_str,"MS",%progbits,1
+ 3296      02007E01 
+ 3296      00000201 
+ 3296      FB0E0D00 
+ 3296      01010101 
+ 3297              	.LASF105:
+ 3298 0000 696E6964 		.ascii	"inidicator\000"
+ 3298      69636174 
+ 3298      6F7200
+ 3299              	.LASF29:
+ 3300 000b 4359424C 		.ascii	"CYBLE_EVT_GAP_PASSKEY_ENTRY_REQUEST\000"
+ 3300      455F4556 
+ 3300      545F4741 
+ 3300      505F5041 
+ 3300      53534B45 
+ 3301              	.LASF0:
+ 3302 002f 666C6F61 		.ascii	"float\000"
+ 3302      7400
+ 3303              	.LASF60:
+ 3304 0035 4359424C 		.ascii	"CYBLE_EVT_GATTC_WRITE_RSP\000"
+ 3304      455F4556 
+ 3304      545F4741 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 67
+
+
+ 3304      5454435F 
+ 3304      57524954 
+ 3305              	.LASF26:
+ 3306 004f 4359424C 		.ascii	"CYBLE_EVT_MEMORY_REQUEST\000"
+ 3306      455F4556 
+ 3306      545F4D45 
+ 3306      4D4F5259 
+ 3306      5F524551 
+ 3307              	.LASF96:
+ 3308 0068 72656164 		.ascii	"readUint16FromEEPROM\000"
+ 3308      55696E74 
+ 3308      31364672 
+ 3308      6F6D4545 
+ 3308      50524F4D 
+ 3309              	.LASF47:
+ 3310 007d 4359424C 		.ascii	"CYBLE_EVT_GATTC_ERROR_RSP\000"
+ 3310      455F4556 
+ 3310      545F4741 
+ 3310      5454435F 
+ 3310      4552524F 
+ 3311              	.LASF15:
+ 3312 0097 666C6F61 		.ascii	"float32\000"
+ 3312      74333200 
+ 3313              	.LASF89:
+ 3314 009f 72656164 		.ascii	"readFloat32FromEEPROM\000"
+ 3314      466C6F61 
+ 3314      74333246 
+ 3314      726F6D45 
+ 3314      4550524F 
+ 3315              	.LASF32:
+ 3316 00b5 4359424C 		.ascii	"CYBLE_EVT_GAP_AUTH_FAILED\000"
+ 3316      455F4556 
+ 3316      545F4741 
+ 3316      505F4155 
+ 3316      54485F46 
+ 3317              	.LASF19:
+ 3318 00cf 73697A65 		.ascii	"sizetype\000"
+ 3318      74797065 
+ 3318      00
+ 3319              	.LASF43:
+ 3320 00d8 4359424C 		.ascii	"CYBLE_EVT_GAP_DATA_LENGTH_CHANGE\000"
+ 3320      455F4556 
+ 3320      545F4741 
+ 3320      505F4441 
+ 3320      54415F4C 
+ 3321              	.LASF17:
+ 3322 00f9 63686172 		.ascii	"char8\000"
+ 3322      3800
+ 3323              	.LASF7:
+ 3324 00ff 6C6F6E67 		.ascii	"long long int\000"
+ 3324      206C6F6E 
+ 3324      6720696E 
+ 3324      7400
+ 3325              	.LASF10:
+ 3326 010d 5F5F7569 		.ascii	"__uint32_t\000"
+ 3326      6E743332 
+ 3326      5F7400
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 68
+
+
+ 3327              	.LASF107:
+ 3328 0118 4932434D 		.ascii	"I2CM_I2CMasterWriteByte\000"
+ 3328      5F493243 
+ 3328      4D617374 
+ 3328      65725772 
+ 3328      69746542 
+ 3329              	.LASF24:
+ 3330 0130 4359424C 		.ascii	"CYBLE_EVT_HCI_STATUS\000"
+ 3330      455F4556 
+ 3330      545F4843 
+ 3330      495F5354 
+ 3330      41545553 
+ 3331              	.LASF53:
+ 3332 0145 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BY_TYPE_RSP\000"
+ 3332      455F4556 
+ 3332      545F4741 
+ 3332      5454435F 
+ 3332      52454144 
+ 3333              	.LASF111:
+ 3334 0166 4932434D 		.ascii	"I2CM_I2CMasterReadByte\000"
+ 3334      5F493243 
+ 3334      4D617374 
+ 3334      65725265 
+ 3334      61644279 
+ 3335              	.LASF21:
+ 3336 017d 4359424C 		.ascii	"CYBLE_EVT_STACK_ON\000"
+ 3336      455F4556 
+ 3336      545F5354 
+ 3336      41434B5F 
+ 3336      4F4E00
+ 3337              	.LASF117:
+ 3338 0190 64656275 		.ascii	"debugStr\000"
+ 3338      67537472 
+ 3338      00
+ 3339              	.LASF99:
+ 3340 0199 77726974 		.ascii	"writeOneByteToEEPROM\000"
+ 3340      654F6E65 
+ 3340      42797465 
+ 3340      546F4545 
+ 3340      50524F4D 
+ 3341              	.LASF13:
+ 3342 01ae 75696E74 		.ascii	"uint16\000"
+ 3342      313600
+ 3343              	.LASF88:
+ 3344 01b5 72656164 		.ascii	"readOneByteFromEEPROM\000"
+ 3344      4F6E6542 
+ 3344      79746546 
+ 3344      726F6D45 
+ 3344      4550524F 
+ 3345              	.LASF101:
+ 3346 01cb 68656C70 		.ascii	"helperTwoBytes\000"
+ 3346      65725477 
+ 3346      6F427974 
+ 3346      657300
+ 3347              	.LASF58:
+ 3348 01da 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_MULTI_RSP\000"
+ 3348      455F4556 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 69
+
+
+ 3348      545F4741 
+ 3348      5454435F 
+ 3348      52454144 
+ 3349              	.LASF67:
+ 3350 01f9 4359424C 		.ascii	"CYBLE_EVT_GATTS_HANDLE_VALUE_CNF\000"
+ 3350      455F4556 
+ 3350      545F4741 
+ 3350      5454535F 
+ 3350      48414E44 
+ 3351              	.LASF20:
+ 3352 021a 4359424C 		.ascii	"CYBLE_EVT_HOST_INVALID\000"
+ 3352      455F4556 
+ 3352      545F484F 
+ 3352      53545F49 
+ 3352      4E56414C 
+ 3353              	.LASF11:
+ 3354 0231 75696E74 		.ascii	"uint32_t\000"
+ 3354      33325F74 
+ 3354      00
+ 3355              	.LASF75:
+ 3356 023a 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_CONN_IND\000"
+ 3356      455F4556 
+ 3356      545F4C32 
+ 3356      4341505F 
+ 3356      43424643 
+ 3357              	.LASF78:
+ 3358 0258 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DISCONN_CNF\000"
+ 3358      455F4556 
+ 3358      545F4C32 
+ 3358      4341505F 
+ 3358      43424643 
+ 3359              	.LASF3:
+ 3360 0279 73686F72 		.ascii	"short int\000"
+ 3360      7420696E 
+ 3360      7400
+ 3361              	.LASF104:
+ 3362 0283 64656275 		.ascii	"debugI2CTransfer\000"
+ 3362      67493243 
+ 3362      5472616E 
+ 3362      73666572 
+ 3362      00
+ 3363              	.LASF41:
+ 3364 0294 4359424C 		.ascii	"CYBLE_EVT_GAP_KEYPRESS_NOTIFICATION\000"
+ 3364      455F4556 
+ 3364      545F4741 
+ 3364      505F4B45 
+ 3364      59505245 
+ 3365              	.LASF116:
+ 3366 02b8 433A5C55 		.ascii	"C:\\Users\\Jannai\\Documents\\GitHub\\hydrobserve_f"
+ 3366      73657273 
+ 3366      5C4A616E 
+ 3366      6E61695C 
+ 3366      446F6375 
+ 3367 02e6 69726D77 		.ascii	"irmware\\HydrobServe\\HydobServe.cydsn\000"
+ 3367      6172655C 
+ 3367      48796472 
+ 3367      6F625365 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 70
+
+
+ 3367      7276655C 
+ 3368              	.LASF56:
+ 3369 030b 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_RSP\000"
+ 3369      455F4556 
+ 3369      545F4741 
+ 3369      5454435F 
+ 3369      52454144 
+ 3370              	.LASF40:
+ 3371 0324 4359424C 		.ascii	"CYBLE_EVT_GAP_NUMERIC_COMPARISON_REQUEST\000"
+ 3371      455F4556 
+ 3371      545F4741 
+ 3371      505F4E55 
+ 3371      4D455249 
+ 3372              	.LASF45:
+ 3373 034d 4359424C 		.ascii	"CYBLE_EVT_GAPC_DIRECT_ADV_REPORT\000"
+ 3373      455F4556 
+ 3373      545F4741 
+ 3373      50435F44 
+ 3373      49524543 
+ 3374              	.LASF8:
+ 3375 036e 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3375      206C6F6E 
+ 3375      6720756E 
+ 3375      7369676E 
+ 3375      65642069 
+ 3376              	.LASF5:
+ 3377 0385 6C6F6E67 		.ascii	"long int\000"
+ 3377      20696E74 
+ 3377      00
+ 3378              	.LASF103:
+ 3379 038e 64656275 		.ascii	"debugI2CMasterStatus\000"
+ 3379      67493243 
+ 3379      4D617374 
+ 3379      65725374 
+ 3379      61747573 
+ 3380              	.LASF66:
+ 3381 03a3 4359424C 		.ascii	"CYBLE_EVT_GATTC_HANDLE_VALUE_IND\000"
+ 3381      455F4556 
+ 3381      545F4741 
+ 3381      5454435F 
+ 3381      48414E44 
+ 3382              	.LASF34:
+ 3383 03c4 4359424C 		.ascii	"CYBLE_EVT_GAP_DEVICE_CONNECTED\000"
+ 3383      455F4556 
+ 3383      545F4741 
+ 3383      505F4445 
+ 3383      56494345 
+ 3384              	.LASF33:
+ 3385 03e3 4359424C 		.ascii	"CYBLE_EVT_GAPP_ADVERTISEMENT_START_STOP\000"
+ 3385      455F4556 
+ 3385      545F4741 
+ 3385      50505F41 
+ 3385      44564552 
+ 3386              	.LASF65:
+ 3387 040b 4359424C 		.ascii	"CYBLE_EVT_GATTC_HANDLE_VALUE_NTF\000"
+ 3387      455F4556 
+ 3387      545F4741 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 71
+
+
+ 3387      5454435F 
+ 3387      48414E44 
+ 3388              	.LASF25:
+ 3389 042c 4359424C 		.ascii	"CYBLE_EVT_STACK_BUSY_STATUS\000"
+ 3389      455F4556 
+ 3389      545F5354 
+ 3389      41434B5F 
+ 3389      42555359 
+ 3390              	.LASF30:
+ 3391 0448 4359424C 		.ascii	"CYBLE_EVT_GAP_PASSKEY_DISPLAY_REQUEST\000"
+ 3391      455F4556 
+ 3391      545F4741 
+ 3391      505F5041 
+ 3391      53534B45 
+ 3392              	.LASF84:
+ 3393 046e 4359424C 		.ascii	"CYBLE_EVT_LE_PING_AUTH_TIMEOUT\000"
+ 3393      455F4556 
+ 3393      545F4C45 
+ 3393      5F50494E 
+ 3393      475F4155 
+ 3394              	.LASF114:
+ 3395 048d 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 3395      4320342E 
+ 3395      392E3320 
+ 3395      32303135 
+ 3395      30333033 
+ 3396 04c0 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 3396      20726576 
+ 3396      6973696F 
+ 3396      6E203232 
+ 3396      31323230 
+ 3397 04f3 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 3397      66756E63 
+ 3397      74696F6E 
+ 3397      2D736563 
+ 3397      74696F6E 
+ 3398              	.LASF109:
+ 3399 051b 53575F54 		.ascii	"SW_TX_PutString\000"
+ 3399      585F5075 
+ 3399      74537472 
+ 3399      696E6700 
+ 3400              	.LASF76:
+ 3401 052b 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_CONN_CNF\000"
+ 3401      455F4556 
+ 3401      545F4C32 
+ 3401      4341505F 
+ 3401      43424643 
+ 3402              	.LASF44:
+ 3403 0549 4359424C 		.ascii	"CYBLE_EVT_GAP_ENHANCE_CONN_COMPLETE\000"
+ 3403      455F4556 
+ 3403      545F4741 
+ 3403      505F454E 
+ 3403      48414E43 
+ 3404              	.LASF12:
+ 3405 056d 75696E74 		.ascii	"uint8\000"
+ 3405      3800
+ 3406              	.LASF102:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 72
+
+
+ 3407 0573 77726974 		.ascii	"writeFloat32ToEEPROM\000"
+ 3407      65466C6F 
+ 3407      61743332 
+ 3407      546F4545 
+ 3407      50524F4D 
+ 3408              	.LASF72:
+ 3409 0588 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CONN_PARAM_UPDATE_REQ\000"
+ 3409      455F4556 
+ 3409      545F4C32 
+ 3409      4341505F 
+ 3409      434F4E4E 
+ 3410              	.LASF2:
+ 3411 05ae 756E7369 		.ascii	"unsigned char\000"
+ 3411      676E6564 
+ 3411      20636861 
+ 3411      7200
+ 3412              	.LASF59:
+ 3413 05bc 4359424C 		.ascii	"CYBLE_EVT_GATTS_WRITE_REQ\000"
+ 3413      455F4556 
+ 3413      545F4741 
+ 3413      5454535F 
+ 3413      57524954 
+ 3414              	.LASF62:
+ 3415 05d6 4359424C 		.ascii	"CYBLE_EVT_GATTS_PREP_WRITE_REQ\000"
+ 3415      455F4556 
+ 3415      545F4741 
+ 3415      5454535F 
+ 3415      50524550 
+ 3416              	.LASF91:
+ 3417 05f5 62797465 		.ascii	"byte1\000"
+ 3417      3100
+ 3418              	.LASF92:
+ 3419 05fb 62797465 		.ascii	"byte2\000"
+ 3419      3200
+ 3420              	.LASF93:
+ 3421 0601 62797465 		.ascii	"byte3\000"
+ 3421      3300
+ 3422              	.LASF94:
+ 3423 0607 62797465 		.ascii	"byte4\000"
+ 3423      3400
+ 3424              	.LASF54:
+ 3425 060d 4359424C 		.ascii	"CYBLE_EVT_GATTC_FIND_INFO_RSP\000"
+ 3425      455F4556 
+ 3425      545F4741 
+ 3425      5454435F 
+ 3425      46494E44 
+ 3426              	.LASF1:
+ 3427 062b 7369676E 		.ascii	"signed char\000"
+ 3427      65642063 
+ 3427      68617200 
+ 3428              	.LASF115:
+ 3429 0637 4932435F 		.ascii	"I2C_EEPROM.c\000"
+ 3429      45455052 
+ 3429      4F4D2E63 
+ 3429      00
+ 3430              	.LASF55:
+ 3431 0644 4359424C 		.ascii	"CYBLE_EVT_GATTC_FIND_BY_TYPE_VALUE_RSP\000"
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 73
+
+
+ 3431      455F4556 
+ 3431      545F4741 
+ 3431      5454435F 
+ 3431      46494E44 
+ 3432              	.LASF110:
+ 3433 066b 4932434D 		.ascii	"I2CM_I2CMasterSendRestart\000"
+ 3433      5F493243 
+ 3433      4D617374 
+ 3433      65725365 
+ 3433      6E645265 
+ 3434              	.LASF31:
+ 3435 0685 4359424C 		.ascii	"CYBLE_EVT_GAP_AUTH_COMPLETE\000"
+ 3435      455F4556 
+ 3435      545F4741 
+ 3435      505F4155 
+ 3435      54485F43 
+ 3436              	.LASF9:
+ 3437 06a1 756E7369 		.ascii	"unsigned int\000"
+ 3437      676E6564 
+ 3437      20696E74 
+ 3437      00
+ 3438              	.LASF113:
+ 3439 06ae 4932434D 		.ascii	"I2CM_I2CMasterClearStatus\000"
+ 3439      5F493243 
+ 3439      4D617374 
+ 3439      6572436C 
+ 3439      65617253 
+ 3440              	.LASF48:
+ 3441 06c8 4359424C 		.ascii	"CYBLE_EVT_GATT_CONNECT_IND\000"
+ 3441      455F4556 
+ 3441      545F4741 
+ 3441      54545F43 
+ 3441      4F4E4E45 
+ 3442              	.LASF6:
+ 3443 06e3 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3443      20756E73 
+ 3443      69676E65 
+ 3443      6420696E 
+ 3443      7400
+ 3444              	.LASF28:
+ 3445 06f5 4359424C 		.ascii	"CYBLE_EVT_GAP_AUTH_REQ\000"
+ 3445      455F4556 
+ 3445      545F4741 
+ 3445      505F4155 
+ 3445      54485F52 
+ 3446              	.LASF77:
+ 3447 070c 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DISCONN_IND\000"
+ 3447      455F4556 
+ 3447      545F4C32 
+ 3447      4341505F 
+ 3447      43424643 
+ 3448              	.LASF36:
+ 3449 072d 4359424C 		.ascii	"CYBLE_EVT_GAP_ENCRYPT_CHANGE\000"
+ 3449      455F4556 
+ 3449      545F4741 
+ 3449      505F454E 
+ 3449      43525950 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 74
+
+
+ 3450              	.LASF71:
+ 3451 074a 4359424C 		.ascii	"CYBLE_EVT_GATTC_LONG_PROCEDURE_END\000"
+ 3451      455F4556 
+ 3451      545F4741 
+ 3451      5454435F 
+ 3451      4C4F4E47 
+ 3452              	.LASF4:
+ 3453 076d 73686F72 		.ascii	"short unsigned int\000"
+ 3453      7420756E 
+ 3453      7369676E 
+ 3453      65642069 
+ 3453      6E7400
+ 3454              	.LASF97:
+ 3455 0780 73746174 		.ascii	"status\000"
+ 3455      757300
+ 3456              	.LASF37:
+ 3457 0787 4359424C 		.ascii	"CYBLE_EVT_GAP_CONNECTION_UPDATE_COMPLETE\000"
+ 3457      455F4556 
+ 3457      545F4741 
+ 3457      505F434F 
+ 3457      4E4E4543 
+ 3458              	.LASF46:
+ 3459 07b0 4359424C 		.ascii	"CYBLE_EVT_GAP_SMP_NEGOTIATED_AUTH_INFO\000"
+ 3459      455F4556 
+ 3459      545F4741 
+ 3459      505F534D 
+ 3459      505F4E45 
+ 3460              	.LASF112:
+ 3461 07d7 4932434D 		.ascii	"I2CM_I2CMasterSendStop\000"
+ 3461      5F493243 
+ 3461      4D617374 
+ 3461      65725365 
+ 3461      6E645374 
+ 3462              	.LASF18:
+ 3463 07ee 63686172 		.ascii	"char\000"
+ 3463      00
+ 3464              	.LASF74:
+ 3465 07f3 4359424C 		.ascii	"CYBLE_EVT_L2CAP_COMMAND_REJ\000"
+ 3465      455F4556 
+ 3465      545F4C32 
+ 3465      4341505F 
+ 3465      434F4D4D 
+ 3466              	.LASF86:
+ 3467 080f 76616C75 		.ascii	"value\000"
+ 3467      6500
+ 3468              	.LASF50:
+ 3469 0815 4359424C 		.ascii	"CYBLE_EVT_GATTS_XCNHG_MTU_REQ\000"
+ 3469      455F4556 
+ 3469      545F4741 
+ 3469      5454535F 
+ 3469      58434E48 
+ 3470              	.LASF57:
+ 3471 0833 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BLOB_RSP\000"
+ 3471      455F4556 
+ 3471      545F4741 
+ 3471      5454435F 
+ 3471      52454144 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 75
+
+
+ 3472              	.LASF64:
+ 3473 0851 4359424C 		.ascii	"CYBLE_EVT_GATTC_EXEC_WRITE_RSP\000"
+ 3473      455F4556 
+ 3473      545F4741 
+ 3473      5454435F 
+ 3473      45584543 
+ 3474              	.LASF14:
+ 3475 0870 75696E74 		.ascii	"uint32\000"
+ 3475      333200
+ 3476              	.LASF83:
+ 3477 0877 4359424C 		.ascii	"CYBLE_EVT_PENDING_FLASH_WRITE\000"
+ 3477      455F4556 
+ 3477      545F5045 
+ 3477      4E44494E 
+ 3477      475F464C 
+ 3478              	.LASF87:
+ 3479 0895 696E6469 		.ascii	"indicator\000"
+ 3479      6361746F 
+ 3479      7200
+ 3480              	.LASF100:
+ 3481 089f 77726974 		.ascii	"writeUint16ToEEPROM\000"
+ 3481      6555696E 
+ 3481      74313654 
+ 3481      6F454550 
+ 3481      524F4D00 
+ 3482              	.LASF90:
+ 3483 08b3 72656741 		.ascii	"regAdr\000"
+ 3483      647200
+ 3484              	.LASF81:
+ 3485 08ba 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_TX_CREDIT_IND\000"
+ 3485      455F4556 
+ 3485      545F4C32 
+ 3485      4341505F 
+ 3485      43424643 
+ 3486              	.LASF80:
+ 3487 08dd 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_RX_CREDIT_IND\000"
+ 3487      455F4556 
+ 3487      545F4C32 
+ 3487      4341505F 
+ 3487      43424643 
+ 3488              	.LASF106:
+ 3489 0900 4932434D 		.ascii	"I2CM_I2CMasterSendStart\000"
+ 3489      5F493243 
+ 3489      4D617374 
+ 3489      65725365 
+ 3489      6E645374 
+ 3490              	.LASF23:
+ 3491 0918 4359424C 		.ascii	"CYBLE_EVT_HARDWARE_ERROR\000"
+ 3491      455F4556 
+ 3491      545F4841 
+ 3491      52445741 
+ 3491      52455F45 
+ 3492              	.LASF79:
+ 3493 0931 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DATA_READ\000"
+ 3493      455F4556 
+ 3493      545F4C32 
+ 3493      4341505F 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 76
+
+
+ 3493      43424643 
+ 3494              	.LASF73:
+ 3495 0950 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CONN_PARAM_UPDATE_RSP\000"
+ 3495      455F4556 
+ 3495      545F4C32 
+ 3495      4341505F 
+ 3495      434F4E4E 
+ 3496              	.LASF27:
+ 3497 0976 4359424C 		.ascii	"CYBLE_EVT_GAPC_SCAN_PROGRESS_RESULT\000"
+ 3497      455F4556 
+ 3497      545F4741 
+ 3497      50435F53 
+ 3497      43414E5F 
+ 3498              	.LASF95:
+ 3499 099a 6948656C 		.ascii	"iHelper\000"
+ 3499      70657200 
+ 3500              	.LASF52:
+ 3501 09a2 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BY_GROUP_TYPE_RSP\000"
+ 3501      455F4556 
+ 3501      545F4741 
+ 3501      5454435F 
+ 3501      52454144 
+ 3502              	.LASF61:
+ 3503 09c9 4359424C 		.ascii	"CYBLE_EVT_GATTS_WRITE_CMD_REQ\000"
+ 3503      455F4556 
+ 3503      545F4741 
+ 3503      5454535F 
+ 3503      57524954 
+ 3504              	.LASF118:
+ 3505 09e7 53575F54 		.ascii	"SW_TX_PutCRLF\000"
+ 3505      585F5075 
+ 3505      7443524C 
+ 3505      4600
+ 3506              	.LASF51:
+ 3507 09f5 4359424C 		.ascii	"CYBLE_EVT_GATTC_XCHNG_MTU_RSP\000"
+ 3507      455F4556 
+ 3507      545F4741 
+ 3507      5454435F 
+ 3507      5843484E 
+ 3508              	.LASF98:
+ 3509 0a13 6F757470 		.ascii	"output\000"
+ 3509      757400
+ 3510              	.LASF22:
+ 3511 0a1a 4359424C 		.ascii	"CYBLE_EVT_TIMEOUT\000"
+ 3511      455F4556 
+ 3511      545F5449 
+ 3511      4D454F55 
+ 3511      5400
+ 3512              	.LASF82:
+ 3513 0a2c 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DATA_WRITE_IND\000"
+ 3513      455F4556 
+ 3513      545F4C32 
+ 3513      4341505F 
+ 3513      43424643 
+ 3514              	.LASF38:
+ 3515 0a50 4359424C 		.ascii	"CYBLE_EVT_GAPC_SCAN_START_STOP\000"
+ 3515      455F4556 
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 77
+
+
+ 3515      545F4741 
+ 3515      50435F53 
+ 3515      43414E5F 
+ 3516              	.LASF16:
+ 3517 0a6f 646F7562 		.ascii	"double\000"
+ 3517      6C6500
+ 3518              	.LASF85:
+ 3519 0a76 4359424C 		.ascii	"CYBLE_EVT_MAX\000"
+ 3519      455F4556 
+ 3519      545F4D41 
+ 3519      5800
+ 3520              	.LASF70:
+ 3521 0a84 4359424C 		.ascii	"CYBLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ\000"
+ 3521      455F4556 
+ 3521      545F4741 
+ 3521      5454535F 
+ 3521      52454144 
+ 3522              	.LASF69:
+ 3523 0aad 4359424C 		.ascii	"CYBLE_EVT_GATTC_STOP_CMD_COMPLETE\000"
+ 3523      455F4556 
+ 3523      545F4741 
+ 3523      5454435F 
+ 3523      53544F50 
+ 3524              	.LASF108:
+ 3525 0acf 43794465 		.ascii	"CyDelay\000"
+ 3525      6C617900 
+ 3526              	.LASF63:
+ 3527 0ad7 4359424C 		.ascii	"CYBLE_EVT_GATTS_EXEC_WRITE_REQ\000"
+ 3527      455F4556 
+ 3527      545F4741 
+ 3527      5454535F 
+ 3527      45584543 
+ 3528              	.LASF35:
+ 3529 0af6 4359424C 		.ascii	"CYBLE_EVT_GAP_DEVICE_DISCONNECTED\000"
+ 3529      455F4556 
+ 3529      545F4741 
+ 3529      505F4445 
+ 3529      56494345 
+ 3530              	.LASF39:
+ 3531 0b18 4359424C 		.ascii	"CYBLE_EVT_GAP_KEYINFO_EXCHNGE_CMPLT\000"
+ 3531      455F4556 
+ 3531      545F4741 
+ 3531      505F4B45 
+ 3531      59494E46 
+ 3532              	.LASF68:
+ 3533 0b3c 4359424C 		.ascii	"CYBLE_EVT_GATTS_DATA_SIGNED_CMD_REQ\000"
+ 3533      455F4556 
+ 3533      545F4741 
+ 3533      5454535F 
+ 3533      44415441 
+ 3534              	.LASF49:
+ 3535 0b60 4359424C 		.ascii	"CYBLE_EVT_GATT_DISCONNECT_IND\000"
+ 3535      455F4556 
+ 3535      545F4741 
+ 3535      54545F44 
+ 3535      4953434F 
+ 3536              	.LASF42:
+ARM GAS  C:\Users\Jannai\AppData\Local\Temp\cc9YXdAj.s 			page 78
+
+
+ 3537 0b7e 4359424C 		.ascii	"CYBLE_EVT_GAP_OOB_GENERATED_NOTIFICATION\000"
+ 3537      455F4556 
+ 3537      545F4741 
+ 3537      505F4F4F 
+ 3537      425F4745 
+ 3538              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

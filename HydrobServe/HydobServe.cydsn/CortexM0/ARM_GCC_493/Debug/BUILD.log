@@ -1,0 +1,178 @@
+--------------- Build Started: 08/27/2017 17:50:57 Project: HydobServe, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
+cydsfit.exe -.appdatapath "C:\Users\Jannai\AppData\Local\Cypress Semiconductor\PSoC Creator\4.0" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\HydobServe.cyprj -d CYBLE-014008-00 -s C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\Generated_Source\PSoC4 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
+Elaborating Design...
+ADD: pft.M0074: information: A (re)build is required to use the analog device editor. Unable to load the necessary information from the cyfit file. Partial/wrong data will be displayed until this has been resolved.
+ * C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\HydobServe.cydwr ()
+ADD: sdb.M0060: warning: Warning in component: I2CM. The actual data rate is faster than the requested data rate.
+ * C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\TopDesign\TopDesign.cysch (Instance:I2CM)
+ADD: sdb.M0061: information: Info from component: ADC. The actual sample rate (2604 SPS) differs from the desired sample rate (2777 SPS) due to the clock configuration in the DWR.
+ * C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\TopDesign\TopDesign.cysch (Instance:ADC)
+HDL Generation...
+Synthesis...
+Tech Mapping...
+ADD: pft.M0040: information: The following 1 pin(s) will be assigned a location by the fitter: Pin_CombinedIntr(0)
+Analog Placement...
+Analog Routing...
+Analog Code Generation...
+Digital Placement...
+Digital Routing...
+Bitstream Generation...
+Bitstream Verification...
+Static timing analysis...
+API Generation...
+DEL: pft.M0074: information: A (re)build is required to use the analog device editor. Unable to load the necessary information from the cyfit file. Partial/wrong data will be displayed until this has been resolved.
+ * C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\HydobServe.cydwr ()
+Dependency Generation...
+Cleanup...
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/main.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c main.c -o .\CortexM0\ARM_GCC_493\Debug\main.o
+In file included from main.c:14:0:
+mainFunctions.h:22:13: warning: 'LowPowerImplementation' declared 'static' but never defined [-Wunused-function]
+ static void LowPowerImplementation(void);
+             ^
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/BLE_functions.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c BLE_functions.c -o .\CortexM0\ARM_GCC_493\Debug\BLE_functions.o
+BLE_functions.c: In function 'readUint8FromBLEdb':
+BLE_functions.c:35:26: warning: assignment makes pointer from integer without a cast
+     readHandle.value.val = returnVal;                                       
+                          ^
+BLE_functions.c: In function 'readUint16FromBLEdb':
+BLE_functions.c:53:26: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
+     readHandle.value.val = helperArray;                                       
+                          ^
+BLE_functions.c: In function 'readFloat32FromBLEdb':
+BLE_functions.c:74:26: warning: pointer targets in assignment differ in signedness [-Wpointer-sign]
+     readHandle.value.val = helperArray;                                       
+                          ^
+BLE_functions.c: In function 'write22CharsToBLEdb':
+BLE_functions.c:116:27: warning: unused variable 'error' [-Wunused-variable]
+     CYBLE_GATT_ERR_CODE_T error = CyBle_GattsWriteAttributeValue(&dataHandle, 0, &cyBle_connHandle, CYBLE_GATT_DB_LOCALLY_INITIATED);
+                           ^
+BLE_functions.c: In function 'writeUint16ToBLEdb':
+BLE_functions.c:138:27: warning: unused variable 'error' [-Wunused-variable]
+     CYBLE_GATT_ERR_CODE_T error = CyBle_GattsWriteAttributeValue(&dataHandle, 0, &cyBle_connHandle, CYBLE_GATT_DB_LOCALLY_INITIATED);
+                           ^
+BLE_functions.c: In function 'writeUint8ToBLEdb':
+BLE_functions.c:162:27: warning: unused variable 'error' [-Wunused-variable]
+     CYBLE_GATT_ERR_CODE_T error = CyBle_GattsWriteAttributeValue(&dataHandle, 0, &cyBle_connHandle, CYBLE_GATT_DB_LOCALLY_INITIATED);
+                           ^
+BLE_functions.c: In function 'writeFloat32ToBLEdb':
+BLE_functions.c:188:27: warning: unused variable 'error' [-Wunused-variable]
+     CYBLE_GATT_ERR_CODE_T error = CyBle_GattsWriteAttributeValue(&dataHandle, 0, &cyBle_connHandle, CYBLE_GATT_DB_LOCALLY_INITIATED);
+                           ^
+BLE_functions.c: In function 'StackEventHandler':
+BLE_functions.c:451:35: warning: unused variable 'error' [-Wunused-variable]
+             CYBLE_GATT_ERR_CODE_T error = CyBle_GattsWriteAttributeValue(&dataHandle, 0, &cyBle_connHandle, CYBLE_GATT_DB_LOCALLY_INITIATED);
+                                   ^
+BLE_functions.c: In function 'readUint8FromBLEdb':
+BLE_functions.c:35:26: warning: 'returnVal' is used uninitialized in this function [-Wuninitialized]
+     readHandle.value.val = returnVal;                                       
+                          ^
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2C_EEPROM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c I2C_EEPROM.c -o .\CortexM0\ARM_GCC_493\Debug\I2C_EEPROM.o
+I2C_EEPROM.c: In function 'readFloat32FromEEPROM':
+I2C_EEPROM.c:59:11: warning: unused variable 'status' [-Wunused-variable]
+     uint8 status = I2CM_I2CMasterClearStatus();  
+           ^
+I2C_EEPROM.c: In function 'readUint16FromEEPROM':
+I2C_EEPROM.c:104:11: warning: unused variable 'status' [-Wunused-variable]
+     uint8 status = I2CM_I2CMasterClearStatus();  
+           ^
+I2C_EEPROM.c: In function 'writeOneByteToEEPROM':
+I2C_EEPROM.c:179:11: warning: unused variable 'status' [-Wunused-variable]
+     uint8 status = I2CM_I2CMasterClearStatus();
+           ^
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/mainFunctions.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c mainFunctions.c -o .\CortexM0\ARM_GCC_493\Debug\mainFunctions.o
+mainFunctions.c: In function 'ISR_hall_pulse':
+mainFunctions.c:172:11: warning: unused variable 'InterruptState' [-Wunused-variable]
+     uint8 InterruptState = Pin_hall_sig_ClearInterrupt();
+           ^
+mainFunctions.c: In function 'ISR_button_press':
+mainFunctions.c:190:11: warning: unused variable 'InterruptState' [-Wunused-variable]
+     uint8 InterruptState = Pin_button_isr_ClearInterrupt();
+           ^
+mainFunctions.c: In function 'initBLEcharacteristics':
+mainFunctions.c:482:27: warning: unused variable 'error3' [-Wunused-variable]
+     CYBLE_GATT_ERR_CODE_T error3 = CyBle_GattsWriteAttributeValue(&dataHandle, 0, &cyBle_connHandle, CYBLE_GATT_DB_LOCALLY_INITIATED);   
+                           ^
+mainFunctions.c:477:27: warning: unused variable 'error2' [-Wunused-variable]
+     CYBLE_GATT_ERR_CODE_T error2 = CyBle_GattsWriteAttributeValue(&dataHandle, 0, &cyBle_connHandle, CYBLE_GATT_DB_LOCALLY_INITIATED);   
+                           ^
+mainFunctions.c:472:27: warning: unused variable 'error' [-Wunused-variable]
+     CYBLE_GATT_ERR_CODE_T error = CyBle_GattsWriteAttributeValue(&dataHandle, 0, &cyBle_connHandle, CYBLE_GATT_DB_LOCALLY_INITIATED);   
+                           ^
+mainFunctions.c:382:12: warning: unused variable 'ptr' [-Wunused-variable]
+     uint8* ptr;
+            ^
+mainFunctions.c: At top level:
+mainFunctions.c:252:13: warning: 'LowPowerImplementation' defined but not used [-Wunused-function]
+ static void LowPowerImplementation(void)
+             ^
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2C_LIS3DH.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c I2C_LIS3DH.c -o .\CortexM0\ARM_GCC_493\Debug\I2C_LIS3DH.o
+I2C_LIS3DH.c: In function 'acc_read':
+I2C_LIS3DH.c:79:11: warning: unused variable 'status' [-Wunused-variable]
+     uint8 status = I2CM_I2CMasterClearStatus();
+           ^
+I2C_LIS3DH.c: In function 'acc_readRegister8':
+I2C_LIS3DH.c:323:11: warning: unused variable 'status' [-Wunused-variable]
+     uint8 status = I2CM_I2CMasterClearStatus();
+           ^
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/cyfitter_cfg.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\cyfitter_cfg.c -o .\CortexM0\ARM_GCC_493\Debug\cyfitter_cfg.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/cymetadata.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\cymetadata.c -o .\CortexM0\ARM_GCC_493\Debug\cymetadata.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/BLE.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\BLE.c -o .\CortexM0\ARM_GCC_493\Debug\BLE.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/BLE_gatt.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\BLE_gatt.c -o .\CortexM0\ARM_GCC_493\Debug\BLE_gatt.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/BLE_eventHandler.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\BLE_eventHandler.c -o .\CortexM0\ARM_GCC_493\Debug\BLE_eventHandler.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/BLE_HAL_INT.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\BLE_HAL_INT.c -o .\CortexM0\ARM_GCC_493\Debug\BLE_HAL_INT.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/BLE_HAL_PVT.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\BLE_HAL_PVT.c -o .\CortexM0\ARM_GCC_493\Debug\BLE_HAL_PVT.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/BLE_custom.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\BLE_custom.c -o .\CortexM0\ARM_GCC_493\Debug\BLE_custom.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Pin_button_isr.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Pin_button_isr.c -o .\CortexM0\ARM_GCC_493\Debug\Pin_button_isr.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Pin_button_isr_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Pin_button_isr_PM.c -o .\CortexM0\ARM_GCC_493\Debug\Pin_button_isr_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/ISR_hall.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\ISR_hall.c -o .\CortexM0\ARM_GCC_493\Debug\ISR_hall.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Pin_hall_sig.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Pin_hall_sig.c -o .\CortexM0\ARM_GCC_493\Debug\Pin_hall_sig.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Pin_hall_sig_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Pin_hall_sig_PM.c -o .\CortexM0\ARM_GCC_493\Debug\Pin_hall_sig_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/VCC_hall.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\VCC_hall.c -o .\CortexM0\ARM_GCC_493\Debug\VCC_hall.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/VCC_hall_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\VCC_hall_PM.c -o .\CortexM0\ARM_GCC_493\Debug\VCC_hall_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/BLE_bless_isr.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\BLE_bless_isr.c -o .\CortexM0\ARM_GCC_493\Debug\BLE_bless_isr.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Cm0Start.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Cm0Start.c -o .\CortexM0\ARM_GCC_493\Debug\Cm0Start.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/CyFlash.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\CyFlash.c -o .\CortexM0\ARM_GCC_493\Debug\CyFlash.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/CyLib.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\CyLib.c -o .\CortexM0\ARM_GCC_493\Debug\CyLib.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/cyPm.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\cyPm.c -o .\CortexM0\ARM_GCC_493\Debug\cyPm.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/cyutils.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\cyutils.c -o .\CortexM0\ARM_GCC_493\Debug\cyutils.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/CyLFClk.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\CyLFClk.c -o .\CortexM0\ARM_GCC_493\Debug\CyLFClk.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_I2C_INT.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_I2C_INT.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_I2C_INT.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_I2C.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_I2C.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_I2C.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_I2C_BOOT.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_I2C_BOOT.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_I2C_BOOT.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_I2C_MASTER.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_I2C_MASTER.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_I2C_MASTER.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_PM.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_BOOT.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_BOOT.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_BOOT.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_SCBCLK.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_SCBCLK.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_SCBCLK.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_sda.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_sda.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_sda.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_sda_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_sda_PM.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_sda_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_scl.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_scl.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_scl.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_scl_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_scl_PM.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_scl_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/I2CM_SCB_IRQ.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\I2CM_SCB_IRQ.c -o .\CortexM0\ARM_GCC_493\Debug\I2CM_SCB_IRQ.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/SW_TX.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\SW_TX.c -o .\CortexM0\ARM_GCC_493\Debug\SW_TX.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/ISR_btn.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\ISR_btn.c -o .\CortexM0\ARM_GCC_493\Debug\ISR_btn.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Pin_acc_isr.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Pin_acc_isr.c -o .\CortexM0\ARM_GCC_493\Debug\Pin_acc_isr.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Pin_acc_isr_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Pin_acc_isr_PM.c -o .\CortexM0\ARM_GCC_493\Debug\Pin_acc_isr_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/ISR_acc.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\ISR_acc.c -o .\CortexM0\ARM_GCC_493\Debug\ISR_acc.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Timer_1.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Timer_1.c -o .\CortexM0\ARM_GCC_493\Debug\Timer_1.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Timer_1_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Timer_1_PM.c -o .\CortexM0\ARM_GCC_493\Debug\Timer_1_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/ISR_everySecond.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\ISR_everySecond.c -o .\CortexM0\ARM_GCC_493\Debug\ISR_everySecond.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/ADC.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\ADC.c -o .\CortexM0\ARM_GCC_493\Debug\ADC.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/ADC_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\ADC_PM.c -o .\CortexM0\ARM_GCC_493\Debug\ADC_PM.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/ADC_INT.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\ADC_INT.c -o .\CortexM0\ARM_GCC_493\Debug\ADC_INT.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Vref.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Vref.c -o .\CortexM0\ARM_GCC_493\Debug\Vref.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/ADC_IRQ.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\ADC_IRQ.c -o .\CortexM0\ARM_GCC_493\Debug\ADC_IRQ.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/ADC_intClock.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\ADC_intClock.c -o .\CortexM0\ARM_GCC_493\Debug\ADC_intClock.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/isr_CombinedPort.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\isr_CombinedPort.c -o .\CortexM0\ARM_GCC_493\Debug\isr_CombinedPort.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Pin_CombinedIntr.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Pin_CombinedIntr.c -o .\CortexM0\ARM_GCC_493\Debug\Pin_CombinedIntr.o
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_493\Debug/Pin_CombinedIntr_PM.lst -g -D DEBUG -Wall -ffunction-sections -Og -ffat-lto-objects -c Generated_Source\PSoC4\Pin_CombinedIntr_PM.c -o .\CortexM0\ARM_GCC_493\Debug\Pin_CombinedIntr_PM.o
+arm-none-eabi-as.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -alh=.\CortexM0\ARM_GCC_493\Debug/CyBootAsmGnu.lst -g -W -o .\CortexM0\ARM_GCC_493\Debug\CyBootAsmGnu.o Generated_Source\PSoC4\CyBootAsmGnu.s
+arm-none-eabi-as.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -alh=.\CortexM0\ARM_GCC_493\Debug/SW_TX_AsmGnu.lst -g -W -o .\CortexM0\ARM_GCC_493\Debug\SW_TX_AsmGnu.o Generated_Source\PSoC4\SW_TX_AsmGnu.s
+arm-none-eabi-ar.exe -rs .\CortexM0\ARM_GCC_493\Debug\HydobServe.a .\CortexM0\ARM_GCC_493\Debug\cyfitter_cfg.o .\CortexM0\ARM_GCC_493\Debug\BLE.o .\CortexM0\ARM_GCC_493\Debug\BLE_gatt.o .\CortexM0\ARM_GCC_493\Debug\BLE_eventHandler.o .\CortexM0\ARM_GCC_493\Debug\BLE_HAL_INT.o .\CortexM0\ARM_GCC_493\Debug\BLE_HAL_PVT.o .\CortexM0\ARM_GCC_493\Debug\BLE_custom.o .\CortexM0\ARM_GCC_493\Debug\Pin_button_isr.o .\CortexM0\ARM_GCC_493\Debug\Pin_button_isr_PM.o .\CortexM0\ARM_GCC_493\Debug\ISR_hall.o .\CortexM0\ARM_GCC_493\Debug\Pin_hall_sig.o .\CortexM0\ARM_GCC_493\Debug\Pin_hall_sig_PM.o .\CortexM0\ARM_GCC_493\Debug\VCC_hall.o .\CortexM0\ARM_GCC_493\Debug\VCC_hall_PM.o .\CortexM0\ARM_GCC_493\Debug\BLE_bless_isr.o .\CortexM0\ARM_GCC_493\Debug\CyFlash.o .\CortexM0\ARM_GCC_493\Debug\CyLib.o .\CortexM0\ARM_GCC_493\Debug\cyPm.o .\CortexM0\ARM_GCC_493\Debug\cyutils.o .\CortexM0\ARM_GCC_493\Debug\CyLFClk.o .\CortexM0\ARM_GCC_493\Debug\I2CM.o .\CortexM0\ARM_GCC_493\Debug\I2CM_I2C_INT.o .\CortexM0\ARM_GCC_493\Debug\I2CM_I2C.o .\CortexM0\ARM_GCC_493\Debug\I2CM_I2C_BOOT.o .\CortexM0\ARM_GCC_493\Debug\I2CM_I2C_MASTER.o .\CortexM0\ARM_GCC_493\Debug\I2CM_PM.o .\CortexM0\ARM_GCC_493\Debug\I2CM_BOOT.o .\CortexM0\ARM_GCC_493\Debug\I2CM_SCBCLK.o .\CortexM0\ARM_GCC_493\Debug\I2CM_sda.o .\CortexM0\ARM_GCC_493\Debug\I2CM_sda_PM.o .\CortexM0\ARM_GCC_493\Debug\I2CM_scl.o .\CortexM0\ARM_GCC_493\Debug\I2CM_scl_PM.o .\CortexM0\ARM_GCC_493\Debug\I2CM_SCB_IRQ.o .\CortexM0\ARM_GCC_493\Debug\SW_TX.o .\CortexM0\ARM_GCC_493\Debug\ISR_btn.o .\CortexM0\ARM_GCC_493\Debug\Pin_acc_isr.o .\CortexM0\ARM_GCC_493\Debug\Pin_acc_isr_PM.o .\CortexM0\ARM_GCC_493\Debug\ISR_acc.o .\CortexM0\ARM_GCC_493\Debug\Timer_1.o .\CortexM0\ARM_GCC_493\Debug\Timer_1_PM.o .\CortexM0\ARM_GCC_493\Debug\ISR_everySecond.o .\CortexM0\ARM_GCC_493\Debug\ADC.o .\CortexM0\ARM_GCC_493\Debug\ADC_PM.o .\CortexM0\ARM_GCC_493\Debug\ADC_INT.o .\CortexM0\ARM_GCC_493\Debug\Vref.o .\CortexM0\ARM_GCC_493\Debug\ADC_IRQ.o .\CortexM0\ARM_GCC_493\Debug\ADC_intClock.o .\CortexM0\ARM_GCC_493\Debug\isr_CombinedPort.o .\CortexM0\ARM_GCC_493\Debug\Pin_CombinedIntr.o .\CortexM0\ARM_GCC_493\Debug\Pin_CombinedIntr_PM.o .\CortexM0\ARM_GCC_493\Debug\CyBootAsmGnu.o .\CortexM0\ARM_GCC_493\Debug\SW_TX_AsmGnu.o
+arm-none-eabi-ar.exe: creating .\CortexM0\ARM_GCC_493\Debug\HydobServe.a
+arm-none-eabi-gcc.exe -Wl,--start-group -o .\CortexM0\ARM_GCC_493\Debug\HydobServe.elf .\CortexM0\ARM_GCC_493\Debug\main.o .\CortexM0\ARM_GCC_493\Debug\BLE_functions.o .\CortexM0\ARM_GCC_493\Debug\I2C_EEPROM.o .\CortexM0\ARM_GCC_493\Debug\mainFunctions.o .\CortexM0\ARM_GCC_493\Debug\I2C_LIS3DH.o .\CortexM0\ARM_GCC_493\Debug\cymetadata.o .\CortexM0\ARM_GCC_493\Debug\Cm0Start.o .\CortexM0\ARM_GCC_493\Debug\HydobServe.a "C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\BLE_v3_10\Library\gccCyBLEStack_BLE_SOC_PERIPHERAL.a" "C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CortexM0\ARM_GCC_493\Debug\CyComponentLibrary.a" -mcpu=cortex-m0 -mthumb -g -ffunction-sections -Og -ffat-lto-objects -L Generated_Source\PSoC4 -Wl,-Map,.\CortexM0\ARM_GCC_493\Debug/HydobServe.map -T C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\Generated_Source\PSoC4\cm0gcc.ld -specs=nano.specs -Wl,--gc-sections -u _printf_float -Wl,--end-group
+cyelftool.exe -C C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\CortexM0\ARM_GCC_493\Debug\HydobServe.elf --flash_row_size 128 --flash_size 131072
+cyelftool.exe -S C:\Users\Jannai\Documents\GitHub\hydrobserve_firmware\HydrobServe\HydobServe.cydsn\CortexM0\ARM_GCC_493\Debug\HydobServe.elf
+Flash used: 107785 of 131072 bytes (82,2 %).
+SRAM used: 11688 of 16384 bytes (71,3 %). Stack: 2048 bytes. Heap: 512 bytes.
+--------------- Build Succeeded: 08/27/2017 17:51:25 ---------------
